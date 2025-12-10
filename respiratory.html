@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <div class="quickbar">
-  <button onclick="scrollToSection('cards')">Conditions</button>
-  <button onclick="scrollToSection('table')">Compare</button>
-  <button onclick="scrollToSection('redflags')">Red Flags</button>
-</div>
-
-<script>
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
-</script>
-
   <title>Respiratory - Paramedics in Primary Care</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,14 +10,16 @@ function scrollToSection(id){
 
 <h1>Respiratory</h1>
 <p class="subtitle">Common Primary Care Presentations</p>
+
+<!-- Jump menu -->
 <div class="jump-menu">
   <button onclick="scrollToSection('cards')">Conditions</button>
   <button onclick="scrollToSection('table')">Comparison Table</button>
   <button onclick="scrollToSection('redflags')">Red Flags</button>
 </div>
 
+<!-- Conditions grid -->
 <div id="cards" class="grid">
-
 
   <div class="card" onclick="openCondition('asthma')">
     <h3>Asthma</h3>
@@ -51,135 +41,52 @@ function scrollToSection(id){
     <p>Sudden breathlessness</p>
   </div>
 
+  <div class="card" onclick="openCondition('pneumothorax')">
+    <h3>Pneumothorax</h3>
+    <p>Sudden pleuritic pain</p>
+  </div>
+
+  <div class="card" onclick="openCondition('hf')">
+    <h3>Heart Failure</h3>
+    <p>Orthopnoea • Oedema</p>
+  </div>
+
 </div>
 
 <h2 id="table">Comparison Table</h2>
 
-
 <table>
-<tr>
-  <th>Condition</th>
-  <th>Cough</th>
-  <th>Fever</th>
-  <th>Chest Pain</th>
-  <th>Breath Sounds</th>
-  <th>Red Flag</th>
-</tr>
-
-<tr>
-  <td>Asthma</td>
-  <td>Dry</td>
-  <td>Rare</td>
-  <td>Tight</td>
-  <td>Wheeze</td>
-  <td>Silent chest</td>
-</tr>
-
-<tr>
-  <td>COPD</td>
-  <td>Wet</td>
-  <td>Sometimes</td>
-  <td>Rare</td>
-  <td>Coarse</td>
-  <td>Drowsy</td>
-</tr>
-
-<tr>
-  <td>Pneumonia</td>
-  <td>Wet</td>
-  <td>Yes</td>
-  <td>Pleuritic</td>
-  <td>Crackles</td>
-  <td>Hypotension</td>
-</tr>
-
-<tr>
-  <td>PE</td>
-  <td>Dry</td>
-  <td>Rare</td>
-  <td>Sharp</td>
-  <td>Normal</td>
-  <td>Collapse</td>
-</tr>
+  <tr>
+    <th>Condition</th><th>Onset</th><th>Cough</th><th>Fever</th>
+    <th>Chest pain</th><th>Breath sounds</th><th>Clue</th><th>Red flag</th>
+  </tr>
+  <tr>
+    <td>Asthma</td><td>Rapid</td><td>Dry</td><td>No</td><td>Tight</td><td>Wheeze</td>
+    <td>Triggers</td><td>Silent chest</td>
+  </tr>
+  <tr>
+    <td>COPD</td><td>Gradual</td><td>Wet</td><td>±</td><td>Rare</td><td>Coarse</td>
+    <td>Smoker</td><td>CO₂ retention</td>
+  </tr>
+  <tr>
+    <td>Pneumonia</td><td>Acute</td><td>Wet</td><td>Yes</td><td>Pleuritic</td><td>Crackles</td>
+    <td>Rigors</td><td>Sepsis</td>
+  </tr>
+  <tr>
+    <td>PE</td><td>Sudden</td><td>Dry</td><td>±</td><td>Sharp</td><td>Normal</td>
+    <td>Risk factors</td><td>Collapse</td>
+  </tr>
+  <tr>
+    <td>Pneumothorax</td><td>Sudden</td><td>No</td><td>No</td><td>Sharp</td><td>Reduced</td>
+    <td>Hyperresonant</td><td>Tension</td>
+  </tr>
+  <tr>
+    <td>HF</td><td>Gradual</td><td>Frothy</td><td>No</td><td>Rare</td><td>Crackles</td>
+    <td>Oedema</td><td>Pink sputum</td>
+  </tr>
 </table>
 
-<!-- MODAL -->
-<div id="popup" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closePopup()">&times;</span>
-    <div id="popupContent"></div>
-  </div>
-</div>
-
-<script>
-function openCondition(name) {
-
-let info = {
-  asthma: `
-    <h2>Asthma</h2>
-    <p>Inflammatory airway disease with reversible obstruction.</p>
-    <ul>
-      <li>Wheeze</li>
-      <li>Tight chest</li>
-      <li>Triggered by allergens/exertion</li>
-    </ul>
-    <strong>RED FLAGS:</strong>
-    <ul>
-      <li>Silent chest</li>
-      <li>Exhaustion</li>
-      <li>Low sats</li>
-    </ul>
-    <a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">Open NICE CKS</a>
-  `,
-
-  copd: `
-    <h2>COPD Exacerbation</h2>
-    <p>Worsening airflow obstruction.</p>
-    <ul>
-      <li>Productive cough</li>
-      <li>Breathlessness</li>
-      <li>Smoking history</li>
-    </ul>
-    <strong>RED FLAGS:</strong>
-    <ul>
-      <li>Cyanosis</li>
-      <li>Drowsy</li>
-    </ul>
-    <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
-  `,
-
-  pneumonia: `
-    <h2>Pneumonia</h2>
-    <p>Acute infection of lung tissue.</p>
-    <ul>
-      <li>Fever</li>
-      <li>Productive cough</li>
-      <li>Pleuritic pain</li>
-    </ul>
-    <strong>RED FLAGS:</strong>
-    <ul>
-      <li>Confusion</li>
-      <li>Low BP</li>
-    </ul>
-    <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">Open NICE CKS</a>
-  `,
-
-  pe: `
-    <h2>Pulmonary Embolism</h2>
-    <p>Clot in pulmonary circulation.</p>
-    <ul>
-      <li>Sudden dyspnoea</li>
-      <li>Tachycardia</li>
-      <li>Pleuritic pain</li>
-    </ul>
-    <strong>RED FLAGS:</strong>
-    <ul>
-      <li>Collapse</li>
-      <li>Haemoptysis</li>
-    </ul>
-    <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
-  `
-  <h2 id="redflags">Red Flags</h2>
+<h2 id="redflags">Respiratory Red Flags</h2>
 <ul class="redflags">
   <li>New oxygen requirement</li>
   <li>RR ≥ 25 or exhaustion</li>
@@ -190,18 +97,145 @@ let info = {
   <li>Confusion</li>
 </ul>
 
+<!-- MODAL -->
+<div id="popup" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<script>
+// Open condition modal
+function openCondition(name) {
+  const info = {
+    asthma: `
+      <h2>Asthma</h2>
+      <p>Reversible airway obstruction with inflammation.</p>
+      <ul>
+        <li>Wheeze, chest tightness</li>
+        <li>Triggered by allergens/exertion</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>Silent chest</li>
+        <li>PEF not improving</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Exhaustion</li>
+        <li>Low sats</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">Open NICE CKS</a>
+    `,
+    copd: `
+      <h2>COPD Exacerbation</h2>
+      <p>Worsening airflow obstruction in a patient with COPD.</p>
+      <ul>
+        <li>Productive cough</li>
+        <li>Breathlessness</li>
+        <li>Smoking history</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>New confusion</li>
+        <li>Unable to speak full sentences</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Cyanosis</li>
+        <li>Drowsiness / CO₂ retention</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
+    `,
+    pneumonia: `
+      <h2>Pneumonia</h2>
+      <p>Acute infection of lung parenchyma.</p>
+      <ul>
+        <li>Fever and rigors</li>
+        <li>Productive cough</li>
+        <li>Pleuritic chest pain</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>CURB-65 features (confusion, RR↑, BP↓, age ≥65)</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Hypotension</li>
+        <li>New confusion</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">Open NICE CKS</a>
+    `,
+    pe: `
+      <h2>Pulmonary Embolism</h2>
+      <p>Clot in pulmonary arterial circulation.</p>
+      <ul>
+        <li>Sudden-onset dyspnoea</li>
+        <li>Pleuritic chest pain</li>
+        <li>Tachycardia</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>Recent immobility / surgery / pregnancy</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Collapse / syncope</li>
+        <li>Haemodynamic instability</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
+    `,
+    pneumothorax: `
+      <h2>Pneumothorax</h2>
+      <p>Air in pleural space causing lung collapse.</p>
+      <ul>
+        <li>Sudden pleuritic pain</li>
+        <li>Shortness of breath</li>
+        <li>Often young, tall, thin or trauma</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>Hyperresonance on percussion</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Tracheal deviation</li>
+        <li>Severe respiratory distress</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">Open NICE CKS</a>
+    `,
+    hf: `
+      <h2>Heart Failure</h2>
+      <p>Pump failure causing pulmonary congestion.</p>
+      <ul>
+        <li>Orthopnoea</li>
+        <li>Paroxysmal nocturnal dyspnoea</li>
+        <li>Peripheral oedema</li>
+      </ul>
+      <strong>DON’T MISS:</strong>
+      <ul>
+        <li>New onset AF</li>
+      </ul>
+      <strong>RED FLAGS:</strong>
+      <ul>
+        <li>Pink frothy sputum</li>
+        <li>Severe hypoxia</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">Open NICE CKS</a>
+    `
+  };
+
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("popupContent").innerHTML = info[name];
 }
 
-document.getElementById("popup").style.display = "block";
-document.getElementById("popupContent").innerHTML = info[name];
-
-}
-
+// Close modal
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
-</script>
-<script>
+
+// Jump menu scroll
 function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
@@ -209,4 +243,5 @@ function scrollToSection(id) {
 
 </body>
 </html>
+
 
