@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ENT - Paramedics in Primary Care</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="back" href="index.html">⬅ Home</a>
+
+<h1>ENT</h1>
+<p class="subtitle">Common Primary Care Presentations</p>
+
+<div class="grid">
+
+  <div class="card" onclick="openCondition('otitisExterna')">
+    <h3>Otitis Externa</h3>
+    <p>Pain on tragus</p>
+  </div>
+
+  <div class="card" onclick="openCondition('otitisMedia')">
+    <h3>Otitis Media</h3>
+    <p>Bulging TM</p>
+  </div>
+
+  <div class="card" onclick="openCondition('tonsillitis')">
+    <h3>Tonsillitis</h3>
+    <p>Exudate • Fever</p>
+  </div>
+
+  <div class="card" onclick="openCondition('quinsy')">
+    <h3>Quinsy</h3>
+    <p>Muffled voice</p>
+  </div>
+
+  <div class="card" onclick="openCondition('epiglottitis')">
+    <h3>Epiglottitis</h3>
+    <p>Drooling • Stridor</p>
+  </div>
+
+  <div class="card" onclick="openCondition('sinusitis')">
+    <h3>Sinusitis</h3>
+    <p>Facial pressure</p>
+  </div>
+
+</div>
+
+<h2>Comparison Table</h2>
+
+<table>
+<tr>
+  <th>Condition</th>
+  <th>Pain</th>
+  <th>Fever</th>
+  <th>Hearing</th>
+  <th>Key Feature</th>
+  <th>Red Flag</th>
+</tr>
+
+<tr>
+  <td>Otitis externa</td>
+  <td>Yes</td>
+  <td>No</td>
+  <td>Normal</td>
+  <td>Pain on tragus</td>
+  <td>Spreading cellulitis</td>
+</tr>
+
+<tr>
+  <td>Otitis media</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Reduced</td>
+  <td>Bulging TM</td>
+  <td>Mastoiditis</td>
+</tr>
+
+<tr>
+  <td>Tonsillitis</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Normal</td>
+  <td>Exudate</td>
+  <td>Quinsy</td>
+</tr>
+
+<tr>
+  <td>Quinsy</td>
+  <td>Severe</td>
+  <td>Yes</td>
+  <td>Normal</td>
+  <td>Trismus</td>
+  <td>Airway compromise</td>
+</tr>
+
+<tr>
+  <td>Epiglottitis</td>
+  <td>Severe</td>
+  <td>Yes</td>
+  <td>Normal</td>
+  <td>Drooling</td>
+  <td>Obstruction</td>
+</tr>
+
+<tr>
+  <td>Sinusitis</td>
+  <td>Moderate</td>
+  <td>Maybe</td>
+  <td>Normal</td>
+  <td>Facial tenderness</td>
+  <td>Orbital cellulitis</td>
+</tr>
+</table>
+
+<!-- MODAL -->
+<div id="popup" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<script>
+function openCondition(name) {
+
+let info = {
+
+  otitisExterna: `
+    <h2>Otitis Externa</h2>
+    <p>Inflammation of the ear canal.</p>
+    <ul>
+      <li>Pain on tragus</li>
+      <li>Discharge</li>
+      <li>Recent swimming</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Spreading redness</li>
+      <li>Immunocompromised patient</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/otitis-externa/" target="_blank">Open NICE CKS</a>
+  `,
+
+  otitisMedia: `
+    <h2>Otitis Media</h2>
+    <p>Middle ear infection.</p>
+    <ul>
+      <li>Otalgia</li>
+      <li>Fever</li>
+      <li>Bulging tympanic membrane</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Mastoid tenderness</li>
+      <li>Facial weakness</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/otitis-media-acute/" target="_blank">Open NICE CKS</a>
+  `,
+
+  tonsillitis: `
+    <h2>Tonsillitis</h2>
+    <p>Inflammation of the tonsils.</p>
+    <ul>
+      <li>Exudate</li>
+      <li>Fever</li>
+      <li>Odynophagia</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Trismus</li>
+      <li>Voice change</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/sore-throat-acute/" target="_blank">Open NICE CKS</a>
+  `,
+
+  quinsy: `
+    <h2>Peritonsillar Abscess (Quinsy)</h2>
+    <p>Deep tonsillar infection.</p>
+    <ul>
+      <li>Muffled voice</li>
+      <li>Trismus</li>
+      <li>Uvula deviation</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Neck stiffness</li>
+      <li>Sepsis</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/sore-throat-acute/" target="_blank">Open NICE CKS</a>
+  `,
+
+  epiglottitis: `
+    <h2>Epiglottitis</h2>
+    <p>Life-threatening airway infection.</p>
+    <ul>
+      <li>Drooling</li>
+      <li>Stridor</li>
+      <li>Tripod position</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Voice change</li>
+      <li>Rapid deterioration</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/epiglottitis/" target="_blank">Open NICE CKS</a>
+  `,
+
+  sinusitis: `
+    <h2>Sinusitis</h2>
+    <p>Inflammation of the paranasal sinuses.</p>
+    <ul>
+      <li>Facial pain</li>
+      <li>Congestion</li>
+      <li>Purulent discharge</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Orbital swelling</li>
+      <li>Altered consciousness</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/sinusitis/" target="_blank">Open NICE CKS</a>
+  `
+
+}
+
+document.getElementById("popup").style.display = "block";
+document.getElementById("popupContent").innerHTML = info[name];
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
