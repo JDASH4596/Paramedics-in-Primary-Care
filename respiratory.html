@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Respiratory - Paramedics in Primary Care</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="back" href="index.html">⬅ Home</a>
+
+<h1>Respiratory</h1>
+<p class="subtitle">Common Primary Care Presentations</p>
+
+<div class="grid">
+
+  <div class="card" onclick="openCondition('asthma')">
+    <h3>Asthma</h3>
+    <p>Wheeze • Tight chest</p>
+  </div>
+
+  <div class="card" onclick="openCondition('copd')">
+    <h3>COPD Exacerbation</h3>
+    <p>Productive cough</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pneumonia')">
+    <h3>Pneumonia</h3>
+    <p>Fever • Crackles</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pe')">
+    <h3>Pulmonary Embolism</h3>
+    <p>Sudden breathlessness</p>
+  </div>
+
+</div>
+
+<h2>Comparison Table</h2>
+
+<table>
+<tr>
+  <th>Condition</th>
+  <th>Cough</th>
+  <th>Fever</th>
+  <th>Chest Pain</th>
+  <th>Breath Sounds</th>
+  <th>Red Flag</th>
+</tr>
+
+<tr>
+  <td>Asthma</td>
+  <td>Dry</td>
+  <td>Rare</td>
+  <td>Tight</td>
+  <td>Wheeze</td>
+  <td>Silent chest</td>
+</tr>
+
+<tr>
+  <td>COPD</td>
+  <td>Wet</td>
+  <td>Sometimes</td>
+  <td>Rare</td>
+  <td>Coarse</td>
+  <td>Drowsy</td>
+</tr>
+
+<tr>
+  <td>Pneumonia</td>
+  <td>Wet</td>
+  <td>Yes</td>
+  <td>Pleuritic</td>
+  <td>Crackles</td>
+  <td>Hypotension</td>
+</tr>
+
+<tr>
+  <td>PE</td>
+  <td>Dry</td>
+  <td>Rare</td>
+  <td>Sharp</td>
+  <td>Normal</td>
+  <td>Collapse</td>
+</tr>
+</table>
+
+<!-- MODAL -->
+<div id="popup" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<script>
+function openCondition(name) {
+
+let info = {
+  asthma: `
+    <h2>Asthma</h2>
+    <p>Inflammatory airway disease with reversible obstruction.</p>
+    <ul>
+      <li>Wheeze</li>
+      <li>Tight chest</li>
+      <li>Triggered by allergens/exertion</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Silent chest</li>
+      <li>Exhaustion</li>
+      <li>Low sats</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">Open NICE CKS</a>
+  `,
+
+  copd: `
+    <h2>COPD Exacerbation</h2>
+    <p>Worsening airflow obstruction.</p>
+    <ul>
+      <li>Productive cough</li>
+      <li>Breathlessness</li>
+      <li>Smoking history</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Cyanosis</li>
+      <li>Drowsy</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
+  `,
+
+  pneumonia: `
+    <h2>Pneumonia</h2>
+    <p>Acute infection of lung tissue.</p>
+    <ul>
+      <li>Fever</li>
+      <li>Productive cough</li>
+      <li>Pleuritic pain</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Confusion</li>
+      <li>Low BP</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">Open NICE CKS</a>
+  `,
+
+  pe: `
+    <h2>Pulmonary Embolism</h2>
+    <p>Clot in pulmonary circulation.</p>
+    <ul>
+      <li>Sudden dyspnoea</li>
+      <li>Tachycardia</li>
+      <li>Pleuritic pain</li>
+    </ul>
+    <strong>RED FLAGS:</strong>
+    <ul>
+      <li>Collapse</li>
+      <li>Haemoptysis</li>
+    </ul>
+    <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
+  `
+}
+
+document.getElementById("popup").style.display = "block";
+document.getElementById("popupContent").innerHTML = info[name];
+
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
 
