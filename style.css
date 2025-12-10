@@ -95,4 +95,23 @@ td, th {
   background: #1e88e5;
   color: white;
 }
+.jump-menu {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.jump-menu button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #1e88e5;
+  color: white;
+}
+
+.redflags li {
+  color: #b71c1c;
+  font-weight: bold;
+}
 
