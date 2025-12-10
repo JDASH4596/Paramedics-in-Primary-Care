@@ -1,21 +1,238 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>System - Paramedics in Primary Care</title>
+  <title>Neurology - Paramedics in Primary Care</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <a class="back" href="index.html">⬅ Home</a>
 
-<h1>SYSTEM NAME</h1>
-<p class="subtitle">Coming soon</p>
+<h1>Neurology</h1>
+<p class="subtitle">Common Primary Care Presentations</p>
 
-<div class="card">
-  <p>This section is in development.</p>
-  <p>Conditions, tables and NICE links will be added.</p>
+<div class="grid">
+
+  <div class="card" onclick="openCondition('stroke')">
+    <h3>Stroke / TIA</h3>
+    <p>FAST positive</p>
+  </div>
+
+  <div class="card" onclick="openCondition('migraine')">
+    <h3>Migraine</h3>
+    <p>Unilateral headache</p>
+  </div>
+
+  <div class="card" onclick="openCondition('seizure')">
+    <h3>Seizure</h3>
+    <p>LOC ± convulsions</p>
+  </div>
+
+  <div class="card" onclick="openCondition('bell')">
+    <h3>Bell’s Palsy</h3>
+    <p>LMN facial weakness</p>
+  </div>
+
+  <div class="card" onclick="openCondition('meningitis')">
+    <h3>Meningitis</h3>
+    <p>Headache & fever</p>
+  </div>
+
+  <div class="card" onclick="openCondition('neuropathy')">
+    <h3>Peripheral Neuropathy</h3>
+    <p>Numbness & tingling</p>
+  </div>
+
 </div>
+
+<h2>Comparison Table</h2>
+
+<table>
+<tr>
+  <th>Condition</th>
+  <th>Onset</th>
+  <th>Pain</th>
+  <th>Consciousness</th>
+  <th>Key Feature</th>
+  <th>Red Flag</th>
+</tr>
+
+<tr>
+  <td>Stroke</td>
+  <td>Sudden</td>
+  <td>No</td>
+  <td>Normal/altered</td>
+  <td>Focal deficit</td>
+  <td>FAST positive</td>
+</tr>
+
+<tr>
+  <td>Migraine</td>
+  <td>Gradual</td>
+  <td>Yes</td>
+  <td>Normal</td>
+  <td>Photophobia</td>
+  <td>Change in pattern</td>
+</tr>
+
+<tr>
+  <td>Seizure</td>
+  <td>Sudden</td>
+  <td>No</td>
+  <td>LOC</td>
+  <td>Post-ictal state</td>
+  <td>Status epilepticus</td>
+</tr>
+
+<tr>
+  <td>Bell’s palsy</td>
+  <td>Hours</td>
+  <td>No</td>
+  <td>Normal</td>
+  <td>Forehead unable to raise</td>
+  <td>Facial numbness</td>
+</tr>
+
+<tr>
+  <td>Meningitis</td>
+  <td>Acute</td>
+  <td>Yes</td>
+  <td>Altered</td>
+  <td>Neck stiffness</td>
+  <td>Non-blanching rash</td>
+</tr>
+
+<tr>
+  <td>Neuropathy</td>
+  <td>Chronic</td>
+  <td>Yes</td>
+  <td>Normal</td>
+  <td>Stocking/glove pattern</td>
+  <td>Rapid progression</td>
+</tr>
+
+</table>
+
+<!-- MODAL -->
+<div id="popup" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<script>
+function openCondition(name) {
+
+let info = {
+
+stroke: `
+<h2>Stroke / TIA</h2>
+<p>Acute neurological deficit due to vascular occlusion or bleed.</p>
+<ul>
+  <li>Face droop</li>
+  <li>Weakness</li>
+  <li>Speech difficulty</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>FAST positive</li>
+  <li>Sudden severe headache</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/stroke/" target="_blank">Open NICE CKS</a>
+`,
+
+migraine: `
+<h2>Migraine</h2>
+<p>Recurrent headache disorder with sensory features.</p>
+<ul>
+  <li>Unilateral pain</li>
+  <li>Aura</li>
+  <li>Photophobia</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>New onset >50</li>
+  <li>Thunderclap headache</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/migraine/" target="_blank">Open NICE CKS</a>
+`,
+
+seizure: `
+<h2>Seizure</h2>
+<p>Abnormal electrical brain activity.</p>
+<ul>
+  <li>Convulsions</li>
+  <li>Confusion</li>
+  <li>Incontinence</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>Status epilepticus</li>
+  <li>First seizure</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/epilepsy/" target="_blank">Open NICE CKS</a>
+`,
+
+bell: `
+<h2>Bell’s Palsy</h2>
+<p>Acute LMN facial nerve palsy.</p>
+<ul>
+  <li>Unilateral weakness</li>
+  <li>Unable to wrinkle forehead</li>
+  <li>Loss of taste</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>Sparing of forehead (think stroke)</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/bells-palsy/" target="_blank">Open NICE CKS</a>
+`,
+
+meningitis: `
+<h2>Meningitis</h2>
+<p>Inflammation of the meninges.</p>
+<ul>
+  <li>Headache</li>
+  <li>Photophobia</li>
+  <li>Neck stiffness</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>Non-blanching rash</li>
+  <li>Altered mental state</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/meningitis/" target="_blank">Open NICE CKS</a>
+`,
+
+neuropathy: `
+<h2>Peripheral Neuropathy</h2>
+<p>Damage to peripheral nerves.</p>
+<ul>
+  <li>Numbness</li>
+  <li>Tingling</li>
+  <li>Burning pain</li>
+</ul>
+<strong>RED FLAGS:</strong>
+<ul>
+  <li>Ascending weakness</li>
+  <li>Loss of reflexes</li>
+</ul>
+<a href="https://cks.nice.org.uk/topics/peripheral-neuropathy/" target="_blank">Open NICE CKS</a>
+`
+
+}
+
+document.getElementById("popup").style.display = "block";
+document.getElementById("popupContent").innerHTML = info[name];
+}
+
+function closePopup() {
+document.getElementById("popup").style.display = "none";
+}
+</script>
 
 </body>
 </html>
+
 
