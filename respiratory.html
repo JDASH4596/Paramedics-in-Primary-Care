@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <div class="quickbar">
+  <button onclick="scrollToSection('cards')">Conditions</button>
+  <button onclick="scrollToSection('table')">Compare</button>
+  <button onclick="scrollToSection('redflags')">Red Flags</button>
+</div>
+
+<script>
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+</script>
+
   <title>Respiratory - Paramedics in Primary Care</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +23,8 @@
 <h1>Respiratory</h1>
 <p class="subtitle">Common Primary Care Presentations</p>
 
-<div class="grid">
+<div id="cards" class="grid">
+
 
   <div class="card" onclick="openCondition('asthma')">
     <h3>Asthma</h3>
@@ -35,7 +48,8 @@
 
 </div>
 
-<h2>Comparison Table</h2>
+<h2 id="table">Comparison Table</h2>
+
 
 <table>
 <tr>
