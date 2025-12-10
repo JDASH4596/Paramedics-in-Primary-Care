@@ -22,6 +22,11 @@ function scrollToSection(id){
 
 <h1>Respiratory</h1>
 <p class="subtitle">Common Primary Care Presentations</p>
+<div class="jump-menu">
+  <button onclick="scrollToSection('cards')">Conditions</button>
+  <button onclick="scrollToSection('table')">Comparison Table</button>
+  <button onclick="scrollToSection('redflags')">Red Flags</button>
+</div>
 
 <div id="cards" class="grid">
 
@@ -174,6 +179,17 @@ let info = {
     </ul>
     <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
   `
+  <h2 id="redflags">Red Flags</h2>
+<ul class="redflags">
+  <li>New oxygen requirement</li>
+  <li>RR ≥ 25 or exhaustion</li>
+  <li>Haemoptysis</li>
+  <li>Pleuritic chest pain + tachycardia</li>
+  <li>Hypotension</li>
+  <li>Silent chest</li>
+  <li>Confusion</li>
+</ul>
+
 }
 
 document.getElementById("popup").style.display = "block";
@@ -183,6 +199,11 @@ document.getElementById("popupContent").innerHTML = info[name];
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
+}
+</script>
+<script>
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
 </script>
 
