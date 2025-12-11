@@ -25,6 +25,10 @@
     <h3>Asthma</h3>
     <p>Wheeze • Tight chest</p>
   </div>
+<div class="card" onclick="openCondition('virusrti')">
+  <h3>Viral RTI</h3>
+  <p>URTI symptoms • mild</p>
+</div>
 
   <div class="card" onclick="openCondition('copd')">
     <h3>COPD Exacerbation</h3>
@@ -83,6 +87,17 @@
   <tr>
     <td>HF</td><td>Gradual</td><td>Frothy</td><td>No</td><td>Rare</td><td>Crackles</td>
     <td>Oedema</td><td>Pink sputum</td>
+    <tr>
+  <td>Viral RTI</td>
+  <td>Gradual</td>
+  <td>Dry/mild</td>
+  <td>Mild</td>
+  <td>No pleuritic pain</td>
+  <td>Usually normal or mild wheeze</td>
+  <td>Nasal/throat symptoms</td>
+  <td>Persistent high fever (suggests NOT RTI)</td>
+</tr>
+
   </tr>
 </table>
 
@@ -224,6 +239,46 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">Open NICE CKS</a>
     `
+    virusrti: `
+  <h2>Viral RTI</h2>
+  <p>Upper respiratory tract infection with mild systemic symptoms.</p>
+
+  <h3>Key Features</h3>
+  <ul>
+    <li>Rhinorrhoea (runny / snotty nose)</li>
+    <li>Nasal congestion</li>
+    <li>Sore throat</li>
+    <li>Headache</li>
+    <li>Mild fever</li>
+    <li>Dry or mild cough</li>
+  </ul>
+
+  <h3>Clinical Pattern</h3>
+  <ul>
+    <li>URTI predominance (nose + throat first)</li>
+    <li>Chest usually clear — may have mild wheeze</li>
+    <li>Symptoms improve within 3–5 days</li>
+  </ul>
+
+  <h3>Shared With Pneumonia</h3>
+  <ul>
+    <li>Cough</li>
+    <li>Fever</li>
+    <li>Fatigue</li>
+    <li>Chest ache from coughing</li>
+  </ul>
+
+  <h3>Why It's NOT Pneumonia</h3>
+  <ul>
+    <li>No pleuritic chest pain</li>
+    <li>No focal crackles</li>
+    <li>No high fever</li>
+    <li>No breathlessness on minimal exertion</li>
+  </ul>
+
+  <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
+`,
+
   };
 
   document.getElementById("popup").style.display = "block";
