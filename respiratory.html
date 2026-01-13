@@ -11,7 +11,6 @@
 <h1>Respiratory</h1>
 <p class="subtitle">Common Primary Care Presentations</p>
 
-<!-- Jump menu -->
 <div class="jump-menu">
   <button onclick="scrollToSection('cards')">Conditions</button>
   <button onclick="scrollToSection('table')">Comparison</button>
@@ -121,6 +120,44 @@ function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
 
+/* DEFAULT ASTHMA GUIDELINES (SAFE FALLBACK) */
+const defaultAsthmaGuidelines = `
+<h3>Treatment (Primary Care)</h3>
+<ul>
+  <li>MART inhaler with a spacer – follow the patient’s asthma care plan</li>
+  <li>Check inhaler technique with a spacer</li>
+  <li>Consider a short course of oral steroids if exacerbation:
+    <ul>
+      <li>Tight chest</li>
+      <li>Increased SABA / MART use</li>
+      <li>Use clinical judgement if chest is clear</li>
+    </ul>
+  </li>
+  <li>Consider asthma review if exacerbated or if review is due</li>
+</ul>
+
+<h3>Guidelines</h3>
+<ul>
+  <li><a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">NICE CKS – Asthma</a></li>
+  <li><a href="https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" target="_blank">BTS / SIGN Asthma Guideline</a></li>
+</ul>
+`;
+
+function loadAsthmaGuidelines() {
+  const saved = localStorage.getItem("asthmaGuidelines");
+  document.getElementById("asthma-guidelines").innerHTML =
+    saved ? saved : defaultAsthmaGuidelines;
+}
+
+function editAsthmaGuidelines() {
+  const current = localStorage.getItem("asthmaGuidelines") || defaultAsthmaGuidelines;
+  const updated = prompt("Edit Asthma Guidelines (HTML allowed):", current);
+  if (updated !== null) {
+    localStorage.setItem("asthmaGuidelines", updated);
+    document.getElementById("asthma-guidelines").innerHTML = updated;
+  }
+}
+
 function openCondition(name) {
 
   const info = {
@@ -128,58 +165,52 @@ function openCondition(name) {
     asthma: `
       <h2>Asthma</h2>
       <p>Reversible inflammatory airway disease.</p>
+
+      <h3>Key Features</h3>
       <ul>
         <li>Wheeze</li>
         <li>Chest tightness</li>
         <li>Trigger-related</li>
       </ul>
-      <strong>Red flags:</strong>
-      <ul>
-        <li>Silent chest</li>
-        <li>Exhaustion</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">Open NICE CKS</a>
+
+      <h3>Guidelines & Treatment</h3>
+      <div id="asthma-guidelines" class="guideline-box"></div>
+
+      <button onclick="editAsthmaGuidelines()">✏️ Edit guidelines</button>
     `,
 
     virusrti: `
       <h2>Viral RTI</h2>
-      <p>Upper respiratory tract infection.</p>
       <ul>
         <li>Rhinorrhoea</li>
         <li>Sore throat</li>
         <li>Headache</li>
         <li>Mild fever</li>
       </ul>
-      <p><strong>Key point:</strong> Starts in nose and throat.</p>
       <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
     `,
 
     bronchitis: `
       <h2>Bronchitis</h2>
-      <p>Inflammation of the bronchi, usually post-viral.</p>
       <ul>
-        <li>Persistent cough</li>
-        <li>Sputum production</li>
-        <li>Chest tightness</li>
+        <li>Persistent productive cough</li>
+        <li>Often post-viral</li>
+        <li>No focal chest signs</li>
       </ul>
-      <p><strong>Key point:</strong> No focal chest signs.</p>
       <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">Open NICE CKS</a>
     `,
 
     copd: `
       <h2>COPD Exacerbation</h2>
-      <p>Worsening airflow obstruction.</p>
       <ul>
         <li>Productive cough</li>
         <li>Breathlessness</li>
-        <li>Smoking history</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
     `,
 
     pneumonia: `
       <h2>Pneumonia</h2>
-      <p>Acute infection of lung parenchyma.</p>
       <ul>
         <li>High fever</li>
         <li>Pleuritic chest pain</li>
@@ -190,18 +221,15 @@ function openCondition(name) {
 
     pe: `
       <h2>Pulmonary Embolism</h2>
-      <p>Thrombus in pulmonary circulation.</p>
       <ul>
         <li>Sudden dyspnoea</li>
         <li>Pleuritic pain</li>
-        <li>Tachycardia</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
     `,
 
     pneumothorax: `
       <h2>Pneumothorax</h2>
-      <p>Air in pleural space causing lung collapse.</p>
       <ul>
         <li>Sudden chest pain</li>
         <li>Reduced air entry</li>
@@ -211,7 +239,6 @@ function openCondition(name) {
 
     hf: `
       <h2>Heart Failure</h2>
-      <p>Pulmonary congestion secondary to pump failure.</p>
       <ul>
         <li>Orthopnoea</li>
         <li>Peripheral oedema</li>
@@ -222,6 +249,10 @@ function openCondition(name) {
 
   document.getElementById("popup").style.display = "block";
   document.getElementById("popupContent").innerHTML = info[name];
+
+  if (name === "asthma") {
+    setTimeout(loadAsthmaGuidelines, 0);
+  }
 }
 
 function closePopup() {
