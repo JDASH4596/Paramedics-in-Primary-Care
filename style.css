@@ -114,4 +114,27 @@ td, th {
   color: #b71c1c;
   font-weight: bold;
 }
+.compare-box {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.compare-column {
+  flex: 1;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.compare-column h3 {
+  margin-top: 0;
+}
+
+.compare-column ul {
+  padding-left: 18px;
+}
+<p><strong>Clinical tip:</strong> Bronchitis is usually a post-viral cough with no focal chest signs. Pneumonia is a primary chest infection with focal findings and systemic illness.</p>
 
