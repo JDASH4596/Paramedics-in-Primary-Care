@@ -29,6 +29,10 @@
   <h3>Viral RTI</h3>
   <p>URTI symptoms • mild</p>
 </div>
+<div class="card" onclick="openCondition('bronchitis')">
+  <h3>🫁 Bronchitis</h3>
+  <p>Productive cough</p>
+</div>
 
   <div class="card" onclick="openCondition('copd')">
     <h3>COPD Exacerbation</h3>
@@ -95,8 +99,45 @@
   <td>No pleuritic pain</td>
   <td>Usually normal or mild wheeze</td>
   <td>Nasal/throat symptoms</td>
-  <td>Persistent high fever (suggests NOT RTI)</td>
+<td>Persistent high fever (suggests NOT RTI)</td>
+<tr>
+  <td>Bronchitis</td>
+  <td>Gradual</td>
+  <td>Wet</td>
+  <td>Mild or none</td>
+  <td>Chest tightness</td>
+  <td>Coarse / wheeze</td>
+  <td>Post-viral cough</td>
+  <td>Breathlessness or haemoptysis</td>
 </tr>
+
+    </tr>
+  <h2>Bronchitis vs Pneumonia</h2>
+
+<div class="compare-box">
+  <div class="compare-column">
+    <h3>🫁 Bronchitis</h3>
+    <ul>
+      <li>Often post-viral</li>
+      <li>Persistent cough (often wet)</li>
+      <li>Sputum may be coloured</li>
+      <li>Mild or no fever</li>
+      <li>Chest tightness</li>
+      <li>Generally systemically well</li>
+      <li>No focal chest signs</li>
+    </ul>
+  </div>
+
+  <div class="compare-column">
+    <h3>🦠 Pneumonia</h3>
+    <ul>
+      <li>Primary chest infection</li>
+      <li>Productive cough</li>
+      <li>High or persistent fever</li>
+      <li>Pleuritic chest pain</li>
+      <li>Shortness of breath</li>
+      <li
+
 
   </tr>
 </table>
@@ -278,7 +319,46 @@ function openCondition(name) {
 
   <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
 `,
+bronchitis: `
+  <h2>Bronchitis</h2>
+  <p>Inflammation of the bronchi, usually viral.</p>
 
+  <h3>Key Features</h3>
+  <ul>
+    <li>Persistent cough (often productive)</li>
+    <li>Sputum (clear or coloured)</li>
+    <li>Mild fever or none</li>
+    <li>Chest tightness</li>
+    <li>Generally systemically well</li>
+  </ul>
+
+  <h3>Clinical Pattern</h3>
+  <ul>
+    <li>Often follows a viral RTI</li>
+    <li>Chest may have wheeze or coarse sounds</li>
+    <li>No focal crackles</li>
+  </ul>
+
+  <h3>Why it's NOT Pneumonia</h3>
+  <ul>
+    <li>No pleuritic chest pain</li>
+    <li>No high or persistent fever</li>
+    <li>No focal chest signs</li>
+  </ul>
+
+  <strong>RED FLAGS:</strong>
+  <ul>
+    <li>Breathlessness at rest</li>
+    <li>High fever</li>
+    <li>Haemoptysis</li>
+    <li>Symptoms worsening after 7–10 days</li>
+  </ul>
+
+  <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">
+    Open NICE CKS
+  </a>
+`
+,
   };
 
   document.getElementById("popup").style.display = "block";
