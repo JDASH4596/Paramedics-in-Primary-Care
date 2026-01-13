@@ -14,144 +14,99 @@
 <!-- Jump menu -->
 <div class="jump-menu">
   <button onclick="scrollToSection('cards')">Conditions</button>
-  <button onclick="scrollToSection('table')">Comparison Table</button>
-  <button onclick="scrollToSection('redflags')">Red Flags</button>
+  <button onclick="scrollToSection('table')">Comparison</button>
 </div>
 
-<!-- Conditions grid -->
+<!-- CONDITION TILES -->
 <div id="cards" class="grid">
 
   <div class="card" onclick="openCondition('asthma')">
-    <h3>Asthma</h3>
+    <h3>💨 Asthma</h3>
     <p>Wheeze • Tight chest</p>
   </div>
-<div class="card" onclick="openCondition('virusrti')">
-  <h3>Viral RTI</h3>
-  <p>URTI symptoms • mild</p>
-</div>
-<div class="card" onclick="openCondition('bronchitis')">
-  <h3>🫁 Bronchitis</h3>
-  <p>Productive cough</p>
-</div>
 
-  <div class="card" onclick="openCondition('copd')">
-    <h3>COPD Exacerbation</h3>
+  <div class="card" onclick="openCondition('virusrti')">
+    <h3>🤧 Viral RTI</h3>
+    <p>URTI symptoms</p>
+  </div>
+
+  <div class="card" onclick="openCondition('bronchitis')">
+    <h3>🫁 Bronchitis</h3>
     <p>Productive cough</p>
   </div>
 
+  <div class="card" onclick="openCondition('copd')">
+    <h3>🫁 COPD Exacerbation</h3>
+    <p>Chronic airflow limitation</p>
+  </div>
+
   <div class="card" onclick="openCondition('pneumonia')">
-    <h3>Pneumonia</h3>
+    <h3>🦠 Pneumonia</h3>
     <p>Fever • Crackles</p>
   </div>
 
   <div class="card" onclick="openCondition('pe')">
-    <h3>Pulmonary Embolism</h3>
+    <h3>🩸 Pulmonary Embolism</h3>
     <p>Sudden breathlessness</p>
   </div>
 
   <div class="card" onclick="openCondition('pneumothorax')">
-    <h3>Pneumothorax</h3>
+    <h3>🎈 Pneumothorax</h3>
     <p>Sudden pleuritic pain</p>
   </div>
 
   <div class="card" onclick="openCondition('hf')">
-    <h3>Heart Failure</h3>
+    <h3>💔 Heart Failure</h3>
     <p>Orthopnoea • Oedema</p>
   </div>
 
 </div>
 
+<!-- COMPARISON TABLE -->
 <h2 id="table">Comparison Table</h2>
 
 <table>
-  <tr>
-    <th>Condition</th><th>Onset</th><th>Cough</th><th>Fever</th>
-    <th>Chest pain</th><th>Breath sounds</th><th>Clue</th><th>Red flag</th>
-  </tr>
-  <tr>
-    <td>Asthma</td><td>Rapid</td><td>Dry</td><td>No</td><td>Tight</td><td>Wheeze</td>
-    <td>Triggers</td><td>Silent chest</td>
-  </tr>
-  <tr>
-    <td>COPD</td><td>Gradual</td><td>Wet</td><td>±</td><td>Rare</td><td>Coarse</td>
-    <td>Smoker</td><td>CO₂ retention</td>
-  </tr>
-  <tr>
-    <td>Pneumonia</td><td>Acute</td><td>Wet</td><td>Yes</td><td>Pleuritic</td><td>Crackles</td>
-    <td>Rigors</td><td>Sepsis</td>
-  </tr>
-  <tr>
-    <td>PE</td><td>Sudden</td><td>Dry</td><td>±</td><td>Sharp</td><td>Normal</td>
-    <td>Risk factors</td><td>Collapse</td>
-  </tr>
-  <tr>
-    <td>Pneumothorax</td><td>Sudden</td><td>No</td><td>No</td><td>Sharp</td><td>Reduced</td>
-    <td>Hyperresonant</td><td>Tension</td>
-  </tr>
-  <tr>
-    <td>HF</td><td>Gradual</td><td>Frothy</td><td>No</td><td>Rare</td><td>Crackles</td>
-    <td>Oedema</td><td>Pink sputum</td>
-    <tr>
-  <td>Viral RTI</td>
-  <td>Gradual</td>
-  <td>Dry/mild</td>
-  <td>Mild</td>
-  <td>No pleuritic pain</td>
-  <td>Usually normal or mild wheeze</td>
-  <td>Nasal/throat symptoms</td>
-<td>Persistent high fever (suggests NOT RTI)</td>
 <tr>
-  <td>Bronchitis</td>
-  <td>Gradual</td>
-  <td>Wet</td>
-  <td>Mild or none</td>
-  <td>Chest tightness</td>
-  <td>Coarse / wheeze</td>
-  <td>Post-viral cough</td>
-  <td>Breathlessness or haemoptysis</td>
+  <th>Condition</th>
+  <th>Main feature</th>
+  <th>Fever</th>
+  <th>Cough</th>
+  <th>Chest signs</th>
 </tr>
 
-    </tr>
-  <h2>Bronchitis vs Pneumonia</h2>
+<tr>
+  <td>Viral RTI</td>
+  <td>URTI symptoms</td>
+  <td>Mild</td>
+  <td>Dry/mild</td>
+  <td>Clear</td>
+</tr>
 
-<div class="compare-box">
-  <div class="compare-column">
-    <h3>🫁 Bronchitis</h3>
-    <ul>
-      <li>Often post-viral</li>
-      <li>Persistent cough (often wet)</li>
-      <li>Sputum may be coloured</li>
-      <li>Mild or no fever</li>
-      <li>Chest tightness</li>
-      <li>Generally systemically well</li>
-      <li>No focal chest signs</li>
-    </ul>
-  </div>
+<tr>
+  <td>Bronchitis</td>
+  <td>Post-viral cough</td>
+  <td>None/mild</td>
+  <td>Wet</td>
+  <td>Wheeze / coarse</td>
+</tr>
 
-  <div class="compare-column">
-    <h3>🦠 Pneumonia</h3>
-    <ul>
-      <li>Primary chest infection</li>
-      <li>Productive cough</li>
-      <li>High or persistent fever</li>
-      <li>Pleuritic chest pain</li>
-      <li>Shortness of breath</li>
-      <li
+<tr>
+  <td>Pneumonia</td>
+  <td>Chest infection</td>
+  <td>High</td>
+  <td>Wet</td>
+  <td>Focal crackles</td>
+</tr>
 
+<tr>
+  <td>Asthma</td>
+  <td>Reversible airway obstruction</td>
+  <td>No</td>
+  <td>Dry</td>
+  <td>Wheeze</td>
+</tr>
 
-  </tr>
 </table>
-
-<h2 id="redflags">Respiratory Red Flags</h2>
-<ul class="redflags">
-  <li>New oxygen requirement</li>
-  <li>RR ≥ 25 or exhaustion</li>
-  <li>Haemoptysis</li>
-  <li>Pleuritic chest pain + tachycardia</li>
-  <li>Hypotension</li>
-  <li>Silent chest</li>
-  <li>Confusion</li>
-</ul>
 
 <!-- MODAL -->
 <div id="popup" class="modal">
@@ -162,314 +117,117 @@
 </div>
 
 <script>
-// Open condition modal
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
 function openCondition(name) {
+
   const info = {
+
     asthma: `
       <h2>Asthma</h2>
-      <p>Reversible airway obstruction with inflammation.</p>
+      <p>Reversible inflammatory airway disease.</p>
       <ul>
-        <li>Wheeze, chest tightness</li>
-        <li>Triggered by allergens/exertion</li>
+        <li>Wheeze</li>
+        <li>Chest tightness</li>
+        <li>Trigger-related</li>
       </ul>
-      <strong>DON’T MISS:</strong>
+      <strong>Red flags:</strong>
       <ul>
         <li>Silent chest</li>
-        <li>PEF not improving</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
         <li>Exhaustion</li>
-        <li>Low sats</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">Open NICE CKS</a>
-      <strong>TREATMENT:</strong>
-      <ul>
-      <li>40mg Prednislone<li>
-      <li>Antibiotics if bacteria infection</li>
     `,
+
+    virusrti: `
+      <h2>Viral RTI</h2>
+      <p>Upper respiratory tract infection.</p>
+      <ul>
+        <li>Rhinorrhoea</li>
+        <li>Sore throat</li>
+        <li>Headache</li>
+        <li>Mild fever</li>
+      </ul>
+      <p><strong>Key point:</strong> Starts in nose and throat.</p>
+      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
+    `,
+
+    bronchitis: `
+      <h2>Bronchitis</h2>
+      <p>Inflammation of the bronchi, usually post-viral.</p>
+      <ul>
+        <li>Persistent cough</li>
+        <li>Sputum production</li>
+        <li>Chest tightness</li>
+      </ul>
+      <p><strong>Key point:</strong> No focal chest signs.</p>
+      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">Open NICE CKS</a>
+    `,
+
     copd: `
       <h2>COPD Exacerbation</h2>
-      <p>Worsening airflow obstruction in a patient with COPD.</p>
+      <p>Worsening airflow obstruction.</p>
       <ul>
         <li>Productive cough</li>
         <li>Breathlessness</li>
         <li>Smoking history</li>
       </ul>
-      <strong>DON’T MISS:</strong>
-      <ul>
-        <li>New confusion</li>
-        <li>Unable to speak full sentences</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
-        <li>Cyanosis</li>
-        <li>Drowsiness / CO₂ retention</li>
-      </ul>
       <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
     `,
+
     pneumonia: `
       <h2>Pneumonia</h2>
       <p>Acute infection of lung parenchyma.</p>
       <ul>
-        <li>Fever and rigors</li>
-        <li>Productive cough</li>
+        <li>High fever</li>
         <li>Pleuritic chest pain</li>
-      </ul>
-      <strong>DON’T MISS:</strong>
-      <ul>
-        <li>CURB-65 features (confusion, RR↑, BP↓, age ≥65)</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
-        <li>Hypotension</li>
-        <li>New confusion</li>
+        <li>Crackles</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">Open NICE CKS</a>
     `,
+
     pe: `
       <h2>Pulmonary Embolism</h2>
-      <p>Clot in pulmonary arterial circulation.</p>
+      <p>Thrombus in pulmonary circulation.</p>
       <ul>
-        <li>Sudden-onset dyspnoea</li>
-        <li>Pleuritic chest pain</li>
+        <li>Sudden dyspnoea</li>
+        <li>Pleuritic pain</li>
         <li>Tachycardia</li>
-      </ul>
-      <strong>DON’T MISS:</strong>
-      <ul>
-        <li>Recent immobility / surgery / pregnancy</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
-        <li>Collapse / syncope</li>
-        <li>Haemodynamic instability</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
     `,
+
     pneumothorax: `
       <h2>Pneumothorax</h2>
       <p>Air in pleural space causing lung collapse.</p>
       <ul>
-        <li>Sudden pleuritic pain</li>
-        <li>Shortness of breath</li>
-        <li>Often young, tall, thin or trauma</li>
-      </ul>
-      <strong>DON’T MISS:</strong>
-      <ul>
-        <li>Hyperresonance on percussion</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
-        <li>Tracheal deviation</li>
-        <li>Severe respiratory distress</li>
+        <li>Sudden chest pain</li>
+        <li>Reduced air entry</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">Open NICE CKS</a>
     `,
+
     hf: `
       <h2>Heart Failure</h2>
-      <p>Pump failure causing pulmonary congestion.</p>
+      <p>Pulmonary congestion secondary to pump failure.</p>
       <ul>
         <li>Orthopnoea</li>
-        <li>Paroxysmal nocturnal dyspnoea</li>
         <li>Peripheral oedema</li>
       </ul>
-      <strong>DON’T MISS:</strong>
-      <ul>
-        <li>New onset AF</li>
-      </ul>
-      <strong>RED FLAGS:</strong>
-      <ul>
-        <li>Pink frothy sputum</li>
-        <li>Severe hypoxia</li>
-      </ul>
       <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">Open NICE CKS</a>
-    `,
-    virusrti: `
-  <h2>Viral RTI</h2>
-  <p>Upper respiratory tract infection with mild systemic symptoms.</p>
-
-  <h3>Key Features</h3>
-  <ul>
-    <li>Rhinorrhoea (runny / snotty nose)</li>
-    <li>Nasal congestion</li>
-    <li>Sore throat</li>
-    <li>Headache</li>
-    <li>Mild fever</li>
-    <li>Dry or mild cough</li>
-  </ul>
-
-  <h3>Clinical Pattern</h3>
-  <ul>
-    <li>URTI predominance (nose + throat first)</li>
-    <li>Chest usually clear — may have mild wheeze</li>
-    <li>Symptoms improve within 3–5 days</li>
-  </ul>
-
-  <h3>Shared With Pneumonia</h3>
-  <ul>
-    <li>Cough</li>
-    <li>Fever</li>
-    <li>Fatigue</li>
-    <li>Chest ache from coughing</li>
-  </ul>
-
-  <h3>Why It's NOT Pneumonia</h3>
-  <ul>
-    <li>No pleuritic chest pain</li>
-    <li>No focal crackles</li>
-    <li>No high fever</li>
-    <li>No breathlessness on minimal exertion</li>
-  </ul>
-
-  <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
-`,
-bronchitis: `
-  <h2>Bronchitis</h2>
-  <p>Inflammation of the bronchi, usually viral.</p>
-
-  <h3>Key Features</h3>
-  <ul>
-    <li>Persistent cough (often productive)</li>
-    <li>Sputum (clear or coloured)</li>
-    <li>Mild fever or none</li>
-    <li>Chest tightness</li>
-    <li>Generally systemically well</li>
-  </ul>
-
-  <h3>Clinical Pattern</h3>
-  <ul>
-    <li>Often follows a viral RTI</li>
-    <li>Chest may have wheeze or coarse sounds</li>
-    <li>No focal crackles</li>
-  </ul>
-
-  <h3>Why it's NOT Pneumonia</h3>
-  <ul>
-    <li>No pleuritic chest pain</li>
-    <li>No high or persistent fever</li>
-    <li>No focal chest signs</li>
-  </ul>
-
-  <strong>RED FLAGS:</strong>
-  <ul>
-    <li>Breathlessness at rest</li>
-    <li>High fever</li>
-    <li>Haemoptysis</li>
-    <li>Symptoms worsening after 7–10 days</li>
-  </ul>
-
-  <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">
-    Open NICE CKS
-  </a>
-` <h2>Bronchitis vs Pneumonia</h2>
-
-<div class="compare-box">
-  <div class="compare-column">
-    <h3>🫁 Bronchitis</h3>
-    <ul>
-      <li>Often post-viral</li>
-      <li>Persistent cough (often wet)</li>
-      <li>Mild or no fever</li>
-      <li>Chest tightness</li>
-      <li>Generally systemically well</li>
-      <li>No focal chest signs</li>
-    </ul>
-  </div>
-
-  <div class="compare-column">
-    <h3>🦠 Pneumonia</h3>
-    <ul>
-      <li>Primary chest infection</li>
-      <li>Productive cough</li>
-      <li>High or persistent fever</li>
-      <li>Pleuritic chest pain</li>
-      <li>Shortness of breath</li>
-      <li>Focal crackles / bronchial breathing</li>
-    </ul>
-  </div>
-</div>
-
-<hr>
-
-<h2>Bronchitis vs Viral RTI</h2>
-
-<div class="compare-box">
-  <div class="compare-column">
-    <h3>🫁 Bronchitis</h3>
-    <ul>
-      <li>Cough is the main symptom</li>
-      <li>Often follows a viral RTI</li>
-      <li>Sputum may be present</li>
-      <li>Chest symptoms dominate</li>
-    </ul>
-  </div>
-
-  <div class="compare-column">
-    <h3>🤧 Viral RTI</h3>
-    <ul>
-      <li>Nasal congestion / rhinorrhoea</li>
-      <li>Sore throat</li>
-      <li>Headache</li>
-      <li>Chest usually clear</li>
-    </ul>
-  </div>
-</div>
-
-<hr>
-
-<h2>Bronchitis – Reassurance Guide</h2>
-
-<div class="traffic-box green">
-  <h3>🟢 Green – Reassure & Safety Net</h3>
-  <ul>
-    <li>Patient systemically well</li>
-    <li>Mild or no fever</li>
-    <li>Normal oxygen saturations</li>
-    <li>No focal chest signs</li>
-    <li>Symptoms improving or stable</li>
-  </ul>
-</div>
-
-<div class="traffic-box amber">
-  <h3>🟠 Amber – Review / Caution</h3>
-  <ul>
-    <li>Persistent symptoms &gt; 7–10 days</li>
-    <li>Worsening cough or breathlessness</li>
-    <li>Multiple comorbidities</li>
-    <li>Frail or elderly patient</li>
-  </ul>
-</div>
-
-<div class="traffic-box red">
-  <h3>🔴 Red – Consider Pneumonia / Escalate</h3>
-  <ul>
-    <li>High or persistent fever</li>
-    <li>New confusion</li>
-    <li>Breathlessness at rest</li>
-    <li>Hypoxia</li>
-    <li>Focal chest signs</li>
-  </ul>
-</div>
-
-,
+    `
   };
 
   document.getElementById("popup").style.display = "block";
   document.getElementById("popupContent").innerHTML = info[name];
 }
 
-// Close modal
 function closePopup() {
   document.getElementById("popup").style.display = "none";
-}
-
-// Jump menu scroll
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 }
 </script>
 
 </body>
 </html>
-
-
