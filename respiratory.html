@@ -1,32 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Respiratory - Paramedics in Primary Care</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Respiratory – Paramedics in Primary Care</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  background: #f9f9f9;
+}
+
+.card:hover {
+  background: #eef4ff;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: white;
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 6px 10px;
+}
+
+.guideline-box {
+  background: #f1f8ff;
+  padding: 10px;
+  border-radius: 8px;
+}
+</style>
 </head>
+
 <body>
 
-<a class="back" href="index.html">⬅ Home</a>
-
 <h1>Respiratory</h1>
-<p class="subtitle">Common Primary Care Presentations</p>
+<p>Paramedics in Primary Care</p>
 
-<div class="jump-menu">
-  <button onclick="scrollToSection('cards')">Conditions</button>
-  <button onclick="scrollToSection('table')">Comparison</button>
-</div>
-
-<!-- CONDITION TILES -->
-<div id="cards" class="grid">
+<div class="grid">
 
   <div class="card" onclick="openCondition('asthma')">
     <h3>💨 Asthma</h3>
     <p>Wheeze • Tight chest</p>
-  </div>
-
-  <div class="card" onclick="openCondition('virusrti')">
-    <h3>🤧 Viral RTI</h3>
-    <p>URTI symptoms</p>
   </div>
 
   <div class="card" onclick="openCondition('bronchitis')">
@@ -34,216 +79,44 @@
     <p>Productive cough</p>
   </div>
 
-  <div class="card" onclick="openCondition('copd')">
-    <h3>🫁 COPD Exacerbation</h3>
-    <p>Chronic airflow limitation</p>
-  </div>
-
-  <div class="card" onclick="openCondition('pneumonia')">
-    <h3>🦠 Pneumonia</h3>
-    <p>Fever • Crackles</p>
-  </div>
-
-  <div class="card" onclick="openCondition('pe')">
-    <h3>🩸 Pulmonary Embolism</h3>
-    <p>Sudden breathlessness</p>
-  </div>
-
-  <div class="card" onclick="openCondition('pneumothorax')">
-    <h3>🎈 Pneumothorax</h3>
-    <p>Sudden pleuritic pain</p>
-  </div>
-
-  <div class="card" onclick="openCondition('hf')">
-    <h3>💔 Heart Failure</h3>
-    <p>Orthopnoea • Oedema</p>
-  </div>
-
 </div>
 
-<!-- COMPARISON TABLE -->
-<h2 id="table">Comparison Table</h2>
-
-<table>
-<tr>
-  <th>Condition</th>
-  <th>Main feature</th>
-  <th>Fever</th>
-  <th>Cough</th>
-  <th>Chest signs</th>
-</tr>
-
-<tr>
-  <td>Viral RTI</td>
-  <td>URTI symptoms</td>
-  <td>Mild</td>
-  <td>Dry/mild</td>
-  <td>Clear</td>
-</tr>
-
-<tr>
-  <td>Bronchitis</td>
-  <td>Post-viral cough</td>
-  <td>None/mild</td>
-  <td>Wet</td>
-  <td>Wheeze / coarse</td>
-</tr>
-
-<tr>
-  <td>Pneumonia</td>
-  <td>Chest infection</td>
-  <td>High</td>
-  <td>Wet</td>
-  <td>Focal crackles</td>
-</tr>
-
-<tr>
-  <td>Asthma</td>
-  <td>Reversible airway obstruction</td>
-  <td>No</td>
-  <td>Dry</td>
-  <td>Wheeze</td>
-</tr>
-
-</table>
-
-<!-- MODAL -->
 <div id="popup" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closePopup()">&times;</span>
+    <span class="close" onclick="closePopup()">×</span>
     <div id="popupContent"></div>
   </div>
 </div>
 
 <script>
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-}
-
-/* DEFAULT ASTHMA GUIDELINES (SAFE FALLBACK) */
 const defaultAsthmaGuidelines = `
 <h3>Treatment (Primary Care)</h3>
 <ul>
-  <li>MART inhaler with a spacer – follow the patient’s asthma care plan</li>
-  <li>Check inhaler technique with a spacer</li>
-  <li>Consider a short course of oral steroids if exacerbation:
-    <ul>
-      <li>Tight chest</li>
-      <li>Increased SABA / MART use</li>
-      <li>Use clinical judgement if chest is clear</li>
-    </ul>
-  </li>
-  <li>Consider asthma review if exacerbated or if review is due</li>
+  <li>MART inhaler with a spacer – follow asthma care plan</li>
+  <li>Check inhaler technique with spacer</li>
+  <li>Consider oral steroids if exacerbation</li>
+  <li>Consider asthma review if due or recently exacerbated</li>
 </ul>
 
 <h3>Guidelines</h3>
 <ul>
   <li><a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">NICE CKS – Asthma</a></li>
-  <li><a href="https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" target="_blank">BTS / SIGN Asthma Guideline</a></li>
+  <li><a href="https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" target="_blank">BTS / SIGN Asthma</a></li>
 </ul>
 `;
 
-function loadAsthmaGuidelines() {
-  const saved = localStorage.getItem("asthmaGuidelines");
-  document.getElementById("asthma-guidelines").innerHTML =
-    saved ? saved : defaultAsthmaGuidelines;
-}
-
-function editAsthmaGuidelines() {
-  const current = localStorage.getItem("asthmaGuidelines") || defaultAsthmaGuidelines;
-  const updated = prompt("Edit Asthma Guidelines (HTML allowed):", current);
-  if (updated !== null) {
-    localStorage.setItem("asthmaGuidelines", updated);
-    document.getElementById("asthma-guidelines").innerHTML = updated;
-  }
-}
-
 function openCondition(name) {
-
   const info = {
-
     asthma: `
       <h2>Asthma</h2>
       <p>Reversible inflammatory airway disease.</p>
 
-      <h3>Key Features</h3>
-      <ul>
-        <li>Wheeze</li>
-        <li>Chest tightness</li>
-        <li>Trigger-related</li>
-      </ul>
-
-      <h3>Guidelines & Treatment</h3>
-      <div id="asthma-guidelines" class="guideline-box"></div>
-
-      <button onclick="editAsthmaGuidelines()">✏️ Edit guidelines</button>
+      <div id="asthma-guidelines"></div>
+      <button onclick="editAsthma()">✏️ Edit guidelines</button>
     `,
-
-    virusrti: `
-      <h2>Viral RTI</h2>
-      <ul>
-        <li>Rhinorrhoea</li>
-        <li>Sore throat</li>
-        <li>Headache</li>
-        <li>Mild fever</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">Open NICE CKS</a>
-    `,
-
     bronchitis: `
       <h2>Bronchitis</h2>
-      <ul>
-        <li>Persistent productive cough</li>
-        <li>Often post-viral</li>
-        <li>No focal chest signs</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">Open NICE CKS</a>
-    `,
-
-    copd: `
-      <h2>COPD Exacerbation</h2>
-      <ul>
-        <li>Productive cough</li>
-        <li>Breathlessness</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">Open NICE CKS</a>
-    `,
-
-    pneumonia: `
-      <h2>Pneumonia</h2>
-      <ul>
-        <li>High fever</li>
-        <li>Pleuritic chest pain</li>
-        <li>Crackles</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">Open NICE CKS</a>
-    `,
-
-    pe: `
-      <h2>Pulmonary Embolism</h2>
-      <ul>
-        <li>Sudden dyspnoea</li>
-        <li>Pleuritic pain</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">Open NICE CKS</a>
-    `,
-
-    pneumothorax: `
-      <h2>Pneumothorax</h2>
-      <ul>
-        <li>Sudden chest pain</li>
-        <li>Reduced air entry</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">Open NICE CKS</a>
-    `,
-
-    hf: `
-      <h2>Heart Failure</h2>
-      <ul>
-        <li>Orthopnoea</li>
-        <li>Peripheral oedema</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">Open NICE CKS</a>
+      <p>Post-viral inflammation of bronchi.</p>
     `
   };
 
@@ -251,7 +124,22 @@ function openCondition(name) {
   document.getElementById("popupContent").innerHTML = info[name];
 
   if (name === "asthma") {
-    setTimeout(loadAsthmaGuidelines, 0);
+    loadAsthma();
+  }
+}
+
+function loadAsthma() {
+  const saved = localStorage.getItem("asthmaGuidelines");
+  document.getElementById("asthma-guidelines").innerHTML =
+    saved || defaultAsthmaGuidelines;
+}
+
+function editAsthma() {
+  const current = localStorage.getItem("asthmaGuidelines") || defaultAsthmaGuidelines;
+  const updated = prompt("Edit asthma guidance (HTML allowed):", current);
+  if (updated) {
+    localStorage.setItem("asthmaGuidelines", updated);
+    loadAsthma();
   }
 }
 
@@ -262,3 +150,4 @@ function closePopup() {
 
 </body>
 </html>
+
