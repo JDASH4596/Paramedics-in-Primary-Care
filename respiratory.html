@@ -18,9 +18,10 @@ a.home {
   font-weight: bold;
 }
 
+/* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 15px;
 }
 
@@ -32,43 +33,71 @@ a.home {
   background: #f9f9f9;
 }
 
+.card h3 {
+  margin: 0 0 5px 0;
+}
+
+.card p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
 .card:hover {
   background: #eef4ff;
 }
 
+/* MODAL OVERLAY */
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.4);
 }
 
+/* MODAL WINDOW */
 .modal-content {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
   background: white;
-  max-width: 750px;
-  margin: 60px auto;
-  padding: 20px;
+  max-width: 800px;
+  width: 92%;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* DRAG BAR */
+.modal-header {
+  padding: 10px;
+  cursor: move;
+  background: #1e88e5;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  font-weight: bold;
 }
 
 .close {
   float: right;
   cursor: pointer;
-  font-size: 22px;
 }
 
-button {
-  margin-top: 10px;
-  padding: 6px 10px;
+/* MODAL BODY */
+.modal-body {
+  padding: 20px;
 }
 
+/* GUIDELINE DISPLAY */
 .guideline-box {
   background: #f1f8ff;
   padding: 12px;
   border-radius: 8px;
   white-space: pre-wrap;
+  margin-bottom: 10px;
 }
 
+/* EDITOR */
 .editor {
   display: none;
   margin-top: 10px;
@@ -78,6 +107,11 @@ textarea {
   width: 100%;
   height: 260px;
   font-family: Arial, sans-serif;
+}
+
+button {
+  margin-top: 8px;
+  padding: 6px 10px;
 }
 </style>
 </head>
@@ -89,27 +123,64 @@ textarea {
 <h1>Respiratory</h1>
 <p>Paramedics in Primary Care</p>
 
+<!-- CONDITION TILES -->
 <div class="grid">
 
-  <div class="card" onclick="openCondition('asthma')"><h3>💨 Asthma</h3></div>
-  <div class="card" onclick="openCondition('virusrti')"><h3>🤧 Viral RTI</h3></div>
-  <div class="card" onclick="openCondition('bronchitis')"><h3>🫁 Bronchitis</h3></div>
-  <div class="card" onclick="openCondition('copd')"><h3>🫁 COPD</h3></div>
-  <div class="card" onclick="openCondition('pneumonia')"><h3>🦠 Pneumonia</h3></div>
-  <div class="card" onclick="openCondition('pe')"><h3>🩸 PE</h3></div>
-  <div class="card" onclick="openCondition('pneumothorax')"><h3>🎈 Pneumothorax</h3></div>
-  <div class="card" onclick="openCondition('hf')"><h3>💔 Heart Failure</h3></div>
+  <div class="card" onclick="openCondition('asthma')">
+    <h3>💨 Asthma</h3>
+    <p>Wheeze • Tight chest • Reversible airway disease</p>
+  </div>
+
+  <div class="card" onclick="openCondition('virusrti')">
+    <h3>🤧 Viral RTI</h3>
+    <p>Runny nose • Sore throat • Mild illness</p>
+  </div>
+
+  <div class="card" onclick="openCondition('bronchitis')">
+    <h3>🫁 Bronchitis</h3>
+    <p>Post-viral productive cough</p>
+  </div>
+
+  <div class="card" onclick="openCondition('copd')">
+    <h3>🫁 COPD Exacerbation</h3>
+    <p>Chronic airflow limitation • Smokers</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pneumonia')">
+    <h3>🦠 Pneumonia</h3>
+    <p>Fever • Crackles • Chest infection</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pe')">
+    <h3>🩸 Pulmonary Embolism</h3>
+    <p>Sudden SOB • Pleuritic pain</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pneumothorax')">
+    <h3>🎈 Pneumothorax</h3>
+    <p>Sudden chest pain • Reduced air entry</p>
+  </div>
+
+  <div class="card" onclick="openCondition('hf')">
+    <h3>💔 Heart Failure</h3>
+    <p>Orthopnoea • Oedema • Fluid overload</p>
+  </div>
 
 </div>
 
+<!-- MODAL -->
 <div id="popup" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closePopup()">×</span>
-    <div id="popupContent"></div>
+  <div id="modalBox" class="modal-content">
+    <div id="modalHeader" class="modal-header">
+      Respiratory
+      <span class="close" onclick="closePopup()">✖</span>
+    </div>
+    <div id="popupContent" class="modal-body"></div>
   </div>
 </div>
 
 <script>
+/* DEFAULT ASTHMA FREE-TEXT */
 const defaultAsthmaText = `TREATMENT (PRIMARY CARE)
 
 • MART inhaler with a spacer – follow asthma care plan
@@ -130,36 +201,110 @@ https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
 `;
 
 function openCondition(name) {
+
   const info = {
+
     asthma: `
       <h2>Asthma</h2>
+      <p>Reversible inflammatory airway disease.</p>
 
       <div id="asthmaDisplay" class="guideline-box"></div>
 
-      <button onclick="showEditor()">✏️ Edit</button>
+      <button onclick="showEditor()">✏️ Edit guidance</button>
 
       <div id="editor" class="editor">
-        <textarea id="editorText"></textarea>
-        <br>
+        <textarea id="editorText"></textarea><br>
         <button onclick="saveAsthma()">💾 Save</button>
         <button onclick="cancelEdit()">Cancel</button>
       </div>
     `,
-    virusrti: `<h2>Viral RTI</h2><p>Upper respiratory symptoms.</p>`,
-    bronchitis: `<h2>Bronchitis</h2><p>Post-viral productive cough.</p>`,
-    copd: `<h2>COPD Exacerbation</h2><p>Worsening airflow limitation.</p>`,
-    pneumonia: `<h2>Pneumonia</h2><p>Acute chest infection.</p>`,
-    pe: `<h2>Pulmonary Embolism</h2><p>Acute thromboembolic disease.</p>`,
-    pneumothorax: `<h2>Pneumothorax</h2><p>Air in pleural space.</p>`,
-    hf: `<h2>Heart Failure</h2><p>Pulmonary congestion.</p>`
+
+    virusrti: `
+      <h2>Viral RTI</h2>
+      <ul>
+        <li>Rhinorrhoea</li>
+        <li>Sore throat</li>
+        <li>Headache</li>
+        <li>Mild fever</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS – Common Cold</a>
+    `,
+
+    bronchitis: `
+      <h2>Bronchitis</h2>
+      <ul>
+        <li>Persistent productive cough</li>
+        <li>Often post-viral</li>
+        <li>No focal chest signs</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS – Acute Bronchitis</a>
+    `,
+
+    copd: `
+      <h2>COPD Exacerbation</h2>
+      <ul>
+        <li>Increased breathlessness</li>
+        <li>Change in sputum</li>
+        <li>Smoking history</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS – COPD</a>
+    `,
+
+    pneumonia: `
+      <h2>Pneumonia</h2>
+      <ul>
+        <li>High fever</li>
+        <li>Pleuritic chest pain</li>
+        <li>Focal crackles</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS – Pneumonia (Adults)</a>
+    `,
+
+    pe: `
+      <h2>Pulmonary Embolism</h2>
+      <ul>
+        <li>Sudden dyspnoea</li>
+        <li>Pleuritic pain</li>
+        <li>Tachycardia</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS – Pulmonary Embolism</a>
+    `,
+
+    pneumothorax: `
+      <h2>Pneumothorax</h2>
+      <ul>
+        <li>Sudden chest pain</li>
+        <li>Reduced air entry</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS – Pneumothorax</a>
+    `,
+
+    hf: `
+      <h2>Heart Failure</h2>
+      <ul>
+        <li>Orthopnoea</li>
+        <li>Peripheral oedema</li>
+        <li>Weight gain</li>
+      </ul>
+      <p><strong>Guidelines:</strong></p>
+      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS – Heart Failure</a>
+    `
   };
 
   document.getElementById("popup").style.display = "block";
   document.getElementById("popupContent").innerHTML = info[name];
+  document.getElementById("modalHeader").textContent = name.toUpperCase();
 
   if (name === "asthma") loadAsthma();
 }
 
+/* ASTHMA FREE-TEXT EDITOR */
 function loadAsthma() {
   const text = localStorage.getItem("asthmaText") || defaultAsthmaText;
   document.getElementById("asthmaDisplay").textContent = text;
@@ -184,10 +329,33 @@ function cancelEdit() {
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
+
+/* DRAGGABLE MODAL */
+let isDragging = false, offsetX = 0, offsetY = 0;
+const modal = document.getElementById("modalBox");
+const header = document.getElementById("modalHeader");
+
+header.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  offsetX = e.clientX - modal.offsetLeft;
+  offsetY = e.clientY - modal.offsetTop;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  modal.style.left = (e.clientX - offsetX) + "px";
+  modal.style.top = (e.clientY - offsetY) + "px";
+  modal.style.transform = "none";
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
 </script>
 
 </body>
 </html>
+
 
 
 
