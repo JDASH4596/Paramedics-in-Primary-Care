@@ -76,11 +76,14 @@ a.home {
   color: white;
   border-radius: 10px 10px 0 0;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .close {
-  float: right;
   cursor: pointer;
+  font-weight: normal;
 }
 
 /* MODAL BODY */
@@ -123,7 +126,6 @@ button {
 <h1>Respiratory</h1>
 <p>Paramedics in Primary Care</p>
 
-<!-- CONDITION TILES -->
 <div class="grid">
 
   <div class="card" onclick="openCondition('asthma')">
@@ -172,7 +174,7 @@ button {
 <div id="popup" class="modal">
   <div id="modalBox" class="modal-content">
     <div id="modalHeader" class="modal-header">
-      Respiratory
+      <span id="modalTitle">RESPIRATORY</span>
       <span class="close" onclick="closePopup()">✖</span>
     </div>
     <div id="popupContent" class="modal-body"></div>
@@ -227,8 +229,7 @@ function openCondition(name) {
         <li>Headache</li>
         <li>Mild fever</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS – Common Cold</a>
+      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS</a>
     `,
 
     bronchitis: `
@@ -238,8 +239,7 @@ function openCondition(name) {
         <li>Often post-viral</li>
         <li>No focal chest signs</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS – Acute Bronchitis</a>
+      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS</a>
     `,
 
     copd: `
@@ -249,8 +249,7 @@ function openCondition(name) {
         <li>Change in sputum</li>
         <li>Smoking history</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS – COPD</a>
+      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS</a>
     `,
 
     pneumonia: `
@@ -260,8 +259,7 @@ function openCondition(name) {
         <li>Pleuritic chest pain</li>
         <li>Focal crackles</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS – Pneumonia (Adults)</a>
+      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS</a>
     `,
 
     pe: `
@@ -271,8 +269,7 @@ function openCondition(name) {
         <li>Pleuritic pain</li>
         <li>Tachycardia</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS – Pulmonary Embolism</a>
+      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS</a>
     `,
 
     pneumothorax: `
@@ -281,8 +278,7 @@ function openCondition(name) {
         <li>Sudden chest pain</li>
         <li>Reduced air entry</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS – Pneumothorax</a>
+      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS</a>
     `,
 
     hf: `
@@ -292,14 +288,13 @@ function openCondition(name) {
         <li>Peripheral oedema</li>
         <li>Weight gain</li>
       </ul>
-      <p><strong>Guidelines:</strong></p>
-      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS – Heart Failure</a>
+      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS</a>
     `
   };
 
   document.getElementById("popup").style.display = "block";
   document.getElementById("popupContent").innerHTML = info[name];
-  document.getElementById("modalHeader").textContent = name.toUpperCase();
+  document.getElementById("modalTitle").textContent = name.toUpperCase();
 
   if (name === "asthma") loadAsthma();
 }
@@ -355,6 +350,7 @@ document.addEventListener("mouseup", () => {
 
 </body>
 </html>
+
 
 
 
