@@ -21,7 +21,7 @@ a.home {
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 15px;
 }
 
@@ -33,8 +33,12 @@ a.home {
   background: #f9f9f9;
 }
 
+.card:hover {
+  background: #eef4ff;
+}
+
 .card h3 {
-  margin: 0 0 5px 0;
+  margin: 0 0 6px 0;
 }
 
 .card p {
@@ -43,64 +47,48 @@ a.home {
   color: #555;
 }
 
-.card:hover {
-  background: #eef4ff;
-}
-
-/* MODAL OVERLAY */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-}
-
-/* MODAL WINDOW */
-.modal-content {
+/* WINDOW */
+.window {
   position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 120px;
+  left: 120px;
   background: white;
-  max-width: 800px;
-  width: 92%;
+  max-width: 420px;
+  width: 90%;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 1000;
 }
 
-/* DRAG BAR */
-.modal-header {
+.window-header {
   padding: 10px;
-  cursor: move;
   background: #1e88e5;
   color: white;
+  cursor: move;
   border-radius: 10px 10px 0 0;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+}
+
+.window-body {
+  padding: 15px;
 }
 
 .close {
   cursor: pointer;
-  font-weight: normal;
 }
 
-/* MODAL BODY */
-.modal-body {
-  padding: 20px;
-}
-
-/* GUIDELINE DISPLAY */
+/* CONTENT */
 .guideline-box {
   background: #f1f8ff;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
-  white-space: pre-wrap;
   margin-bottom: 10px;
+  white-space: pre-wrap;
 }
 
-/* EDITOR */
 .editor {
   display: none;
   margin-top: 10px;
@@ -108,13 +96,11 @@ a.home {
 
 textarea {
   width: 100%;
-  height: 260px;
-  font-family: Arial, sans-serif;
+  height: 220px;
 }
 
 button {
-  margin-top: 8px;
-  padding: 6px 10px;
+  margin-top: 6px;
 }
 </style>
 </head>
@@ -128,101 +114,78 @@ button {
 
 <div class="grid">
 
-  <div class="card" onclick="openCondition('asthma')">
+  <div class="card" onclick="openWindow('asthma')">
     <h3>💨 Asthma</h3>
     <p>Wheeze • Tight chest • Reversible airway disease</p>
   </div>
 
-  <div class="card" onclick="openCondition('virusrti')">
+  <div class="card" onclick="openWindow('virusrti')">
     <h3>🤧 Viral RTI</h3>
-    <p>Runny nose • Sore throat • Mild illness</p>
+    <p>Runny nose • Sore throat • Headache</p>
   </div>
 
-  <div class="card" onclick="openCondition('bronchitis')">
+  <div class="card" onclick="openWindow('bronchitis')">
     <h3>🫁 Bronchitis</h3>
-    <p>Post-viral productive cough</p>
+    <p>Post-viral productive cough • No focal signs</p>
   </div>
 
-  <div class="card" onclick="openCondition('copd')">
+  <div class="card" onclick="openWindow('copd')">
     <h3>🫁 COPD Exacerbation</h3>
-    <p>Chronic airflow limitation • Smokers</p>
+    <p>Breathlessness • Sputum change • Smoking history</p>
   </div>
 
-  <div class="card" onclick="openCondition('pneumonia')">
+  <div class="card" onclick="openWindow('pneumonia')">
     <h3>🦠 Pneumonia</h3>
-    <p>Fever • Crackles • Chest infection</p>
+    <p>Fever • Pleuritic pain • Focal crackles</p>
   </div>
 
-  <div class="card" onclick="openCondition('pe')">
+  <div class="card" onclick="openWindow('pe')">
     <h3>🩸 Pulmonary Embolism</h3>
-    <p>Sudden SOB • Pleuritic pain</p>
+    <p>Sudden SOB • Pleuritic pain • Tachycardia</p>
   </div>
 
-  <div class="card" onclick="openCondition('pneumothorax')">
+  <div class="card" onclick="openWindow('pneumothorax')">
     <h3>🎈 Pneumothorax</h3>
     <p>Sudden chest pain • Reduced air entry</p>
   </div>
 
-  <div class="card" onclick="openCondition('hf')">
+  <div class="card" onclick="openWindow('hf')">
     <h3>💔 Heart Failure</h3>
-    <p>Orthopnoea • Oedema • Fluid overload</p>
+    <p>Orthopnoea • Peripheral oedema • Weight gain</p>
   </div>
 
-</div>
-
-<!-- MODAL -->
-<div id="popup" class="modal">
-  <div id="modalBox" class="modal-content">
-    <div id="modalHeader" class="modal-header">
-      <span id="modalTitle">RESPIRATORY</span>
-      <span class="close" onclick="closePopup()">✖</span>
-    </div>
-    <div id="popupContent" class="modal-body"></div>
-  </div>
 </div>
 
 <script>
-/* DEFAULT ASTHMA FREE-TEXT */
+let zIndexCounter = 1000;
+
 const defaultAsthmaText = `TREATMENT (PRIMARY CARE)
 
-• MART inhaler with a spacer – follow asthma care plan
-• Check inhaler technique with a spacer
-• Consider a short course of oral steroids if exacerbation:
-  – Tight chest
-  – Increased SABA / MART use
-  – Use clinical judgement if chest is clear
-• Consider asthma review if exacerbated or due
+• MART inhaler with spacer
+• Check inhaler technique
+• Consider oral steroids if exacerbation
+• Arrange asthma review
 
 GUIDELINES
 
 NICE CKS – Asthma
 https://cks.nice.org.uk/topics/asthma/
-
-BTS / SIGN Asthma Guideline
-https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
 `;
 
-function openCondition(name) {
+function openWindow(type) {
 
-  const info = {
-
+  const content = {
     asthma: `
-      <h2>Asthma</h2>
-      <p>Reversible inflammatory airway disease.</p>
-
-      <div id="asthmaDisplay" class="guideline-box"></div>
-
-      <button onclick="showEditor()">✏️ Edit guidance</button>
-
-      <div id="editor" class="editor">
-        <textarea id="editorText"></textarea><br>
-        <button onclick="saveAsthma()">💾 Save</button>
-        <button onclick="cancelEdit()">Cancel</button>
+      <h3>Asthma</h3>
+      <div class="guideline-box" id="asthmaDisplay"></div>
+      <button onclick="showEditor(this)">✏️ Edit</button>
+      <div class="editor">
+        <textarea></textarea>
+        <button onclick="saveAsthma(this)">💾 Save</button>
       </div>
     `,
-
     virusrti: `
-      <h2>Viral RTI</h2>
+      <h3>Viral RTI</h3>
       <ul>
         <li>Rhinorrhoea</li>
         <li>Sore throat</li>
@@ -231,9 +194,8 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS</a>
     `,
-
     bronchitis: `
-      <h2>Bronchitis</h2>
+      <h3>Bronchitis</h3>
       <ul>
         <li>Persistent productive cough</li>
         <li>Often post-viral</li>
@@ -241,9 +203,8 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS</a>
     `,
-
     copd: `
-      <h2>COPD Exacerbation</h2>
+      <h3>COPD Exacerbation</h3>
       <ul>
         <li>Increased breathlessness</li>
         <li>Change in sputum</li>
@@ -251,9 +212,8 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS</a>
     `,
-
     pneumonia: `
-      <h2>Pneumonia</h2>
+      <h3>Pneumonia</h3>
       <ul>
         <li>High fever</li>
         <li>Pleuritic chest pain</li>
@@ -261,9 +221,8 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS</a>
     `,
-
     pe: `
-      <h2>Pulmonary Embolism</h2>
+      <h3>Pulmonary Embolism</h3>
       <ul>
         <li>Sudden dyspnoea</li>
         <li>Pleuritic pain</li>
@@ -271,18 +230,16 @@ function openCondition(name) {
       </ul>
       <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS</a>
     `,
-
     pneumothorax: `
-      <h2>Pneumothorax</h2>
+      <h3>Pneumothorax</h3>
       <ul>
         <li>Sudden chest pain</li>
         <li>Reduced air entry</li>
       </ul>
       <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS</a>
     `,
-
     hf: `
-      <h2>Heart Failure</h2>
+      <h3>Heart Failure</h3>
       <ul>
         <li>Orthopnoea</li>
         <li>Peripheral oedema</li>
@@ -292,64 +249,72 @@ function openCondition(name) {
     `
   };
 
-  document.getElementById("popup").style.display = "block";
-  document.getElementById("popupContent").innerHTML = info[name];
-  document.getElementById("modalTitle").textContent = name.toUpperCase();
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.zIndex = ++zIndexCounter;
 
-  if (name === "asthma") loadAsthma();
+  win.innerHTML = `
+    <div class="window-header">
+      ${type.toUpperCase()}
+      <span class="close" onclick="this.closest('.window').remove()">✖</span>
+    </div>
+    <div class="window-body">${content[type]}</div>
+  `;
+
+  document.body.appendChild(win);
+  makeDraggable(win);
+
+  if (type === "asthma") {
+    win.querySelector("#asthmaDisplay").textContent =
+      localStorage.getItem("asthmaText") || defaultAsthmaText;
+  }
 }
 
-/* ASTHMA FREE-TEXT EDITOR */
-function loadAsthma() {
-  const text = localStorage.getItem("asthmaText") || defaultAsthmaText;
-  document.getElementById("asthmaDisplay").textContent = text;
-}
-
-function showEditor() {
-  document.getElementById("editor").style.display = "block";
-  document.getElementById("editorText").value =
+function showEditor(btn) {
+  const editor = btn.nextElementSibling;
+  editor.style.display = "block";
+  editor.querySelector("textarea").value =
     localStorage.getItem("asthmaText") || defaultAsthmaText;
 }
 
-function saveAsthma() {
-  localStorage.setItem("asthmaText", document.getElementById("editorText").value);
-  loadAsthma();
-  cancelEdit();
+function saveAsthma(btn) {
+  const editor = btn.parentElement;
+  const text = editor.querySelector("textarea").value;
+  localStorage.setItem("asthmaText", text);
+  editor.previousElementSibling.textContent = text;
+  editor.style.display = "none";
 }
 
-function cancelEdit() {
-  document.getElementById("editor").style.display = "none";
+/* DRAGGING */
+function makeDraggable(win) {
+  const header = win.querySelector(".window-header");
+  let offsetX = 0, offsetY = 0, dragging = false;
+
+  header.addEventListener("mousedown", e => {
+    dragging = true;
+    win.style.zIndex = ++zIndexCounter;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    document.body.style.userSelect = "auto";
+  });
 }
-
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-/* DRAGGABLE MODAL */
-let isDragging = false, offsetX = 0, offsetY = 0;
-const modal = document.getElementById("modalBox");
-const header = document.getElementById("modalHeader");
-
-header.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  offsetX = e.clientX - modal.offsetLeft;
-  offsetY = e.clientY - modal.offsetTop;
-});
-
-document.addEventListener("mousemove", (e) => {
-  if (!isDragging) return;
-  modal.style.left = (e.clientX - offsetX) + "px";
-  modal.style.top = (e.clientY - offsetY) + "px";
-  modal.style.transform = "none";
-});
-
-document.addEventListener("mouseup", () => {
-  isDragging = false;
-});
 </script>
 
 </body>
 </html>
+
+
 
 
 
