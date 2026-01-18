@@ -12,7 +12,7 @@ body {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
 }
 
@@ -37,7 +37,7 @@ body {
 
 .modal-content {
   background: white;
-  max-width: 600px;
+  max-width: 700px;
   margin: 60px auto;
   padding: 20px;
   border-radius: 10px;
@@ -56,18 +56,19 @@ button {
 
 .guideline-box {
   background: #f1f8ff;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 </style>
 </head>
 
 <body>
-<h1 style="color:red">TEST – IF YOU SEE THIS, THE FILE IS LOADING</h1>
 
 <h1>Respiratory</h1>
 <p>Paramedics in Primary Care</p>
 
+<!-- CONDITION TILES -->
 <div class="grid">
 
   <div class="card" onclick="openCondition('asthma')">
@@ -75,13 +76,44 @@ button {
     <p>Wheeze • Tight chest</p>
   </div>
 
+  <div class="card" onclick="openCondition('virusrti')">
+    <h3>🤧 Viral RTI</h3>
+    <p>URTI symptoms</p>
+  </div>
+
   <div class="card" onclick="openCondition('bronchitis')">
     <h3>🫁 Bronchitis</h3>
     <p>Productive cough</p>
   </div>
 
+  <div class="card" onclick="openCondition('copd')">
+    <h3>🫁 COPD Exacerbation</h3>
+    <p>Chronic airflow limitation</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pneumonia')">
+    <h3>🦠 Pneumonia</h3>
+    <p>Fever • Crackles</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pe')">
+    <h3>🩸 Pulmonary Embolism</h3>
+    <p>Sudden breathlessness</p>
+  </div>
+
+  <div class="card" onclick="openCondition('pneumothorax')">
+    <h3>🎈 Pneumothorax</h3>
+    <p>Sudden pleuritic pain</p>
+  </div>
+
+  <div class="card" onclick="openCondition('hf')">
+    <h3>💔 Heart Failure</h3>
+    <p>Orthopnoea • Oedema</p>
+  </div>
+
 </div>
 
+<!-- MODAL -->
 <div id="popup" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePopup()">×</span>
@@ -90,34 +122,115 @@ button {
 </div>
 
 <script>
+/* ===== DEFAULT ASTHMA GUIDELINES ===== */
 const defaultAsthmaGuidelines = `
 <h3>Treatment (Primary Care)</h3>
 <ul>
   <li>MART inhaler with a spacer – follow asthma care plan</li>
   <li>Check inhaler technique with spacer</li>
-  <li>Consider oral steroids if exacerbation</li>
-  <li>Consider asthma review if due or recently exacerbated</li>
+  <li>Consider short course oral steroids if exacerbation:
+    <ul>
+      <li>Tight chest</li>
+      <li>Increased SABA / MART use</li>
+      <li>Use clinical judgement if chest is clear</li>
+    </ul>
+  </li>
+  <li>Consider asthma review if exacerbated or due</li>
 </ul>
 
 <h3>Guidelines</h3>
 <ul>
   <li><a href="https://cks.nice.org.uk/topics/asthma/" target="_blank">NICE CKS – Asthma</a></li>
-  <li><a href="https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" target="_blank">BTS / SIGN Asthma</a></li>
+  <li><a href="https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" target="_blank">BTS / SIGN Asthma Guideline</a></li>
 </ul>
 `;
 
 function openCondition(name) {
+
   const info = {
+
     asthma: `
       <h2>Asthma</h2>
       <p>Reversible inflammatory airway disease.</p>
 
-      <div id="asthma-guidelines"></div>
+      <h3>Key Features</h3>
+      <ul>
+        <li>Wheeze</li>
+        <li>Chest tightness</li>
+        <li>Trigger-related</li>
+      </ul>
+
+      <div id="asthma-guidelines" class="guideline-box"></div>
       <button onclick="editAsthma()">✏️ Edit guidelines</button>
     `,
+
+    virusrti: `
+      <h2>Viral RTI</h2>
+      <ul>
+        <li>Rhinorrhoea</li>
+        <li>Sore throat</li>
+        <li>Headache</li>
+        <li>Mild fever</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS</a>
+    `,
+
     bronchitis: `
       <h2>Bronchitis</h2>
-      <p>Post-viral inflammation of bronchi.</p>
+      <ul>
+        <li>Persistent productive cough</li>
+        <li>Often post-viral</li>
+        <li>No focal chest signs</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS</a>
+    `,
+
+    copd: `
+      <h2>COPD Exacerbation</h2>
+      <ul>
+        <li>Productive cough</li>
+        <li>Breathlessness</li>
+        <li>Smoking history</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS</a>
+    `,
+
+    pneumonia: `
+      <h2>Pneumonia</h2>
+      <ul>
+        <li>High fever</li>
+        <li>Pleuritic chest pain</li>
+        <li>Crackles</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS</a>
+    `,
+
+    pe: `
+      <h2>Pulmonary Embolism</h2>
+      <ul>
+        <li>Sudden dyspnoea</li>
+        <li>Pleuritic pain</li>
+        <li>Tachycardia</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS</a>
+    `,
+
+    pneumothorax: `
+      <h2>Pneumothorax</h2>
+      <ul>
+        <li>Sudden chest pain</li>
+        <li>Reduced air entry</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS</a>
+    `,
+
+    hf: `
+      <h2>Heart Failure</h2>
+      <ul>
+        <li>Orthopnoea</li>
+        <li>Peripheral oedema</li>
+      </ul>
+      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS</a>
     `
   };
 
@@ -151,4 +264,5 @@ function closePopup() {
 
 </body>
 </html>
+
 
