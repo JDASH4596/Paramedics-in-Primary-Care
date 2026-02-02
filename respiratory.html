@@ -53,8 +53,8 @@ a.home {
   top: 120px;
   left: 120px;
   background: white;
-  max-width: 420px;
-  width: 90%;
+  max-width: 460px;
+  width: 92%;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   z-index: 1000;
@@ -96,11 +96,16 @@ a.home {
 
 textarea {
   width: 100%;
-  height: 220px;
+  height: 240px;
 }
 
 button {
   margin-top: 6px;
+}
+
+.small-note {
+  font-size: 0.85em;
+  color: #444;
 }
 </style>
 </head>
@@ -159,17 +164,36 @@ button {
 <script>
 let zIndexCounter = 1000;
 
-const defaultAsthmaText = `TREATMENT (PRIMARY CARE)
+/* ===== ASTHMA DEFAULT (FREE TEXT) =====
+   This is the "built-in" version that everyone gets from the repo.
+   Your personal edits (via Edit) are saved in THIS browser only.
+*/
+const defaultAsthmaText = `DEFINITION
+Inflammatory condition of the airways which result in narrowing during exacerbation causing a wheeze
 
-• MART inhaler with spacer
-• Check inhaler technique
-• Consider oral steroids if exacerbation
-• Arrange asthma review
+SIGNS AND SYMPTOMS
+• Increased respiratory rate
+• Feeling tight chested
+• Increased inhaler use
+• Peak flow depends on the severity of the asthma
+
+TREATMENT
+• 40mg prednisolone if wheeze chest
+• Consider how much the patient has been using the inhaler
+• Make clinical judgement
+• Remember: most exacerbations are viral, but check for clinical signs of LRTI such as:
+  – Focal chest sounds
+  – Reduced SpO2
+  – Fever
+• Consider referring to the patient’s individual asthma plan
+• Consider the patient’s last respiratory review – they may need another review
 
 GUIDELINES
-
 NICE CKS – Asthma
 https://cks.nice.org.uk/topics/asthma/
+
+BTS / SIGN Asthma Guideline
+https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
 `;
 
 function openWindow(type) {
@@ -177,11 +201,14 @@ function openWindow(type) {
   const content = {
     asthma: `
       <h3>Asthma</h3>
+      <div class="small-note">Tip: you can open multiple windows and drag them side-by-side to compare.</div>
       <div class="guideline-box" id="asthmaDisplay"></div>
-      <button onclick="showEditor(this)">✏️ Edit</button>
+
+      <button onclick="showEditor(this)">✏️ Edit (free text)</button>
       <div class="editor">
         <textarea></textarea>
         <button onclick="saveAsthma(this)">💾 Save</button>
+        <button onclick="cancelEdit(this)">Cancel</button>
       </div>
     `,
     virusrti: `
@@ -192,7 +219,7 @@ function openWindow(type) {
         <li>Headache</li>
         <li>Mild fever</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS – Common Cold</a>
     `,
     bronchitis: `
       <h3>Bronchitis</h3>
@@ -201,7 +228,7 @@ function openWindow(type) {
         <li>Often post-viral</li>
         <li>No focal chest signs</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS – Acute Bronchitis</a>
     `,
     copd: `
       <h3>COPD Exacerbation</h3>
@@ -210,7 +237,7 @@ function openWindow(type) {
         <li>Change in sputum</li>
         <li>Smoking history</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS – COPD</a>
     `,
     pneumonia: `
       <h3>Pneumonia</h3>
@@ -219,7 +246,7 @@ function openWindow(type) {
         <li>Pleuritic chest pain</li>
         <li>Focal crackles</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS – Pneumonia (Adults)</a>
     `,
     pe: `
       <h3>Pulmonary Embolism</h3>
@@ -228,7 +255,7 @@ function openWindow(type) {
         <li>Pleuritic pain</li>
         <li>Tachycardia</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS – Pulmonary Embolism</a>
     `,
     pneumothorax: `
       <h3>Pneumothorax</h3>
@@ -236,7 +263,7 @@ function openWindow(type) {
         <li>Sudden chest pain</li>
         <li>Reduced air entry</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS – Pneumothorax</a>
     `,
     hf: `
       <h3>Heart Failure</h3>
@@ -245,7 +272,7 @@ function openWindow(type) {
         <li>Peripheral oedema</li>
         <li>Weight gain</li>
       </ul>
-      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS</a>
+      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS – Heart Failure</a>
     `
   };
 
@@ -270,6 +297,7 @@ function openWindow(type) {
   }
 }
 
+/* ===== ASTHMA FREE TEXT EDITOR ===== */
 function showEditor(btn) {
   const editor = btn.nextElementSibling;
   editor.style.display = "block";
@@ -285,7 +313,12 @@ function saveAsthma(btn) {
   editor.style.display = "none";
 }
 
-/* DRAGGING */
+function cancelEdit(btn) {
+  const editor = btn.parentElement;
+  editor.style.display = "none";
+}
+
+/* ===== DRAGGING (no text highlighting while dragging) ===== */
 function makeDraggable(win) {
   const header = win.querySelector(".window-header");
   let offsetX = 0, offsetY = 0, dragging = false;
@@ -313,6 +346,7 @@ function makeDraggable(win) {
 
 </body>
 </html>
+
 
 
 
