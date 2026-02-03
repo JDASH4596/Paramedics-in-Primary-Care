@@ -37,13 +37,14 @@ a.home {
   top: 120px;
   left: 120px;
   background: white;
-  max-width: 600px;
+  max-width: 640px;
   width: 92%;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   z-index: 1000;
 }
 
+/* Header stays fixed */
 .window-header {
   padding: 10px;
   background: #1e88e5;
@@ -56,7 +57,13 @@ a.home {
   user-select: none;
 }
 
-.window-body { padding: 15px; }
+/* ✅ Scrollable body */
+.window-body {
+  padding: 15px;
+  max-height: 70vh;     /* window never taller than 70% of screen */
+  overflow-y: auto;     /* scrollbar appears when needed */
+}
+
 .close { cursor: pointer; }
 
 /* CONTENT */
@@ -68,15 +75,13 @@ a.home {
   white-space: pre-wrap;
 }
 
-.small {
-  font-size: 0.9em;
-  color: #333;
-}
-
-hr.sep {
-  border: none;
-  border-top: 1px solid #d9e6ff;
-  margin: 12px 0;
+.note {
+  background: #f6f6f6;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.92em;
+  white-space: pre-wrap;
 }
 </style>
 </head>
@@ -136,9 +141,9 @@ hr.sep {
 let zIndexCounter = 1000;
 
 function openWindow(type) {
+
   const content = {
 
-    /* ===================== ASTHMA ===================== */
     asthma: `
       <h3>Asthma</h3>
       <div class="guideline-box">
@@ -154,30 +159,30 @@ SIGNS AND SYMPTOMS
 ASSESSMENT (QUICK)
 • ABCDE, work of breathing, speaking in sentences, fatigue
 • SpO₂ (compare to baseline if known)
-• Auscultation: wheeze? (remember: a “silent chest” is worrying)
-• Consider triggers: viral illness, allergens, poor inhaler technique/adherence
-• Check if they have a personal asthma action plan / rescue pack
+• Auscultation: wheeze? (“silent chest” is worrying)
+• Triggers: viral illness, allergens, poor inhaler technique/adherence
+• Check personal asthma action plan / rescue pack
 
 TREATMENT (PRIMARY CARE)
 • 40mg prednisolone if wheeze chest
 • Consider how much the patient has been using the inhaler
 • Make clinical judgement
-• Remember: most exacerbations are viral but check for clinical signs of LRTI such as:
+• Most exacerbations are viral — but check for clinical signs of LRTI:
   – Focal chest sounds
   – Reduced SpO₂
   – Fever
-• Consider referring to the patient’s individual asthma plan
-• Consider the patient’s last respiratory review – they may need another review
+• Consider referring to the patient’s asthma plan
+• Consider last respiratory review – may need another review
 
 WHEN TO THINK “NOT JUST ASTHMA”
-• Fever + focal chest signs → consider pneumonia
-• Pleuritic chest pain, tachycardia, risk factors → consider PE
-• Orthopnoea, oedema, bibasal crackles → consider HF
-• Sudden unilateral reduced air entry → consider pneumothorax
+• Fever + focal chest signs → pneumonia
+• Pleuritic pain + risk factors → PE
+• Orthopnoea + oedema + bibasal crackles → HF
+• Sudden unilateral reduced air entry → pneumothorax
 
 RED FLAGS (ESCALATE)
 • Severe breathlessness / exhaustion / unable to speak
-• SpO₂ low or dropping despite treatment
+• SpO₂ low or dropping
 • Cyanosis, reduced consciousness, agitation/confusion
 • “Silent chest” or very poor air movement
 • Features of sepsis
@@ -191,14 +196,13 @@ https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
       </div>
     `,
 
-    /* ===================== VIRAL URTI ===================== */
     virusrti: `
       <h3>Viral URTI</h3>
       <div class="guideline-box">
 DEFINITION
 Self-limiting viral infection of the upper airway (nose/throat). Antibiotics are usually not indicated.
 
-SIGNS AND SYMPTOMS (COMMON)
+SIGNS AND SYMPTOMS
 • Runny/blocked nose
 • Sore throat
 • Headache
@@ -207,28 +211,29 @@ SIGNS AND SYMPTOMS (COMMON)
 • Myalgia / fatigue
 
 ASSESSMENT (QUICK)
-• Duration + severity (impact on function, hydration)
-• Red flags (see below)
+• Duration + severity
+• Hydration status
 • Baseline risk: frailty, immunosuppression, significant comorbidity
+• Red flags (below)
 
 TREATMENT (PRIMARY CARE – SUPPORTIVE)
 • Safety-net + expected course (often 7–10 days; cough can last longer)
 • Fluids + rest
-• Simple analgesia (paracetamol / ibuprofen if appropriate)
-• Honey / warm drinks for cough (if appropriate)
-• Saline nasal spray/irrigation
+• Simple analgesia (paracetamol/ibuprofen if appropriate)
+• Honey/warm drinks for cough (if appropriate)
+• Saline spray/irrigation
 • Avoid antibiotics unless clear indication
 
-WHEN TO THINK “NOT A SIMPLE URTI”
+WHEN TO THINK “NOT URTI”
 • Focal chest signs / reduced SpO₂ / fever and systemically unwell
 • Pleuritic chest pain
 • Increasing breathlessness
-→ consider LRTI / pneumonia / PE / HF depending on context
+→ consider LRTI / pneumonia / PE / HF
 
 RED FLAGS (ESCALATE)
-• Severe breathlessness / respiratory distress
+• Severe breathlessness / distress
 • SpO₂ low for patient
-• Chest pain suggestive of cardiac/PE
+• Chest pain suggestive of ACS/PE
 • Haemoptysis
 • Confusion / reduced consciousness
 • Sepsis features
@@ -242,7 +247,6 @@ https://cks.nice.org.uk/topics/sore-throat-acute/
       </div>
     `,
 
-    /* ===================== ACUTE BRONCHITIS ===================== */
     bronchitis: `
       <h3>Acute Bronchitis</h3>
       <div class="guideline-box">
@@ -250,35 +254,25 @@ DEFINITION
 Acute inflammation of the bronchi, usually viral, causing cough (often after an URTI). Antibiotics are usually not indicated.
 
 SIGNS AND SYMPTOMS
-• Cough (can persist 2–3 weeks)
-• Sputum can be present (does not automatically mean bacterial)
+• Cough (often 2–3 weeks)
+• Sputum may be present (not automatically bacterial)
 • Chest discomfort from coughing
-• Wheeze can occur (especially in smokers/asthma)
+• Wheeze can occur
 
 ASSESSMENT (QUICK)
-• Vitals: RR, HR, temp, SpO₂
-• Chest exam: often widespread wheeze/rhonchi; typically no focal crackles
-• Consider baseline lung disease (COPD/asthma)
-• Ask: duration, haemoptysis, pleuritic pain, breathlessness
+• RR, HR, temp, SpO₂
+• Chest exam: often widespread wheeze/rhonchi; usually no focal crackles
+• Consider baseline lung disease
+• Consider differentials if breathless
 
 TREATMENT (PRIMARY CARE)
-• Reassure + safety-net (expected duration)
+• Reassure + safety-net
 • Fluids, rest, simple analgesia
-• Consider bronchodilator only if significant wheeze/bronchospasm and appropriate history
-• Avoid antibiotics unless clear bacterial features or high-risk per guideline
+• Consider bronchodilator only if significant wheeze and appropriate history
 
-WHEN TO THINK “NOT BRONCHITIS”
-• Focal chest signs + fever + systemic unwell → consider pneumonia
-• Low SpO₂ or rising breathlessness → consider LRTI/COPD/HF/PE
-• Pleuritic pain / risk factors → consider PE
-• Sudden unilateral reduced air entry → consider pneumothorax
-
-RED FLAGS (ESCALATE)
-• SpO₂ low or dropping
-• Severe breathlessness / exhaustion
-• Haemoptysis (significant)
-• Sepsis features
-• Chest pain suggestive of ACS/PE
+FIRST-LINE (ANTIMICROBIALS)
+• Usually NO antibiotics
+• If high-risk / atypical course → follow LOCAL antimicrobial guidance + NICE CKS criteria
 
 GUIDELINES
 NICE CKS – Acute Bronchitis
@@ -286,91 +280,73 @@ https://cks.nice.org.uk/topics/acute-bronchitis/
       </div>
     `,
 
-    /* ===================== COPD EXACERBATION ===================== */
     copd: `
       <h3>COPD Exacerbation</h3>
       <div class="guideline-box">
 DEFINITION
-Acute worsening of COPD symptoms beyond normal day-to-day variation (often triggered by viral infection), typically with increased breathlessness and/or sputum changes.
+Acute worsening of COPD symptoms beyond normal day-to-day variation (often viral trigger), typically increased breathlessness +/- sputum changes.
 
 SIGNS AND SYMPTOMS
 • Increased breathlessness
 • Increased sputum volume and/or purulence
 • Increased cough/wheeze
-• Fatigue, reduced exercise tolerance
+• Reduced exercise tolerance
 
 ASSESSMENT (QUICK)
-• ABCDE + work of breathing
-• Vitals + SpO₂ (compare to baseline if known)
-• Chest exam: wheeze, reduced air entry; check for focal crackles (pneumonia)
-• Consider CO₂ retention risk in known COPD
-• Ask: rescue pack? inhaler/nebuliser use? previous admissions, NIV/ICU?
+• ABCDE + SpO₂ (baseline if known)
+• Check for focal signs (pneumonia)
+• Ask: rescue pack? previous admissions/NIV?
 
-TREATMENT / MANAGEMENT (PRIMARY CARE)
-• Optimise bronchodilators (per local protocol / patient plan)
-• Consider oral steroids and/or antibiotics if indicated (follow guideline / patient plan)
-• Safety-net and arrange appropriate follow-up/review
+MANAGEMENT (PRIMARY CARE)
+• Optimise bronchodilators (per local protocol)
+• Consider oral steroids per local pathway if indicated
+• Safety-net + follow-up
 
-WHEN TO THINK “NOT (OR NOT ONLY) COPD”
-• Focal crackles + fever + systemic unwell → consider pneumonia
-• New unilateral pleuritic pain + sudden SOB → consider PE/pneumothorax
-• Orthopnoea, oedema, bibasal crackles → consider HF
-
-RED FLAGS (ESCALATE)
-• Drowsiness, confusion, exhaustion (possible hypercapnia)
-• SpO₂ persistently low despite management
-• Severe respiratory distress, cyanosis
-• Sepsis features
-• New arrhythmia / chest pain
+FIRST-LINE (ANTIMICROBIALS)
+• Not for all exacerbations
+• Consider if bacterial features (e.g., sputum purulence/volume, systemic features, or per local criteria)
+• Choose FIRST-LINE per LOCAL antimicrobial guidance (sense-check with NICE CKS)
 
 GUIDELINES
 NICE CKS – COPD
 https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/
-
-NICE CKS – COPD Exacerbation (often within COPD topic)
-https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/
       </div>
     `,
 
-    /* ===================== PNEUMONIA ===================== */
     pneumonia: `
       <h3>Pneumonia (Adults)</h3>
       <div class="guideline-box">
 DEFINITION
-Infection of lung parenchyma causing inflammation and consolidation. Can be community-acquired; severity varies widely.
+Infection of lung tissue causing inflammation/consolidation. Severity varies.
 
 SIGNS AND SYMPTOMS
-• Fever / rigors
+• Fever/rigors
 • Cough +/- sputum
 • Pleuritic chest pain
 • Breathlessness
 • Focal crackles / bronchial breathing
-• Confusion in older adults can be a key presenting feature
+• Confusion (especially in older adults)
 
 ASSESSMENT (QUICK)
 • Vitals + SpO₂
-• Chest exam: focal findings?
-• Consider sepsis screen / NEWS2 style approach (as per service)
-• Risk factors: frailty, immunosuppression, aspiration risk, comorbidities
-• Consider differential: PE, HF, asthma/COPD exacerbation
+• Check for sepsis features
+• Focal chest signs? Systemically unwell?
+• Consider differentials (PE, HF, asthma/COPD)
 
 MANAGEMENT (PRIMARY CARE)
-• If mild and appropriate for community: follow guideline for antibiotics/analgesia/safety-net
-• Encourage fluids + rest, treat fever/pain
-• Safety-net: worsening breathlessness, persistent fever, confusion, low SpO₂, inability to maintain oral intake
-• Arrange follow-up/review as appropriate
+• If mild and appropriate for community: follow NICE/local guidance
+• Analgesia/antipyretics, hydration, safety-net
+• Arrange review if not improving
 
-WHEN TO THINK “NOT PNEUMONIA”
-• Sudden onset pleuritic pain + tachycardia + risk factors → consider PE
-• Orthopnoea + oedema + bibasal crackles → consider HF
-• Unilateral sudden reduced air entry → consider pneumothorax
+FIRST-LINE (ANTIMICROBIALS)
+• Choose FIRST-LINE antibiotic per LOCAL antimicrobial guidance first
+• Use NICE CKS to cross-check indications and alternatives (e.g., allergy)
 
 RED FLAGS (ESCALATE)
-• SpO₂ low, respiratory distress
-• Sepsis features
-• Hypotension, confusion, exhaustion
-• Significant comorbidity / immunosuppression with deterioration
-• Unable to maintain oral intake / dehydration
+• Low SpO₂ / respiratory distress
+• Sepsis features / hypotension
+• Confusion/exhaustion
+• Unable to maintain oral intake
 
 GUIDELINES
 NICE CKS – Pneumonia (Adults)
@@ -378,12 +354,11 @@ https://cks.nice.org.uk/topics/pneumonia-adults/
       </div>
     `,
 
-    /* ===================== PE ===================== */
     pe: `
       <h3>Pulmonary Embolism</h3>
       <div class="guideline-box">
 DEFINITION
-Thrombus in pulmonary arterial circulation causing ventilation/perfusion mismatch. Can be life-threatening.
+Thrombus in pulmonary arterial circulation. Can be life-threatening.
 
 SIGNS AND SYMPTOMS
 • Sudden breathlessness
@@ -391,30 +366,21 @@ SIGNS AND SYMPTOMS
 • Tachycardia
 • Cough +/- haemoptysis
 • Syncope/pre-syncope (worrying)
-• Sometimes subtle symptoms, especially in older adults
 
 ASSESSMENT (QUICK)
-• ABCDE + vitals + SpO₂
-• Risk factors: recent immobility/surgery, cancer, prior VTE, pregnancy/post-partum, oestrogen therapy, long travel
+• ABCDE + SpO₂
+• Risk factors: recent immobility/surgery, cancer, prior VTE, pregnancy/post-partum, oestrogen, long travel
 • Look for DVT signs (unilateral leg swelling/pain)
-• Consider differential: pneumonia, pneumothorax, ACS, asthma/COPD, HF
 
-MANAGEMENT (PRIMARY CARE)
-• If suspected and unwell: urgent escalation (same-day emergency assessment)
-• Avoid delay where red flags present
-• Follow local pathway for suspected PE (Wells/PERC etc where applicable within service)
-
-WHEN TO THINK “NOT PE”
-• Fever + focal crackles → pneumonia
-• Sudden unilateral reduced air entry → pneumothorax
-• Orthopnoea + oedema → HF
+MANAGEMENT
+• If suspected: urgent same-day emergency assessment (follow local pathway)
+• Escalate immediately if unstable
 
 RED FLAGS (ESCALATE IMMEDIATELY)
-• Haemodynamic instability / hypotension
-• Syncope, severe hypoxia
+• Hypotension/shock, syncope
+• Severe hypoxia
 • Severe chest pain suggestive of ACS
 • Significant haemoptysis
-• Reduced consciousness / collapse
 
 GUIDELINES
 NICE CKS – Pulmonary Embolism
@@ -422,40 +388,25 @@ https://cks.nice.org.uk/topics/pulmonary-embolism/
       </div>
     `,
 
-    /* ===================== PNEUMOTHORAX ===================== */
     pneumothorax: `
       <h3>Pneumothorax</h3>
       <div class="guideline-box">
 DEFINITION
-Air in the pleural space causing partial/complete lung collapse. Can be spontaneous or traumatic.
+Air in the pleural space causing lung collapse. Can be spontaneous or traumatic.
 
 SIGNS AND SYMPTOMS
 • Sudden unilateral pleuritic chest pain
 • Sudden breathlessness
 • Reduced/absent breath sounds on affected side
-• Hyperresonance (if assessed)
 • Tachycardia
 
-ASSESSMENT (QUICK)
-• ABCDE + SpO₂
-• Consider triggers: trauma, underlying lung disease, tall/thin young person (primary spontaneous), COPD (secondary)
-• Look for tension features (see red flags)
-
-MANAGEMENT (PRIMARY CARE)
-• Suspected pneumothorax generally needs urgent same-day assessment/imaging
-• Provide oxygen/support as per local protocol if hypoxic
+MANAGEMENT
+• Suspected pneumothorax usually needs urgent same-day assessment/imaging
 • Escalate early if unstable or suspected tension
 
-WHEN TO THINK “NOT PNEUMOTHORAX”
-• Fever + focal crackles → pneumonia
-• Risk factors + DVT signs + sudden SOB → PE
-• Wheeze predominant + known asthma → asthma
-
-RED FLAGS (TENSION / UNSTABLE → EMERGENCY)
+RED FLAGS (TENSION)
 • Severe respiratory distress
 • Hypotension, shock
-• Tracheal deviation (late sign)
-• Marked tachycardia
 • SpO₂ very low / rapidly worsening
 • Reduced consciousness
 
@@ -465,46 +416,29 @@ https://cks.nice.org.uk/topics/pneumothorax/
       </div>
     `,
 
-    /* ===================== HEART FAILURE ===================== */
     hf: `
       <h3>Heart Failure</h3>
       <div class="guideline-box">
 DEFINITION
-Syndrome of impaired cardiac function causing fluid overload and reduced perfusion. May present with pulmonary oedema/respiratory symptoms.
+Impaired cardiac function leading to fluid overload and reduced perfusion. Can present with respiratory symptoms.
 
 SIGNS AND SYMPTOMS
-• Breathlessness (exertional or at rest)
+• Breathlessness
 • Orthopnoea / PND
 • Peripheral oedema
 • Weight gain
+• Bibasal crackles
 • Fatigue
-• Bibasal crackles (fluid)
-• Elevated JVP (if assessed)
 
 ASSESSMENT (QUICK)
 • Vitals + SpO₂
-• Look for fluid overload: oedema, crackles, weight gain, reduced exercise tolerance
-• Ask: known HF? diuretics? adherence? recent salt/fluid increase?
-• Consider triggers: infection, arrhythmia, ACS, anaemia, renal issues
+• Look for fluid overload
+• Consider triggers: infection, arrhythmia, ACS, non-adherence
 
-MANAGEMENT (PRIMARY CARE)
-• If mild and stable: follow HF plan/local pathway, arrange urgent GP review as appropriate
-• If acute pulmonary oedema / severe breathlessness: urgent escalation
-• Safety-net: worsening breathlessness, low SpO₂, chest pain, syncope, confusion
-
-WHEN TO THINK “NOT HF”
-• Fever + focal chest findings → pneumonia
-• Wheeze predominant + asthma/COPD pattern → consider obstructive disease
-• Sudden pleuritic pain + risk factors → PE
-• Sudden unilateral reduced air entry → pneumothorax
-
-RED FLAGS (ESCALATE)
-• Acute pulmonary oedema / severe distress
-• SpO₂ low, exhaustion
-• Hypotension, syncope
-• Chest pain suggestive of ACS
-• New significant arrhythmia
-• Sepsis features
+MANAGEMENT
+• If acute pulmonary oedema/severe distress: urgent escalation
+• If stable: follow local pathway/plan and arrange review
+• Safety-net
 
 GUIDELINES
 NICE CKS – Heart Failure
@@ -537,6 +471,8 @@ function makeDraggable(win) {
     dragging = true;
     win.style.zIndex = ++zIndexCounter;
     offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientX - win.offsetLeft;
+    // bug fix: correct offsetY
     offsetY = e.clientY - win.offsetTop;
     document.body.style.userSelect = "none";
   });
@@ -556,6 +492,7 @@ function makeDraggable(win) {
 
 </body>
 </html>
+
 
 
 
