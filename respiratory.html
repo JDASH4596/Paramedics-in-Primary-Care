@@ -5,17 +5,11 @@
 <title>Respiratory – Paramedics in Primary Care</title>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
+body { font-family: Arial, sans-serif; margin: 20px; }
 
 a.home {
-  display: inline-block;
-  margin-bottom: 15px;
-  text-decoration: none;
-  color: #1e88e5;
-  font-weight: bold;
+  display: inline-block; margin-bottom: 15px; text-decoration: none;
+  color: #1e88e5; font-weight: bold;
 }
 
 /* GRID */
@@ -33,19 +27,9 @@ a.home {
   background: #f9f9f9;
 }
 
-.card:hover {
-  background: #eef4ff;
-}
-
-.card h3 {
-  margin: 0 0 6px 0;
-}
-
-.card p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
-}
+.card:hover { background: #eef4ff; }
+.card h3 { margin: 0 0 6px 0; }
+.card p  { margin: 0; font-size: 0.9em; color: #555; }
 
 /* WINDOWS */
 .window {
@@ -53,7 +37,7 @@ a.home {
   top: 120px;
   left: 120px;
   background: white;
-  max-width: 560px;
+  max-width: 600px;
   width: 92%;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -72,13 +56,8 @@ a.home {
   user-select: none;
 }
 
-.window-body {
-  padding: 15px;
-}
-
-.close {
-  cursor: pointer;
-}
+.window-body { padding: 15px; }
+.close { cursor: pointer; }
 
 /* CONTENT */
 .guideline-box {
@@ -89,9 +68,15 @@ a.home {
   white-space: pre-wrap;
 }
 
-.section-title {
-  font-weight: bold;
-  margin-top: 10px;
+.small {
+  font-size: 0.9em;
+  color: #333;
+}
+
+hr.sep {
+  border: none;
+  border-top: 1px solid #d9e6ff;
+  margin: 12px 0;
 }
 </style>
 </head>
@@ -111,23 +96,23 @@ a.home {
   </div>
 
   <div class="card" onclick="openWindow('virusrti')">
-    <h3>🤧 Viral RTI</h3>
+    <h3>🤧 Viral URTI</h3>
     <p>Runny nose • Sore throat • Headache</p>
   </div>
 
   <div class="card" onclick="openWindow('bronchitis')">
-    <h3>🫁 Bronchitis</h3>
-    <p>Post-viral productive cough • No focal signs</p>
+    <h3>🫁 Acute Bronchitis</h3>
+    <p>Post-viral cough • Usually self-limiting</p>
   </div>
 
   <div class="card" onclick="openWindow('copd')">
     <h3>🫁 COPD Exacerbation</h3>
-    <p>Breathlessness • Sputum change • Smoking history</p>
+    <p>Breathlessness • Sputum change • Chronic disease</p>
   </div>
 
   <div class="card" onclick="openWindow('pneumonia')">
     <h3>🦠 Pneumonia</h3>
-    <p>Fever • Pleuritic pain • Focal crackles</p>
+    <p>Fever • Pleuritic pain • Focal signs</p>
   </div>
 
   <div class="card" onclick="openWindow('pe')">
@@ -142,7 +127,7 @@ a.home {
 
   <div class="card" onclick="openWindow('hf')">
     <h3>💔 Heart Failure</h3>
-    <p>Orthopnoea • Peripheral oedema • Weight gain</p>
+    <p>Orthopnoea • Oedema • Fluid overload</p>
   </div>
 
 </div>
@@ -153,9 +138,9 @@ let zIndexCounter = 1000;
 function openWindow(type) {
   const content = {
 
+    /* ===================== ASTHMA ===================== */
     asthma: `
       <h3>Asthma</h3>
-
       <div class="guideline-box">
 DEFINITION
 Inflammatory condition of the airways which result in narrowing during exacerbation causing a wheeze
@@ -166,7 +151,14 @@ SIGNS AND SYMPTOMS
 • Increased inhaler use
 • Peak flow depends on the severity of the asthma
 
-TREATMENT
+ASSESSMENT (QUICK)
+• ABCDE, work of breathing, speaking in sentences, fatigue
+• SpO₂ (compare to baseline if known)
+• Auscultation: wheeze? (remember: a “silent chest” is worrying)
+• Consider triggers: viral illness, allergens, poor inhaler technique/adherence
+• Check if they have a personal asthma action plan / rescue pack
+
+TREATMENT (PRIMARY CARE)
 • 40mg prednisolone if wheeze chest
 • Consider how much the patient has been using the inhaler
 • Make clinical judgement
@@ -177,6 +169,19 @@ TREATMENT
 • Consider referring to the patient’s individual asthma plan
 • Consider the patient’s last respiratory review – they may need another review
 
+WHEN TO THINK “NOT JUST ASTHMA”
+• Fever + focal chest signs → consider pneumonia
+• Pleuritic chest pain, tachycardia, risk factors → consider PE
+• Orthopnoea, oedema, bibasal crackles → consider HF
+• Sudden unilateral reduced air entry → consider pneumothorax
+
+RED FLAGS (ESCALATE)
+• Severe breathlessness / exhaustion / unable to speak
+• SpO₂ low or dropping despite treatment
+• Cyanosis, reduced consciousness, agitation/confusion
+• “Silent chest” or very poor air movement
+• Features of sepsis
+
 GUIDELINES
 NICE CKS – Asthma
 https://cks.nice.org.uk/topics/asthma/
@@ -186,74 +191,325 @@ https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
       </div>
     `,
 
+    /* ===================== VIRAL URTI ===================== */
     virusrti: `
-      <h3>Viral RTI</h3>
-      <ul>
-        <li>Rhinorrhoea</li>
-        <li>Sore throat</li>
-        <li>Headache</li>
-        <li>Mild fever</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS – Common Cold</a>
+      <h3>Viral URTI</h3>
+      <div class="guideline-box">
+DEFINITION
+Self-limiting viral infection of the upper airway (nose/throat). Antibiotics are usually not indicated.
+
+SIGNS AND SYMPTOMS (COMMON)
+• Runny/blocked nose
+• Sore throat
+• Headache
+• Cough (often mild early)
+• Low-grade fever
+• Myalgia / fatigue
+
+ASSESSMENT (QUICK)
+• Duration + severity (impact on function, hydration)
+• Red flags (see below)
+• Baseline risk: frailty, immunosuppression, significant comorbidity
+
+TREATMENT (PRIMARY CARE – SUPPORTIVE)
+• Safety-net + expected course (often 7–10 days; cough can last longer)
+• Fluids + rest
+• Simple analgesia (paracetamol / ibuprofen if appropriate)
+• Honey / warm drinks for cough (if appropriate)
+• Saline nasal spray/irrigation
+• Avoid antibiotics unless clear indication
+
+WHEN TO THINK “NOT A SIMPLE URTI”
+• Focal chest signs / reduced SpO₂ / fever and systemically unwell
+• Pleuritic chest pain
+• Increasing breathlessness
+→ consider LRTI / pneumonia / PE / HF depending on context
+
+RED FLAGS (ESCALATE)
+• Severe breathlessness / respiratory distress
+• SpO₂ low for patient
+• Chest pain suggestive of cardiac/PE
+• Haemoptysis
+• Confusion / reduced consciousness
+• Sepsis features
+
+GUIDELINES
+NICE CKS – Common Cold
+https://cks.nice.org.uk/topics/common-cold/
+
+NICE CKS – Sore Throat (Acute)
+https://cks.nice.org.uk/topics/sore-throat-acute/
+      </div>
     `,
 
+    /* ===================== ACUTE BRONCHITIS ===================== */
     bronchitis: `
-      <h3>Bronchitis</h3>
-      <ul>
-        <li>Persistent productive cough</li>
-        <li>Often post-viral</li>
-        <li>No focal chest signs</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS – Acute Bronchitis</a>
+      <h3>Acute Bronchitis</h3>
+      <div class="guideline-box">
+DEFINITION
+Acute inflammation of the bronchi, usually viral, causing cough (often after an URTI). Antibiotics are usually not indicated.
+
+SIGNS AND SYMPTOMS
+• Cough (can persist 2–3 weeks)
+• Sputum can be present (does not automatically mean bacterial)
+• Chest discomfort from coughing
+• Wheeze can occur (especially in smokers/asthma)
+
+ASSESSMENT (QUICK)
+• Vitals: RR, HR, temp, SpO₂
+• Chest exam: often widespread wheeze/rhonchi; typically no focal crackles
+• Consider baseline lung disease (COPD/asthma)
+• Ask: duration, haemoptysis, pleuritic pain, breathlessness
+
+TREATMENT (PRIMARY CARE)
+• Reassure + safety-net (expected duration)
+• Fluids, rest, simple analgesia
+• Consider bronchodilator only if significant wheeze/bronchospasm and appropriate history
+• Avoid antibiotics unless clear bacterial features or high-risk per guideline
+
+WHEN TO THINK “NOT BRONCHITIS”
+• Focal chest signs + fever + systemic unwell → consider pneumonia
+• Low SpO₂ or rising breathlessness → consider LRTI/COPD/HF/PE
+• Pleuritic pain / risk factors → consider PE
+• Sudden unilateral reduced air entry → consider pneumothorax
+
+RED FLAGS (ESCALATE)
+• SpO₂ low or dropping
+• Severe breathlessness / exhaustion
+• Haemoptysis (significant)
+• Sepsis features
+• Chest pain suggestive of ACS/PE
+
+GUIDELINES
+NICE CKS – Acute Bronchitis
+https://cks.nice.org.uk/topics/acute-bronchitis/
+      </div>
     `,
 
+    /* ===================== COPD EXACERBATION ===================== */
     copd: `
       <h3>COPD Exacerbation</h3>
-      <ul>
-        <li>Increased breathlessness</li>
-        <li>Change in sputum</li>
-        <li>Smoking history</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS – COPD</a>
+      <div class="guideline-box">
+DEFINITION
+Acute worsening of COPD symptoms beyond normal day-to-day variation (often triggered by viral infection), typically with increased breathlessness and/or sputum changes.
+
+SIGNS AND SYMPTOMS
+• Increased breathlessness
+• Increased sputum volume and/or purulence
+• Increased cough/wheeze
+• Fatigue, reduced exercise tolerance
+
+ASSESSMENT (QUICK)
+• ABCDE + work of breathing
+• Vitals + SpO₂ (compare to baseline if known)
+• Chest exam: wheeze, reduced air entry; check for focal crackles (pneumonia)
+• Consider CO₂ retention risk in known COPD
+• Ask: rescue pack? inhaler/nebuliser use? previous admissions, NIV/ICU?
+
+TREATMENT / MANAGEMENT (PRIMARY CARE)
+• Optimise bronchodilators (per local protocol / patient plan)
+• Consider oral steroids and/or antibiotics if indicated (follow guideline / patient plan)
+• Safety-net and arrange appropriate follow-up/review
+
+WHEN TO THINK “NOT (OR NOT ONLY) COPD”
+• Focal crackles + fever + systemic unwell → consider pneumonia
+• New unilateral pleuritic pain + sudden SOB → consider PE/pneumothorax
+• Orthopnoea, oedema, bibasal crackles → consider HF
+
+RED FLAGS (ESCALATE)
+• Drowsiness, confusion, exhaustion (possible hypercapnia)
+• SpO₂ persistently low despite management
+• Severe respiratory distress, cyanosis
+• Sepsis features
+• New arrhythmia / chest pain
+
+GUIDELINES
+NICE CKS – COPD
+https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/
+
+NICE CKS – COPD Exacerbation (often within COPD topic)
+https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/
+      </div>
     `,
 
+    /* ===================== PNEUMONIA ===================== */
     pneumonia: `
-      <h3>Pneumonia</h3>
-      <ul>
-        <li>High fever</li>
-        <li>Pleuritic chest pain</li>
-        <li>Focal crackles</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS – Pneumonia (Adults)</a>
+      <h3>Pneumonia (Adults)</h3>
+      <div class="guideline-box">
+DEFINITION
+Infection of lung parenchyma causing inflammation and consolidation. Can be community-acquired; severity varies widely.
+
+SIGNS AND SYMPTOMS
+• Fever / rigors
+• Cough +/- sputum
+• Pleuritic chest pain
+• Breathlessness
+• Focal crackles / bronchial breathing
+• Confusion in older adults can be a key presenting feature
+
+ASSESSMENT (QUICK)
+• Vitals + SpO₂
+• Chest exam: focal findings?
+• Consider sepsis screen / NEWS2 style approach (as per service)
+• Risk factors: frailty, immunosuppression, aspiration risk, comorbidities
+• Consider differential: PE, HF, asthma/COPD exacerbation
+
+MANAGEMENT (PRIMARY CARE)
+• If mild and appropriate for community: follow guideline for antibiotics/analgesia/safety-net
+• Encourage fluids + rest, treat fever/pain
+• Safety-net: worsening breathlessness, persistent fever, confusion, low SpO₂, inability to maintain oral intake
+• Arrange follow-up/review as appropriate
+
+WHEN TO THINK “NOT PNEUMONIA”
+• Sudden onset pleuritic pain + tachycardia + risk factors → consider PE
+• Orthopnoea + oedema + bibasal crackles → consider HF
+• Unilateral sudden reduced air entry → consider pneumothorax
+
+RED FLAGS (ESCALATE)
+• SpO₂ low, respiratory distress
+• Sepsis features
+• Hypotension, confusion, exhaustion
+• Significant comorbidity / immunosuppression with deterioration
+• Unable to maintain oral intake / dehydration
+
+GUIDELINES
+NICE CKS – Pneumonia (Adults)
+https://cks.nice.org.uk/topics/pneumonia-adults/
+      </div>
     `,
 
+    /* ===================== PE ===================== */
     pe: `
       <h3>Pulmonary Embolism</h3>
-      <ul>
-        <li>Sudden dyspnoea</li>
-        <li>Pleuritic chest pain</li>
-        <li>Tachycardia</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS – Pulmonary Embolism</a>
+      <div class="guideline-box">
+DEFINITION
+Thrombus in pulmonary arterial circulation causing ventilation/perfusion mismatch. Can be life-threatening.
+
+SIGNS AND SYMPTOMS
+• Sudden breathlessness
+• Pleuritic chest pain
+• Tachycardia
+• Cough +/- haemoptysis
+• Syncope/pre-syncope (worrying)
+• Sometimes subtle symptoms, especially in older adults
+
+ASSESSMENT (QUICK)
+• ABCDE + vitals + SpO₂
+• Risk factors: recent immobility/surgery, cancer, prior VTE, pregnancy/post-partum, oestrogen therapy, long travel
+• Look for DVT signs (unilateral leg swelling/pain)
+• Consider differential: pneumonia, pneumothorax, ACS, asthma/COPD, HF
+
+MANAGEMENT (PRIMARY CARE)
+• If suspected and unwell: urgent escalation (same-day emergency assessment)
+• Avoid delay where red flags present
+• Follow local pathway for suspected PE (Wells/PERC etc where applicable within service)
+
+WHEN TO THINK “NOT PE”
+• Fever + focal crackles → pneumonia
+• Sudden unilateral reduced air entry → pneumothorax
+• Orthopnoea + oedema → HF
+
+RED FLAGS (ESCALATE IMMEDIATELY)
+• Haemodynamic instability / hypotension
+• Syncope, severe hypoxia
+• Severe chest pain suggestive of ACS
+• Significant haemoptysis
+• Reduced consciousness / collapse
+
+GUIDELINES
+NICE CKS – Pulmonary Embolism
+https://cks.nice.org.uk/topics/pulmonary-embolism/
+      </div>
     `,
 
+    /* ===================== PNEUMOTHORAX ===================== */
     pneumothorax: `
       <h3>Pneumothorax</h3>
-      <ul>
-        <li>Sudden chest pain</li>
-        <li>Reduced air entry</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS – Pneumothorax</a>
+      <div class="guideline-box">
+DEFINITION
+Air in the pleural space causing partial/complete lung collapse. Can be spontaneous or traumatic.
+
+SIGNS AND SYMPTOMS
+• Sudden unilateral pleuritic chest pain
+• Sudden breathlessness
+• Reduced/absent breath sounds on affected side
+• Hyperresonance (if assessed)
+• Tachycardia
+
+ASSESSMENT (QUICK)
+• ABCDE + SpO₂
+• Consider triggers: trauma, underlying lung disease, tall/thin young person (primary spontaneous), COPD (secondary)
+• Look for tension features (see red flags)
+
+MANAGEMENT (PRIMARY CARE)
+• Suspected pneumothorax generally needs urgent same-day assessment/imaging
+• Provide oxygen/support as per local protocol if hypoxic
+• Escalate early if unstable or suspected tension
+
+WHEN TO THINK “NOT PNEUMOTHORAX”
+• Fever + focal crackles → pneumonia
+• Risk factors + DVT signs + sudden SOB → PE
+• Wheeze predominant + known asthma → asthma
+
+RED FLAGS (TENSION / UNSTABLE → EMERGENCY)
+• Severe respiratory distress
+• Hypotension, shock
+• Tracheal deviation (late sign)
+• Marked tachycardia
+• SpO₂ very low / rapidly worsening
+• Reduced consciousness
+
+GUIDELINES
+NICE CKS – Pneumothorax
+https://cks.nice.org.uk/topics/pneumothorax/
+      </div>
     `,
 
+    /* ===================== HEART FAILURE ===================== */
     hf: `
       <h3>Heart Failure</h3>
-      <ul>
-        <li>Orthopnoea</li>
-        <li>Peripheral oedema</li>
-        <li>Weight gain</li>
-      </ul>
-      <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS – Heart Failure</a>
+      <div class="guideline-box">
+DEFINITION
+Syndrome of impaired cardiac function causing fluid overload and reduced perfusion. May present with pulmonary oedema/respiratory symptoms.
+
+SIGNS AND SYMPTOMS
+• Breathlessness (exertional or at rest)
+• Orthopnoea / PND
+• Peripheral oedema
+• Weight gain
+• Fatigue
+• Bibasal crackles (fluid)
+• Elevated JVP (if assessed)
+
+ASSESSMENT (QUICK)
+• Vitals + SpO₂
+• Look for fluid overload: oedema, crackles, weight gain, reduced exercise tolerance
+• Ask: known HF? diuretics? adherence? recent salt/fluid increase?
+• Consider triggers: infection, arrhythmia, ACS, anaemia, renal issues
+
+MANAGEMENT (PRIMARY CARE)
+• If mild and stable: follow HF plan/local pathway, arrange urgent GP review as appropriate
+• If acute pulmonary oedema / severe breathlessness: urgent escalation
+• Safety-net: worsening breathlessness, low SpO₂, chest pain, syncope, confusion
+
+WHEN TO THINK “NOT HF”
+• Fever + focal chest findings → pneumonia
+• Wheeze predominant + asthma/COPD pattern → consider obstructive disease
+• Sudden pleuritic pain + risk factors → PE
+• Sudden unilateral reduced air entry → pneumothorax
+
+RED FLAGS (ESCALATE)
+• Acute pulmonary oedema / severe distress
+• SpO₂ low, exhaustion
+• Hypotension, syncope
+• Chest pain suggestive of ACS
+• New significant arrhythmia
+• Sepsis features
+
+GUIDELINES
+NICE CKS – Heart Failure
+https://cks.nice.org.uk/topics/heart-failure/
+      </div>
     `
   };
 
@@ -288,7 +544,7 @@ function makeDraggable(win) {
   document.addEventListener("mousemove", e => {
     if (!dragging) return;
     win.style.left = (e.clientX - offsetX) + "px";
-    win.style.top = (e.clientY - offsetY) + "px";
+    win.style.top  = (e.clientY - offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
@@ -300,6 +556,7 @@ function makeDraggable(win) {
 
 </body>
 </html>
+
 
 
 
