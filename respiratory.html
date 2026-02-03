@@ -5,30 +5,18 @@
 <title>Respiratory – Paramedics in Primary Care</title>
 
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
 
 a.home {
-  display: inline-block; margin-bottom: 10px; text-decoration: none;
-  color: #1e88e5; font-weight: bold;
+  display: inline-block;
+  margin-bottom: 15px;
+  text-decoration: none;
+  color: #1e88e5;
+  font-weight: bold;
 }
-
-.version {
-  background: #fff3cd;
-  border: 1px solid #ffeeba;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px 0 18px 0;
-  font-size: 0.95em;
-}
-
-.tools {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 0 0 18px 0;
-}
-
-.tools button { padding: 8px 10px; cursor: pointer; }
 
 /* GRID */
 .grid {
@@ -45,9 +33,19 @@ a.home {
   background: #f9f9f9;
 }
 
-.card:hover { background: #eef4ff; }
-.card h3 { margin: 0 0 6px 0; }
-.card p  { margin: 0; font-size: 0.9em; color: #555; }
+.card:hover {
+  background: #eef4ff;
+}
+
+.card h3 {
+  margin: 0 0 6px 0;
+}
+
+.card p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
+}
 
 /* WINDOWS */
 .window {
@@ -74,40 +72,26 @@ a.home {
   user-select: none;
 }
 
-.window-body { padding: 15px; }
-.close { cursor: pointer; }
+.window-body {
+  padding: 15px;
+}
 
+.close {
+  cursor: pointer;
+}
+
+/* CONTENT */
 .guideline-box {
   background: #f1f8ff;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
-  margin: 10px 0;
+  margin-top: 10px;
   white-space: pre-wrap;
 }
 
-.editor { display: none; margin-top: 10px; }
-textarea { width: 100%; height: 240px; }
-
-button { margin-top: 6px; margin-right: 6px; padding: 6px 10px; }
-
-.small-note { font-size: 0.85em; color: #444; margin: 0 0 8px 0; }
-
-.status-pill {
-  display: inline-block;
-  font-size: 0.8em;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #eee;
-  margin-left: 6px;
-}
-
-.debug {
-  font-size: 0.85em;
-  color: #333;
-  background: #f6f6f6;
-  padding: 6px 8px;
-  border-radius: 8px;
-  margin-top: 8px;
+.section-title {
+  font-weight: bold;
+  margin-top: 10px;
 }
 </style>
 </head>
@@ -116,20 +100,11 @@ button { margin-top: 6px; margin-right: 6px; padding: 6px 10px; }
 
 <a class="home" href="index.html">⬅ Home</a>
 
-<div class="version">
-  <strong>VERSION CHECK:</strong> If you can see this yellow banner, you are viewing the latest <code>respiratory.html</code>.
-  <br><strong>Build:</strong> asthma-text-v3 (guaranteed render)
-</div>
-
-<div class="tools">
-  <button onclick="clearSavedAsthma()">🧹 Clear saved Asthma (local only)</button>
-  <button onclick="forceDefaultAsthma()">✅ Force default Asthma now (local only)</button>
-</div>
-
 <h1>Respiratory</h1>
 <p>Paramedics in Primary Care</p>
 
 <div class="grid">
+
   <div class="card" onclick="openWindow('asthma')">
     <h3>💨 Asthma</h3>
     <p>Wheeze • Tight chest • Reversible airway disease</p>
@@ -169,27 +144,38 @@ button { margin-top: 6px; margin-right: 6px; padding: 6px 10px; }
     <h3>💔 Heart Failure</h3>
     <p>Orthopnoea • Peripheral oedema • Weight gain</p>
   </div>
+
 </div>
 
 <script>
 let zIndexCounter = 1000;
 
-/* ===== YOUR ASTHMA TEXT (DEFAULT) ===== */
-const defaultAsthmaText = `DEFINITION
+function openWindow(type) {
+  const content = {
+
+    asthma: `
+      <h3>Asthma</h3>
+
+      <div class="guideline-box">
+DEFINITION
 Inflammatory condition of the airways which result in narrowing during exacerbation causing a wheeze
 
 SIGNS AND SYMPTOMS
 • Increased respiratory rate
 • Feeling tight chested
-• Increase inhaler use
-• Peak flow depends on the severity of the asthma.
+• Increased inhaler use
+• Peak flow depends on the severity of the asthma
 
 TREATMENT
-• 40mg prednisolone if wheeze chest.
-• Consider how much the patient has been using the inhaler.
-• Make clinical judgement.
-• Remember: most exacerbations are viral but check for clinical signs of LRTI such as focal chest sounds, reduced SpO2 and fever.
-• Consider referring to the patient's individual asthma plan and consider the patient's last respiratory review - they may need another review
+• 40mg prednisolone if wheeze chest
+• Consider how much the patient has been using the inhaler
+• Make clinical judgement
+• Remember: most exacerbations are viral but check for clinical signs of LRTI such as:
+  – Focal chest sounds
+  – Reduced SpO₂
+  – Fever
+• Consider referring to the patient’s individual asthma plan
+• Consider the patient’s last respiratory review – they may need another review
 
 GUIDELINES
 NICE CKS – Asthma
@@ -197,72 +183,76 @@ https://cks.nice.org.uk/topics/asthma/
 
 BTS / SIGN Asthma Guideline
 https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/
-`;
-
-/* Buttons at top (local only) */
-function clearSavedAsthma() {
-  localStorage.removeItem("asthmaText");
-  alert("Saved Asthma cleared (on this device/browser only). Open Asthma again.");
-}
-
-function forceDefaultAsthma() {
-  localStorage.setItem("asthmaText", defaultAsthmaText);
-  alert("Default Asthma forced into saved storage (on this device/browser only). Open Asthma again.");
-}
-
-/* ===== WINDOWS ===== */
-function openWindow(type) {
-  const content = {
-    asthma: `
-      <h3>Asthma <span id="asthmaStatus" class="status-pill"></span></h3>
-      <p class="small-note">Open multiple conditions and drag them side-by-side to compare.</p>
-
-      <div class="guideline-box" id="asthmaDisplay">Loading asthma guidance…</div>
-
-      <button onclick="showEditor(this)">✏️ Edit (free text)</button>
-      <button onclick="resetAsthmaToDefault(this)">↩ Reset to default</button>
-
-      <div class="editor">
-        <textarea></textarea><br>
-        <button onclick="saveAsthma(this)">💾 Save</button>
-        <button onclick="cancelEdit(this)">Cancel</button>
       </div>
-
-      <div class="debug" id="asthmaDebug">Debug: waiting…</div>
     `,
+
     virusrti: `
       <h3>Viral RTI</h3>
-      <ul><li>Rhinorrhoea</li><li>Sore throat</li><li>Headache</li><li>Mild fever</li></ul>
+      <ul>
+        <li>Rhinorrhoea</li>
+        <li>Sore throat</li>
+        <li>Headache</li>
+        <li>Mild fever</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/common-cold/" target="_blank">NICE CKS – Common Cold</a>
     `,
+
     bronchitis: `
       <h3>Bronchitis</h3>
-      <ul><li>Persistent productive cough</li><li>Often post-viral</li><li>No focal chest signs</li></ul>
+      <ul>
+        <li>Persistent productive cough</li>
+        <li>Often post-viral</li>
+        <li>No focal chest signs</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/acute-bronchitis/" target="_blank">NICE CKS – Acute Bronchitis</a>
     `,
+
     copd: `
       <h3>COPD Exacerbation</h3>
-      <ul><li>Increased breathlessness</li><li>Change in sputum</li><li>Smoking history</li></ul>
+      <ul>
+        <li>Increased breathlessness</li>
+        <li>Change in sputum</li>
+        <li>Smoking history</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" target="_blank">NICE CKS – COPD</a>
     `,
+
     pneumonia: `
       <h3>Pneumonia</h3>
-      <ul><li>High fever</li><li>Pleuritic chest pain</li><li>Focal crackles</li></ul>
+      <ul>
+        <li>High fever</li>
+        <li>Pleuritic chest pain</li>
+        <li>Focal crackles</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/pneumonia-adults/" target="_blank">NICE CKS – Pneumonia (Adults)</a>
     `,
+
     pe: `
       <h3>Pulmonary Embolism</h3>
-      <ul><li>Sudden dyspnoea</li><li>Pleuritic pain</li><li>Tachycardia</li></ul>
+      <ul>
+        <li>Sudden dyspnoea</li>
+        <li>Pleuritic chest pain</li>
+        <li>Tachycardia</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/pulmonary-embolism/" target="_blank">NICE CKS – Pulmonary Embolism</a>
     `,
+
     pneumothorax: `
       <h3>Pneumothorax</h3>
-      <ul><li>Sudden chest pain</li><li>Reduced air entry</li></ul>
+      <ul>
+        <li>Sudden chest pain</li>
+        <li>Reduced air entry</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/pneumothorax/" target="_blank">NICE CKS – Pneumothorax</a>
     `,
+
     hf: `
       <h3>Heart Failure</h3>
-      <ul><li>Orthopnoea</li><li>Peripheral oedema</li><li>Weight gain</li></ul>
+      <ul>
+        <li>Orthopnoea</li>
+        <li>Peripheral oedema</li>
+        <li>Weight gain</li>
+      </ul>
       <a href="https://cks.nice.org.uk/topics/heart-failure/" target="_blank">NICE CKS – Heart Failure</a>
     `
   };
@@ -281,67 +271,8 @@ function openWindow(type) {
 
   document.body.appendChild(win);
   makeDraggable(win);
-
-  if (type === "asthma") {
-    renderAsthmaGuaranteed(win);
-  }
 }
 
-/* ===== ASTHMA: GUARANTEED RENDER ===== */
-function renderAsthmaGuaranteed(win) {
-  const display = win.querySelector("#asthmaDisplay");
-  const status  = win.querySelector("#asthmaStatus");
-  const debug   = win.querySelector("#asthmaDebug");
-
-  try {
-    const saved = localStorage.getItem("asthmaText");
-
-    // If saved is empty/blank, ignore it and use default.
-    const finalText = (saved && saved.trim().length > 0) ? saved : defaultAsthmaText;
-
-    // Force display (this is the key "guarantee")
-    display.textContent = finalText;
-
-    status.textContent = (saved && saved.trim().length > 0) ? "SAVED" : "DEFAULT";
-    debug.textContent = "Debug: Loaded OK ✅ (text length " + finalText.length + ")";
-  } catch (e) {
-    display.textContent = defaultAsthmaText;
-    status.textContent = "DEFAULT";
-    debug.textContent = "Debug: Error ❌ " + e;
-  }
-}
-
-function showEditor(btn) {
-  const win = btn.closest(".window");
-  const editor = win.querySelector(".editor");
-  editor.style.display = "block";
-  editor.querySelector("textarea").value =
-    localStorage.getItem("asthmaText") || defaultAsthmaText;
-}
-
-function saveAsthma(btn) {
-  const win = btn.closest(".window");
-  const editor = win.querySelector(".editor");
-  const text = editor.querySelector("textarea").value;
-
-  localStorage.setItem("asthmaText", text);
-  editor.style.display = "none";
-  renderAsthmaGuaranteed(win);
-}
-
-function cancelEdit(btn) {
-  const win = btn.closest(".window");
-  win.querySelector(".editor").style.display = "none";
-}
-
-function resetAsthmaToDefault(btn) {
-  const win = btn.closest(".window");
-  localStorage.removeItem("asthmaText");
-  win.querySelector(".editor").style.display = "none";
-  renderAsthmaGuaranteed(win);
-}
-
-/* ===== DRAGGING (no text highlighting) ===== */
 function makeDraggable(win) {
   const header = win.querySelector(".window-header");
   let offsetX = 0, offsetY = 0, dragging = false;
@@ -357,7 +288,7 @@ function makeDraggable(win) {
   document.addEventListener("mousemove", e => {
     if (!dragging) return;
     win.style.left = (e.clientX - offsetX) + "px";
-    win.style.top  = (e.clientY - offsetY) + "px";
+    win.style.top = (e.clientY - offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
@@ -369,7 +300,6 @@ function makeDraggable(win) {
 
 </body>
 </html>
-
 
 
 
