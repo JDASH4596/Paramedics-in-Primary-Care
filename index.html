@@ -1,55 +1,196 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Paramedics in Primary Care</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paramedics in Primary Care – PIPC</title>
+
+<style>
+  :root{
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --blue: #1e88e5;
+    --border: #e5e7eb;
+  }
+
+  body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* HEADER (FULL LOGO) */
+  .topbar{
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .topbar-inner{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .brand img{
+    height: 56px;          /* full logo size */
+    width: auto;
+    display: block;
+  }
+
+  .brand-sub{
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  /* CONTENT */
+  .wrap{
+    max-width: 1100px;
+    margin: 18px auto;
+    padding: 0 16px 40px 16px;
+  }
+
+  h1{
+    margin: 18px 0 8px 0;
+    font-size: 2.1rem;
+  }
+
+  p.sub{
+    margin: 0 0 18px 0;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* SYSTEM TILES */
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .tile{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .tile h3{
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+  }
+
+  .tile p{
+    margin: 0 0 12px 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .tile a{
+    display: inline-block;
+    text-decoration: none;
+    background: var(--blue);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 9px;
+    font-weight: 800;
+    font-size: 0.86rem;
+  }
+
+  .coming{
+    background: #eef2ff;
+    color: #1e3a8a;
+  }
+
+  @media (max-width: 520px){
+    .brand img{ height: 50px; }
+  }
+</style>
 </head>
+
 <body>
 
-<h1>Paramedics in Primary Care</h1>
-<p class="subtitle">Evidence-Based • Simple to Use • Ideal for Paramedics New to Primary Care</p>
+<header class="topbar">
+  <div class="topbar-inner">
+    <!-- ✅ FULL LOGO ON MAIN PAGE -->
+    <a class="brand" href="index.html" title="PIPC Home">
+      <img src="assets/pipc-full.png" alt="Paramedics in Primary Care (PIPC) logo" />
+      <div>
+        <div class="brand-sub">Clinical quick-reference for paramedics in Primary Care</div>
+      </div>
+    </a>
+  </div>
+</header>
 
-<div class="grid">
+<div class="wrap">
+  <h1>Systems</h1>
+  <p class="sub">
+    Click a system to open quick clinical summaries, red flags, and guideline links.
+    Built for paramedics new to Primary Care: simple, fast, and practical.
+  </p>
 
-  <a href="respiratory.html" class="card">
-    <h2>🫁 Respiratory</h2>
-    <p>Breathlessness, cough</p>
-  </a>
+  <div class="grid">
 
-  <a href="ent.html" class="card">
-    <h2>👂 ENT</h2>
-    <p>Ear, nose & throat</p>
-  </a>
+    <div class="tile">
+      <h3>🫁 Respiratory</h3>
+      <p>Asthma, URTI, bronchitis, COPD, pneumonia, PE, pneumothorax, HF + comparisons + red flags.</p>
+      <a href="respiratory.html">Open</a>
+    </div>
 
- <a href="neuro.html" class="card">
+    <div class="tile">
+      <h3>👂 ENT</h3>
+      <p>Otitis, sinusitis, sore throat, vertigo + red flags + comparisons.</p>
+      <a class="coming" href="ent.html">Coming next</a>
+    </div>
 
-    <h2>🧠 Neurology</h2>
-    <p>Coming soon</p>
-  </a>
+    <div class="tile">
+      <h3>🧠 Neurology</h3>
+      <p>Headache, seizures, TIA/stroke, red flags.</p>
+      <a class="coming" href="neuro.html">Coming soon</a>
+    </div>
 
-  <a href="cardio.html" class="card disabled">
-    <h2>❤️ Cardiology</h2>
-    <p>Coming soon</p>
-  </a>
+    <div class="tile">
+      <h3>💓 Cardiovascular</h3>
+      <p>Chest pain, AF, HTN urgency, heart failure.</p>
+      <a class="coming" href="cv.html">Coming soon</a>
+    </div>
 
-  <a href="abdominal.html" class="card disabled">
-    <h2>🤕 Abdominal</h2>
-    <p>Coming soon</p>
-  </a>
+    <div class="tile">
+      <h3>🍽️ Abdominal</h3>
+      <p>Abdo pain pathways, appendicitis clues, biliary, gastroenteritis.</p>
+      <a class="coming" href="abdo.html">Coming soon</a>
+    </div>
 
-  <a href="gu.html" class="card disabled">
-    <h2>🚽 Genitourinary</h2>
-    <p>Coming soon</p>
-  </a>
+    <div class="tile">
+      <h3>🚻 Genitourinary</h3>
+      <p>UTI, pyelonephritis, renal colic, testicular pain red flags.</p>
+      <a class="coming" href="gu.html">Coming soon</a>
+    </div>
 
-  <a href="skin.html" class="card disabled">
-    <h2>🧴 Dermatology</h2>
-    <p>Coming soon</p>
-  </a>
+    <div class="tile">
+      <h3>🧴 Skin</h3>
+      <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
+      <a class="coming" href="skin.html">Coming soon</a>
+    </div>
 
-</div>
-
-
+  </div>
 </div>
 
 </body>
