@@ -9,12 +9,14 @@
   :root{
     --bg: #f3f5f8;
     --card: #ffffff;
-    --text: #1f2937;
+    --text: #111827;
     --muted: #6b7280;
     --blue: #1e88e5;
-    --red: #c62828;
-    --shadow: 0 6px 18px rgba(0,0,0,0.12);
     --border: #e5e7eb;
+    --shadow: 0 6px 18px rgba(0,0,0,0.12);
+    --danger-bg: #fff1f2;
+    --danger-border: #fecdd3;
+    --danger-text: #b91c1c;
   }
 
   body{
@@ -30,7 +32,6 @@
     border-bottom: 1px solid var(--border);
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
-
   .topbar-inner{
     max-width: 1100px;
     margin: 0 auto;
@@ -39,7 +40,6 @@
     align-items: center;
     gap: 14px;
   }
-
   .brand{
     display: flex;
     align-items: center;
@@ -47,22 +47,19 @@
     text-decoration: none;
     color: inherit;
   }
-
   .brand img{
     height: 44px;
     width: auto;
     display: block;
   }
-
   .brand-title{
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 0.2px;
   }
-
   .page-title{
     margin-left: auto;
-    font-size: 1.15rem;
-    font-weight: 800;
+    font-size: 1.05rem;
+    font-weight: 900;
     color: #0f172a;
   }
 
@@ -72,26 +69,16 @@
     margin: 18px auto;
     padding: 0 16px 40px 16px;
   }
-
   .crumb{
     margin: 8px 0 14px 0;
   }
-
   .crumb a{
     text-decoration: none;
     color: var(--blue);
-    font-weight: 800;
+    font-weight: 900;
   }
-
-  h1{
-    margin: 6px 0 8px 0;
-    font-size: 2.1rem;
-  }
-
-  p.sub{
-    margin: 0 0 18px 0;
-    color: var(--muted);
-  }
+  h1{ margin: 6px 0 6px 0; font-size: 2.0rem; }
+  p.sub{ margin: 0 0 18px 0; color: var(--muted); line-height: 1.4; }
 
   /* GRID */
   .grid{
@@ -101,51 +88,53 @@
   }
 
   .tile{
+    position: relative;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 14px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.06s ease, box-shadow 0.12s ease;
   }
-
-  .tile h3{
-    margin: 0 0 6px 0;
-    font-size: 1.05rem;
+  .tile:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
   }
-
+  .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; }
   .tile p{
-    margin: 0 0 12px 0;
+    margin: 0;
     color: var(--muted);
     font-size: 0.92rem;
   }
 
-  .btn-row{
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  button{
-    border: none;
-    border-radius: 9px;
-    padding: 8px 10px;
+  /* Subtle red flags pill */
+  .flag-pill{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    font-weight: 900;
+    font-size: 0.78rem;
+    padding: 5px 8px;
+    border-radius: 999px;
     cursor: pointer;
-    font-weight: 800;
-    font-size: 0.86rem;
+    user-select: none;
   }
-
-  .btn-open{ background: var(--blue); color: white; }
-  .btn-red { background: var(--red); color: white; }
-  .btn-lite{ background: #eef2ff; color: #1e3a8a; }
+  .flag-pill:hover{
+    filter: brightness(0.98);
+  }
 
   /* WINDOWS */
   .window{
     position: fixed;
     top: 110px;
     left: 120px;
-    width: min(760px, 92vw);
+    width: min(780px, 92vw);
     background: var(--card);
-    border-radius: 12px;
+    border-radius: 14px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
     z-index: 1000;
@@ -156,7 +145,7 @@
     background: var(--blue);
     color: white;
     cursor: move;
-    border-radius: 12px 12px 0 0;
+    border-radius: 14px 14px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,7 +155,7 @@
 
   .window-body{
     padding: 14px;
-    max-height: 70vh;     /* ✅ scroll INSIDE */
+    max-height: 70vh;
     overflow-y: auto;
   }
 
@@ -178,15 +167,6 @@
     background: rgba(255,255,255,0.15);
   }
 
-  .box{
-    background: #f1f8ff;
-    border: 1px solid #dbeafe;
-    padding: 12px;
-    border-radius: 10px;
-    white-space: pre-wrap;
-    line-height: 1.35;
-  }
-
   .tag{
     display: inline-block;
     padding: 2px 8px;
@@ -195,9 +175,22 @@
     font-weight: 900;
     margin: 0 0 10px 0;
   }
-
-  .tag-red{ background: #ffebee; color: #b71c1c; border: 1px solid #ffcdd2; }
   .tag-blue{ background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+  .tag-red{ background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+
+  .box{
+    background: #f1f8ff;
+    border: 1px solid #dbeafe;
+    padding: 12px;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    line-height: 1.38;
+  }
+
+  .box-danger{
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+  }
 
   table.compare{
     width: 100%;
@@ -205,26 +198,23 @@
     margin-top: 10px;
     font-size: 0.92rem;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
   }
-
   .compare th{
     background: #e3f2fd;
     padding: 10px;
     text-align: left;
     font-weight: 900;
   }
-
   .compare td{
     padding: 10px;
     border-top: 1px solid var(--border);
     vertical-align: top;
   }
-
   .good{ color: #1b5e20; font-weight: 900; }
   .mid{  color: #e65100; font-weight: 900; }
-  .bad{  color: #b71c1c; font-weight: 900; }
+  .bad{  color: #b91c1c; font-weight: 900; }
 
   .links a{
     color: var(--blue);
@@ -255,97 +245,70 @@
   <div class="crumb"><a href="index.html">← Home</a></div>
 
   <h1>Respiratory</h1>
-  <p class="sub">Quick tiles with full summaries. Click 🚩 for fast escalation cues. First-line antimicrobials: follow local guidance, cross-check NICE CKS.</p>
+  <p class="sub">Tap a tile for full detail. Use the small 🚩 pill for fast escalation cues.</p>
 
   <div class="grid">
-
-    <div class="tile">
+    <!-- Comparisons -->
+    <div class="tile" onclick="openWindow('comparisons')">
       <h3>📊 Comparisons</h3>
-      <p>At-a-glance tables (fast scan).</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('comparisons')">Open</button>
-        <button class="btn-lite" onclick="openRedFlags('respiratory')">🚩 Red Flags</button>
-      </div>
+      <p>Fast side-by-side tables (scan in seconds).</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('respiratory')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('asthma')">
       <h3>💨 Asthma</h3>
-      <p>Wheeze • tight chest • increased reliever use</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('asthma')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('asthma')">🚩 Red Flags</button>
-      </div>
+      <p>Wheeze • tight chest • ↑ inhaler use</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('asthma')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('urti')">
       <h3>🤧 Viral URTI</h3>
       <p>Runny nose • sore throat • headache</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('urti')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('urti')">🚩 Red Flags</button>
-      </div>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('urti')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('bronchitis')">
       <h3>🫁 Acute Bronchitis</h3>
       <p>Post-viral cough • usually self-limiting</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('bronchitis')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('bronchitis')">🚩 Red Flags</button>
-      </div>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('bronchitis')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('copd')">
       <h3>🫁 COPD Exacerbation</h3>
-      <p>Breathlessness • sputum change • chronic disease</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('copd')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('copd')">🚩 Red Flags</button>
-      </div>
+      <p>↑ breathlessness • sputum change</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('copd')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('pneumonia')">
       <h3>🦠 Pneumonia</h3>
       <p>Fever • pleuritic pain • focal signs</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('pneumonia')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('pneumonia')">🚩 Red Flags</button>
-      </div>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pneumonia')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('pe')">
       <h3>🩸 Pulmonary Embolism</h3>
       <p>Sudden SOB • pleuritic pain • tachycardia</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('pe')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('pe')">🚩 Red Flags</button>
-      </div>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pe')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('ptx')">
       <h3>🎈 Pneumothorax</h3>
-      <p>Sudden pain • reduced air entry • consider tension</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('ptx')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('ptx')">🚩 Red Flags</button>
-      </div>
+      <p>Sudden pain • reduced air entry</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ptx')">🚩</div>
     </div>
 
-    <div class="tile">
+    <div class="tile" onclick="openWindow('hf')">
       <h3>💔 Heart Failure</h3>
-      <p>Orthopnoea/PND • oedema • fluid overload</p>
-      <div class="btn-row">
-        <button class="btn-open" onclick="openWindow('hf')">Open</button>
-        <button class="btn-red" onclick="openRedFlags('hf')">🚩 Red Flags</button>
-      </div>
+      <p>Orthopnoea/PND • oedema • crackles</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('hf')">🚩</div>
     </div>
-
   </div>
 </div>
 
 <script>
 let zIndexCounter = 1000;
 
+/* Window helpers */
 function createWindow(title, html) {
   const win = document.createElement("div");
   win.className = "window";
@@ -365,9 +328,7 @@ function createWindow(title, html) {
 
 function makeDraggable(win) {
   const header = win.querySelector(".window-header");
-  let dragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
+  let dragging = false, offsetX = 0, offsetY = 0;
 
   header.addEventListener("mousedown", (e) => {
     dragging = true;
@@ -389,6 +350,7 @@ function makeDraggable(win) {
   });
 }
 
+/* Content */
 function openWindow(key) {
   const content = {
 
@@ -409,7 +371,7 @@ function openWindow(key) {
 <table class="compare">
 <tr><th>Clue</th><th>Asthma</th><th>COPD</th><th>Heart failure</th></tr>
 <tr><td>Typical history</td><td>Atopy/variable symptoms</td><td>Smoking/chronic symptoms</td><td>Cardiac history, fluid overload</td></tr>
-<tr><td>Chest</td><td class="mid">Wheeze common</td><td class="mid">Wheeze + reduced air entry</td><td class="bad">Crackles ± wheeze (“cardiac”) </td></tr>
+<tr><td>Chest</td><td class="mid">Wheeze common</td><td class="mid">Wheeze + reduced air entry</td><td class="bad">Crackles ± wheeze (“cardiac”)</td></tr>
 <tr><td>Other clues</td><td>Triggered by viral/allergen</td><td>Sputum change in exacerbation</td><td class="bad">Oedema, orthopnoea/PND</td></tr>
 </table>
 
@@ -651,9 +613,10 @@ GUIDELINES
     `
   };
 
-  createWindow(key.toUpperCase(), content[key] || "<div class='box'>Content not found.</div>");
+  createWindow(titleCase(key), content[key] || "<div class='box'>Content not found.</div>");
 }
 
+/* Red flags */
 function openRedFlags(topic) {
   const flags = {
     respiratory: [
@@ -727,19 +690,36 @@ function openRedFlags(topic) {
 
   const html = `
     <span class="tag tag-red">FAST RED FLAGS</span>
-    <div class="box" style="background:#ffebee; border-color:#ffcdd2;">
+    <div class="box box-danger">
       <ul style="margin:0; padding-left:18px;">
         ${list.map(x => `<li style="margin:6px 0;"><strong>${x}</strong></li>`).join("")}
       </ul>
     </div>
   `;
 
-  createWindow("🚩 RED FLAGS", html);
+  createWindow("🚩 Red Flags", html);
+}
+
+/* Helpers */
+function titleCase(s){
+  const map = {
+    comparisons: "Comparisons",
+    asthma: "Asthma",
+    urti: "Viral URTI",
+    bronchitis: "Acute Bronchitis",
+    copd: "COPD Exacerbation",
+    pneumonia: "Pneumonia",
+    pe: "Pulmonary Embolism",
+    ptx: "Pneumothorax",
+    hf: "Heart Failure"
+  };
+  return map[s] || s;
 }
 </script>
 
 </body>
 </html>
+
 
 
 
