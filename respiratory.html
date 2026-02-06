@@ -766,7 +766,16 @@ function titleFor(key){
   return map[key] || key;
 }
 </script>
+<!-- Overlay -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
 
+<!-- Modal -->
+<div id="modalBox" class="modal-box">
+  <div class="modal-handle"></div>
+  <div class="modal-content">
+    <!-- Your existing condition content gets injected here -->
+  </div>
+</div>
 </body>
 </html>
 
