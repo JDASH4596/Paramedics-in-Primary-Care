@@ -1,584 +1,818 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ENT</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ENT – PIPC</title>
 
-  <style>
-    :root{
-      --bg:#f4f6f8;
-      --card:#ffffff;
-      --text:#1c1c1c;
-      --muted:#666;
-      --shadow:0 10px 22px rgba(0,0,0,0.10);
-      --shadow-soft:0 6px 16px rgba(0,0,0,0.08);
-      --radius:16px;
+<style>
+  :root{
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --blue: #1e88e5;
+    --border: #e5e7eb;
+    --shadow: 0 6px 18px rgba(0,0,0,0.12);
+
+    --danger-bg: #fff1f2;
+    --danger-border: #fecdd3;
+    --danger-text: #b91c1c;
+
+    --sec-bg: #f1f8ff;
+    --sec-border: #dbeafe;
+
+    --sec2-bg: #f7f7ff;
+    --sec2-border: #e0e7ff;
+
+    --sec3-bg: #f6fffb;
+    --sec3-border: #bbf7d0;
+  }
+
+  body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* HEADER */
+  .topbar{
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .topbar-inner{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand img{ height: 44px; width: auto; display: block; }
+  .brand-title{ font-weight: 900; letter-spacing: 0.2px; }
+  .page-title{
+    margin-left: auto;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #0f172a;
+  }
+
+  /* CONTENT */
+  .wrap{
+    max-width: 1100px;
+    margin: 18px auto;
+    padding: 0 16px 40px 16px;
+  }
+  .crumb{ margin: 8px 0 14px 0; }
+  .crumb a{
+    text-decoration: none;
+    color: var(--blue);
+    font-weight: 900;
+  }
+  h1{ margin: 6px 0 6px 0; font-size: 2.0rem; }
+  p.sub{ margin: 0 0 18px 0; color: var(--muted); line-height: 1.4; }
+
+  /* GRID */
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .tile{
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.06s ease, box-shadow 0.12s ease;
+  }
+  .tile:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  }
+  .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; }
+  .tile p{ margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+  /* Subtle red flags pill */
+  .flag-pill{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 1px solid var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    font-weight: 900;
+    font-size: 0.78rem;
+    padding: 5px 8px;
+    border-radius: 999px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ===== Overlay (tap outside to close) ===== */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999; /* below window */
+    display: none;
+  }
+
+  /* WINDOWS */
+  .window{
+    position: fixed;
+    top: 110px;
+    left: 120px;
+    width: min(820px, 92vw);
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    z-index: 1000; /* above overlay */
+    box-sizing: border-box;
+  }
+
+  .window-header{
+    padding: 10px 12px;
+    background: var(--blue);
+    color: white;
+    cursor: move;
+    border-radius: 14px 14px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    font-weight: 900;
+  }
+
+  .window-body{
+    padding: 14px;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .close{
+    cursor: pointer;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  /* SECTION CARDS */
+  .section{
+    border: 1px solid var(--sec-border);
+    background: var(--sec-bg);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 10px 0;
+  }
+  .section.alt{
+    border-color: var(--sec2-border);
+    background: var(--sec2-bg);
+  }
+  .section.good{
+    border-color: var(--sec3-border);
+    background: var(--sec3-bg);
+  }
+  .section.danger{
+    border-color: var(--danger-border);
+    background: var(--danger-bg);
+  }
+
+  .section h4{
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+  }
+
+  .section ul{
+    margin: 0;
+    padding-left: 18px;
+  }
+  .section li{ margin: 6px 0; }
+
+  .mini-note{
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .links a{
+    color: var(--blue);
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  /* Comparison tables */
+  table.compare{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.92rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+  }
+  .compare th{
+    background: #e3f2fd;
+    padding: 10px;
+    text-align: left;
+    font-weight: 900;
+  }
+  .compare td{
+    padding: 10px;
+    border-top: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .goodTxt{ color: #1b5e20; font-weight: 900; }
+  .midTxt{  color: #e65100; font-weight: 900; }
+  .badTxt{  color: #b91c1c; font-weight: 900; }
+
+  /* ===== Mobile window behaviour: fit screen + no sideways overflow ===== */
+  @media (max-width: 820px){
+    .window{
+      left: 12px;
+      right: 12px;
+      top: 88px;     /* below topbar */
+      bottom: 14px;  /* keep off the very bottom */
+      width: auto;
+      max-width: none;
     }
-
-    *{ box-sizing:border-box; }
-
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
+    .window-header{
+      cursor: default; /* dragging is awkward on mobile */
     }
-
-    header{
-      padding:18px 16px 10px;
+    .window-body{
+      max-height: calc(100vh - 88px - 14px - 44px);
+      overflow-y: auto;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px;
+    .window, .window *{
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
+  }
 
-    .logo{
-      width:44px;
-      height:44px;
-      border-radius:10px;
-      background:#e9eef5;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:#2b4a7a;
-      user-select:none;
-    }
-
-    h1{
-      margin:0;
-      font-size:32px;
-      letter-spacing:-0.5px;
-    }
-
-    .subtitle{
-      margin:6px 0 0;
-      color:var(--muted);
-      line-height:1.35;
-    }
-
-    .wrap{
-      padding:0 16px 22px;
-    }
-
-    .tile-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap:12px;
-      margin-top:14px;
-    }
-
-    .tile{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:14px 14px;
-      box-shadow:var(--shadow-soft);
-      border:1px solid rgba(0,0,0,0.04);
-      text-decoration:none;
-      color:inherit;
-      cursor:pointer;
-      transition:transform .12s ease, box-shadow .12s ease;
-      min-height:74px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .tile:active{ transform: translateY(1px); }
-
-    .tile-left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .tile-title{
-      font-size:18px;
-      font-weight:800;
-      margin:0;
-    }
-
-    .tile-desc{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .tile-emoji{
-      font-size:22px;
-      width:38px;
-      height:38px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:12px;
-      background:#f0f3f7;
-      flex:0 0 auto;
-    }
-
-    /* ===== Modal overlay + box ===== */
-    .modal-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.45);
-      z-index:999;
-      display:none;
-      touch-action: manipulation;
-    }
-
-    .modal-box{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      width:100%;
-      max-height:92vh;
-      background:var(--card);
-      border-radius:18px 18px 0 0;
-      z-index:1000;
-      transform:translateY(110%);
-      transition:transform .22s ease;
-      display:flex;
-      flex-direction:column;
-      box-shadow: var(--shadow);
-      border-top:1px solid rgba(0,0,0,0.08);
-    }
-
-    .modal-box.open{ transform:translateY(0); }
-
-    .modal-handle{
-      width:44px;
-      height:5px;
-      background:#d3d7de;
-      border-radius:999px;
-      margin:10px auto 6px;
-      flex:0 0 auto;
-    }
-
-    .modal-header{
-      padding:10px 16px 8px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-bottom:1px solid rgba(0,0,0,0.06);
-    }
-
-    .modal-title{
-      margin:0;
-      font-size:18px;
-      font-weight:900;
-    }
-
-    .close-btn{
-      border:none;
-      background:#f2f4f7;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:800;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .modal-content{
-      padding:14px 16px 18px;
-      overflow-y:auto;
-      -webkit-overflow-scrolling:touch;
-    }
-
-    /* “sections stand out” cards inside modal */
-    .info-card{
-      background:#f7f9fc;
-      border:1px solid rgba(0,0,0,0.06);
-      border-left:6px solid #cbd5e1;
-      border-radius:14px;
-      padding:12px 12px;
-      margin:10px 0;
-    }
-
-    .info-card h3{
-      margin:0 0 8px;
-      font-size:14px;
-      letter-spacing:0.4px;
-      text-transform:uppercase;
-      opacity:0.85;
-    }
-
-    .info-card ul{
-      margin:0;
-      padding-left:18px;
-    }
-
-    .info-card li{ margin:6px 0; }
-
-    .def { border-left-color:#4a90e2; }
-    .assess { border-left-color:#7ed321; }
-    .manage { border-left-color:#f5a623; }
-    .flags { border-left-color:#d0021b; }
-
-    .guidelines a{
-      color:#2b70c9;
-      font-weight:800;
-      text-decoration:none;
-    }
-
-    .guidelines a:hover{ text-decoration:underline; }
-
-    /* Make sure nothing causes sideways overflow */
-    .modal-content, .info-card, .tile, header, .wrap { max-width:100%; }
-  </style>
+  @media (max-width: 520px){
+    .page-title{ display: none; }
+    .brand img{ height: 40px; }
+  }
+</style>
 </head>
 
 <body>
-  <div id="top"></div>
 
-  <header>
-    <div class="topbar">
-      <div class="logo">PIPC</div>
-      <div style="font-weight:900;">PIPC</div>
-    </div>
+<!-- Overlay (tap anywhere outside the window to close) -->
+<div id="overlay" class="overlay" aria-hidden="true"></div>
 
-    <h1>ENT</h1>
-    <p class="subtitle">
-      Tap a tile for details. The info opens in a mobile-friendly box. Tap outside to close.
-    </p>
-  </header>
-
-  <div class="wrap">
-    <section class="tile-grid">
-
-      <button class="tile" type="button" onclick="openCondition('Sore Throat', soreThroat)">
-        <div class="tile-left">
-          <p class="tile-title">Sore Throat</p>
-          <p class="tile-desc">Pharyngitis / Tonsillitis</p>
-        </div>
-        <div class="tile-emoji">🗣️</div>
-      </button>
-
-      <button class="tile" type="button" onclick="openCondition('Otitis Media', otitisMedia)">
-        <div class="tile-left">
-          <p class="tile-title">Otitis Media</p>
-          <p class="tile-desc">Middle ear infection</p>
-        </div>
-        <div class="tile-emoji">👂</div>
-      </button>
-
-      <button class="tile" type="button" onclick="openCondition('Otitis Externa', otitisExterna)">
-        <div class="tile-left">
-          <p class="tile-title">Otitis Externa</p>
-          <p class="tile-desc">Ear canal inflammation</p>
-        </div>
-        <div class="tile-emoji">💧</div>
-      </button>
-
-      <button class="tile" type="button" onclick="openCondition('Sinusitis', sinusitis)">
-        <div class="tile-left">
-          <p class="tile-title">Sinusitis</p>
-          <p class="tile-desc">Acute & chronic</p>
-        </div>
-        <div class="tile-emoji">🤧</div>
-      </button>
-
-      <button class="tile" type="button" onclick="openCondition('Epistaxis', epistaxis)">
-        <div class="tile-left">
-          <p class="tile-title">Epistaxis</p>
-          <p class="tile-desc">Nosebleeds</p>
-        </div>
-        <div class="tile-emoji">👃</div>
-      </button>
-
-      <button class="tile" type="button" onclick="openCondition('Vertigo (BPPV)', bppv)">
-        <div class="tile-left">
-          <p class="tile-title">Vertigo (BPPV)</p>
-          <p class="tile-desc">Benign positional vertigo</p>
-        </div>
-        <div class="tile-emoji">🌀</div>
-      </button>
-
-    </section>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html" title="Back to Home">
+      <img src="assets/pipc-short.png" alt="PIPC logo" />
+      <div class="brand-title">PIPC</div>
+    </a>
+    <div class="page-title">ENT</div>
   </div>
+</header>
 
-  <!-- ===== Modal overlay + box ===== -->
-  <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
+<div class="wrap">
+  <div class="crumb"><a href="index.html">← Home</a></div>
 
-  <div id="modalBox" class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-handle"></div>
+  <h1>ENT</h1>
+  <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the small 🚩 pill for red flags.</p>
 
-    <div class="modal-header">
-      <h2 id="modalTitle" class="modal-title">Condition</h2>
-      <button class="close-btn" type="button" onclick="closeModal()">Close</button>
+  <div class="grid">
+    <div class="tile" onclick="openWindow('comparisons')">
+      <h3>📊 Comparisons</h3>
+      <p>Fast side-by-side tables (scan in seconds).</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ent')">🚩</div>
     </div>
 
-    <div class="modal-content" id="modalContent">
-      <!-- Injected content -->
+    <div class="tile" onclick="openWindow('sorethroat')">
+      <h3>🗣️ Sore Throat / Tonsillitis</h3>
+      <p>Viral vs bacterial • peritonsillar abscess cues</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sorethroat')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('otitismedia')">
+      <h3>👂 Otitis Media</h3>
+      <p>Ear pain • fever • bulging TM</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('otitismedia')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('otitisexterna')">
+      <h3>💧 Otitis Externa</h3>
+      <p>Tragal tenderness • swollen canal • discharge</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('otitisexterna')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('sinusitis')">
+      <h3>🤧 Sinusitis</h3>
+      <p>Facial pain • nasal discharge • fever</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sinusitis')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('epistaxis')">
+      <h3>👃 Epistaxis</h3>
+      <p>First aid • packing cues • posterior bleed red flags</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('epistaxis')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('vertigo')">
+      <h3>🌀 Vertigo (BPPV)</h3>
+      <p>Triggered by position • Epley overview • central red flags</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('vertigo')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('hearingloss')">
+      <h3>🔇 Sudden Hearing Loss</h3>
+      <p>Urgent ENT referral • exclude stroke/central causes</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('hearingloss')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('foreignbody')">
+      <h3>🧸 Nasal Foreign Body</h3>
+      <p>Unilateral discharge/odour • removal tips • button battery warning</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('foreignbody')">🚩</div>
     </div>
   </div>
+</div>
 
-  <script>
-    const overlay = document.getElementById('modalOverlay');
-    const modal = document.getElementById('modalBox');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
+<script>
+let zIndexCounter = 1000;
 
-    function openCondition(title, html) {
-      modalTitle.textContent = title;
-      modalContent.innerHTML = html;
+const overlay = document.getElementById("overlay");
 
-      overlay.style.display = 'block';
-      overlay.setAttribute('aria-hidden', 'false');
+function showOverlay(){
+  overlay.style.display = "block";
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function hideOverlay(){
+  overlay.style.display = "none";
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
 
-      modal.classList.add('open');
+/* Close any open window (ONE open at a time for clean mobile UX) */
+function closeAllWindows(){
+  document.querySelectorAll(".window").forEach(w => w.remove());
+  hideOverlay();
+}
 
-      // Lock background scroll
-      document.body.style.overflow = 'hidden';
-    }
+/* Tap outside to close */
+overlay.addEventListener("click", closeAllWindows);
 
-    function closeModal() {
-      modal.classList.remove('open');
+/* ESC to close (desktop) */
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape") closeAllWindows();
+});
 
-      overlay.style.display = 'none';
-      overlay.setAttribute('aria-hidden', 'true');
+/* Window helpers */
+function createWindow(title, html) {
+  closeAllWindows();
+  showOverlay();
 
-      document.body.style.overflow = '';
-    }
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.zIndex = ++zIndexCounter;
 
-    // Tap outside (overlay) closes
-    overlay.addEventListener('click', closeModal);
+  win.innerHTML = `
+    <div class="window-header">
+      ${title}
+      <span class="close" onclick="closeWindow(this)">✖</span>
+    </div>
+    <div class="window-body">${html}</div>
+  `;
 
-    // ESC closes (helpful on desktop)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-    });
+  document.body.appendChild(win);
+  makeDraggable(win);
 
-    // ===== Content blocks (edit these) =====
-    const soreThroat = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Inflammation of pharynx/tonsils. Often viral; consider bacterial features.</li>
-        </ul>
+  win.addEventListener("mousedown", () => {
+    win.style.zIndex = ++zIndexCounter;
+  });
+}
+
+function closeWindow(closeEl){
+  const win = closeEl.closest(".window");
+  if(win) win.remove();
+  hideOverlay();
+}
+
+function makeDraggable(win) {
+  const header = win.querySelector(".window-header");
+  let dragging = false, offsetX = 0, offsetY = 0;
+
+  function canDrag(){
+    return window.matchMedia("(min-width: 821px)").matches;
+  }
+
+  header.addEventListener("mousedown", (e) => {
+    if(!canDrag()) return;
+    dragging = true;
+    win.style.zIndex = ++zIndexCounter;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top  = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    document.body.style.userSelect = "auto";
+  });
+}
+
+/* Section builder */
+function section(title, items, variant="") {
+  const cls = variant ? `section ${variant}` : "section";
+  const list = (items || []).map(x => `<li>${x}</li>`).join("");
+  return `
+    <div class="${cls}">
+      <h4>${title}</h4>
+      <ul>${list}</ul>
+    </div>
+  `;
+}
+function linksSection(title, links) {
+  const list = (links || []).map(l => `<li class="links"><a href="${l.href}" target="_blank">${l.label}</a></li>`).join("");
+  return `
+    <div class="section alt">
+      <h4>${title}</h4>
+      <ul>${list}</ul>
+    </div>
+  `;
+}
+
+/* Content windows */
+function openWindow(key) {
+  const content = {
+
+    comparisons: `
+      <div class="section">
+        <h4>Sore throat vs Peritonsillar abscess vs Epiglottitis (cues)</h4>
+        <table class="compare">
+          <tr><th>Feature</th><th>Sore throat</th><th>Peritonsillar abscess</th><th>Epiglottitis</th></tr>
+          <tr><td>Voice</td><td>Normal</td><td class="midTxt">“Hot potato” voice</td><td class="badTxt">Muffled + distress</td></tr>
+          <tr><td>Mouth opening</td><td>Normal</td><td class="badTxt">Trismus</td><td class="midTxt">Often painful</td></tr>
+          <tr><td>Drooling/stridor</td><td class="goodTxt">No</td><td class="midTxt">Possible</td><td class="badTxt">Yes / airway risk</td></tr>
+          <tr><td>Urgency</td><td class="goodTxt">Routine</td><td class="midTxt">Same day</td><td class="badTxt">Emergency</td></tr>
+        </table>
       </div>
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>Duration, fever, unilateral vs bilateral pain</li>
-          <li>Swallowing, voice change, trismus</li>
-          <li>Examine tonsils/uvula, cervical nodes, hydration</li>
-        </ul>
+      <div class="section alt">
+        <h4>Otitis media vs externa (quick cues)</h4>
+        <table class="compare">
+          <tr><th>Clue</th><th>Otitis media</th><th>Otitis externa</th></tr>
+          <tr><td>Pain</td><td>Deep ear pain</td><td class="midTxt">Tragal/pinna tenderness</td></tr>
+          <tr><td>Discharge</td><td>± if perforated</td><td class="midTxt">Common</td></tr>
+          <tr><td>Canal</td><td class="goodTxt">Usually not swollen</td><td class="badTxt">Swollen/tender canal</td></tr>
+        </table>
+        <div class="mini-note links">
+          <strong>NICE CKS search:</strong>
+          <a href="https://cks.nice.org.uk/" target="_blank">https://cks.nice.org.uk/</a>
+        </div>
       </div>
+    `,
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Analgesia, fluids, rest</li>
-          <li>Consider Centor/FeverPAIN approach (local guidance)</li>
-          <li>Safety net if worsening or not improving</li>
-        </ul>
-      </div>
+    sorethroat: `
+      ${section("Definition", [
+        "Inflammation of pharynx/tonsils. Most are viral; consider bacterial features (Centor/FeverPAIN)."
+      ])}
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>Airway compromise, drooling, stridor</li>
-          <li>Trismus / uvula deviation (consider peritonsillar abscess)</li>
-          <li>Systemically very unwell / dehydration</li>
-        </ul>
-      </div>
+      ${section("Quick assessment", [
+        "Duration, fever, unilateral vs bilateral pain",
+        "Swallowing, voice change, trismus",
+        "Examine tonsils/uvula, cervical nodes, hydration",
+        "Consider scarlet fever features (rash, strawberry tongue)"
+      ], "good")}
 
-      <div class="info-card guidelines">
-        <h3>Guidelines</h3>
-        <ul>
-          <li><a href="#" onclick="return false;">NICE CKS – Sore throat (edit link)</a></li>
-        </ul>
-      </div>
-    `;
+      ${section("Management (Primary Care)", [
+        "Analgesia, fluids, rest",
+        "Consider Centor/FeverPAIN approach per local guidance",
+        "Safety net if worsening or not improving"
+      ])}
 
-    const otitisMedia = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Acute middle ear infection, usually following URTI.</li>
-        </ul>
-      </div>
+      ${section("Red flags / complications", [
+        "Airway compromise, drooling, stridor",
+        "Trismus / uvula deviation (consider peritonsillar abscess)",
+        "Systemically very unwell / dehydration"
+      ], "danger")}
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>Pain, fever, discharge, hearing change</li>
-          <li>Look for mastoid tenderness/swelling</li>
-          <li>Otoscopy: bulging/erythematous TM, perforation</li>
-        </ul>
-      </div>
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Sore throat (acute)", href: "https://cks.nice.org.uk/topics/sore-throat-acute/" }
+      ])}
+    `,
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Analgesia first-line</li>
-          <li>Consider delayed antibiotics (local guidance)</li>
-          <li>Advice: return if worsening, persistent fever, or complications</li>
-        </ul>
-      </div>
+    otitismedia: `
+      ${section("Definition", [
+        "Acute middle ear infection, often after URTI."
+      ])}
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>Mastoiditis signs (post-auricular swelling, protruding ear)</li>
-          <li>Facial nerve weakness</li>
-          <li>Severe systemic illness / meningism</li>
-        </ul>
-      </div>
-    `;
+      ${section("Quick assessment", [
+        "Pain, fever, discharge, hearing change",
+        "Otoscopy: bulging/erythematous TM, perforation",
+        "Look for mastoid tenderness/swelling"
+      ], "good")}
 
-    const otitisExterna = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Inflammation/infection of external ear canal.</li>
-        </ul>
-      </div>
+      ${section("Management (Primary Care)", [
+        "Analgesia first-line",
+        "Consider delayed antibiotics where appropriate (local guidance)",
+        "Advice: return if worsening, persistent fever, or complications"
+      ])}
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>Canal pain/itch, discharge, hearing reduction</li>
-          <li>Tragal tenderness, swollen canal</li>
-          <li>Risk factors: swimming, trauma, diabetes</li>
-        </ul>
-      </div>
+      ${section("Red flags", [
+        "Mastoiditis signs (post-auricular swelling, protruding ear)",
+        "Facial nerve weakness",
+        "Severe systemic illness / meningism"
+      ], "danger")}
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Topical drops per local guidance</li>
-          <li>Keep ear dry; avoid cotton buds</li>
-          <li>Consider wick if canal very swollen (service dependent)</li>
-        </ul>
-      </div>
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Acute otitis media", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
+      ])}
+    `,
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>Diabetes/immunocompromised with severe pain (consider malignant otitis externa)</li>
-          <li>Spreading cellulitis, cranial nerve symptoms</li>
-          <li>Systemically unwell</li>
-        </ul>
-      </div>
-    `;
+    otitisexterna: `
+      ${section("Definition", [
+        "Inflammation/infection of external ear canal."
+      ])}
 
-    const sinusitis = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Inflammation of paranasal sinuses; often viral. Bacterial more likely if prolonged/severe.</li>
-        </ul>
-      </div>
+      ${section("Quick assessment", [
+        "Canal pain/itch, discharge, hearing reduction",
+        "Tragal tenderness, swollen canal",
+        "Risk factors: swimming, trauma, diabetes/immunocompromise"
+      ], "good")}
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>Duration (e.g., &gt;10 days), fever, unilateral facial pain</li>
-          <li>Purulent discharge, anosmia, dental pain</li>
-          <li>Check for orbital symptoms</li>
-        </ul>
-      </div>
+      ${section("Management (Primary Care)", [
+        "Topical drops per local guidance",
+        "Keep ear dry; avoid cotton buds",
+        "Consider wick if canal very swollen (service dependent)"
+      ])}
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Analgesia, saline irrigation</li>
-          <li>Consider intranasal steroid (esp. allergic/rhinitis features)</li>
-          <li>Antibiotics only if criteria met (local guidance)</li>
-        </ul>
-      </div>
+      ${section("Red flags", [
+        "Diabetes/immunocompromised with severe pain (consider malignant otitis externa)",
+        "Spreading cellulitis, cranial nerve symptoms",
+        "Systemically unwell"
+      ], "danger")}
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>Periorbital swelling/erythema, reduced vision, painful eye movements</li>
-          <li>Severe frontal headache, neurological signs</li>
-          <li>Signs of sepsis</li>
-        </ul>
-      </div>
-    `;
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
+      ])}
+    `,
 
-    const epistaxis = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Nasal bleeding, commonly anterior (Little’s area).</li>
-        </ul>
-      </div>
+    sinusitis: `
+      ${section("Definition", [
+        "Inflammation of paranasal sinuses; often viral. Bacterial more likely if prolonged/severe."
+      ])}
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>ABCDE if heavy bleed; quantify blood loss</li>
-          <li>Anticoagulants/antiplatelets, trauma, HTN history</li>
-          <li>Posterior bleed features: blood into throat, difficulty controlling</li>
-        </ul>
-      </div>
+      ${section("Quick assessment", [
+        "Duration (e.g. >10 days), fever, unilateral facial pain",
+        "Purulent discharge, anosmia, dental pain",
+        "Check for orbital symptoms"
+      ], "good")}
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Sit forward, pinch soft part of nose 10–15 mins</li>
-          <li>Ice to bridge can help; clear clots first if possible</li>
-          <li>Topical vasoconstrictor/packing per local capability</li>
-        </ul>
-      </div>
+      ${section("Management (Primary Care)", [
+        "Analgesia, saline irrigation",
+        "Consider intranasal steroid (esp. rhinitis/allergy features)",
+        "Antibiotics only if criteria met (local guidance)"
+      ])}
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>Cannot control bleeding, haemodynamic compromise</li>
-          <li>Suspected posterior bleed</li>
-          <li>Bleeding disorder / anticoagulated with significant bleed</li>
-        </ul>
-      </div>
-    `;
+      ${section("Red flags", [
+        "Periorbital swelling/erythema, reduced vision, painful eye movements",
+        "Severe frontal headache, neurological signs",
+        "Signs of sepsis"
+      ], "danger")}
 
-    const bppv = `
-      <div class="info-card def">
-        <h3>Definition</h3>
-        <ul>
-          <li>Brief episodic vertigo triggered by head movement (otoliths in semicircular canals).</li>
-        </ul>
-      </div>
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" }
+      ])}
+    `,
 
-      <div class="info-card assess">
-        <h3>Quick Assessment</h3>
-        <ul>
-          <li>Seconds-long vertigo with position change</li>
-          <li>Look for neurological symptoms (if present, not BPPV)</li>
-          <li>Dix–Hallpike may reproduce symptoms/nystagmus (trained clinicians)</li>
-        </ul>
-      </div>
+    epistaxis: `
+      ${section("Definition", [
+        "Nasal bleeding, commonly anterior (Little’s area)."
+      ])}
 
-      <div class="info-card manage">
-        <h3>Management</h3>
-        <ul>
-          <li>Repositioning manoeuvres (e.g., Epley) if appropriate</li>
-          <li>Advise slow movements, falls risk</li>
-          <li>Review if persistent or atypical</li>
-        </ul>
-      </div>
+      ${section("First aid (Primary Care)", [
+        "Sit forward, pinch soft part of nose 10–15 minutes",
+        "Clear visible clots if possible before pinching",
+        "Ice to bridge can help",
+        "Avoid nose picking/blowing afterwards"
+      ], "good")}
 
-      <div class="info-card flags">
-        <h3>Red Flags</h3>
-        <ul>
-          <li>New focal neuro deficit, severe headache, ataxia</li>
-          <li>Continuous vertigo with central features</li>
-          <li>New unilateral hearing loss (consider alternative diagnoses)</li>
-        </ul>
-      </div>
-    `;
-  </script>
+      ${section("Quick assessment", [
+        "ABCDE if heavy bleed; quantify blood loss",
+        "Anticoagulants/antiplatelets, trauma, HTN history",
+        "Posterior bleed cues: blood into throat, hard to control"
+      ])}
+
+      ${section("Red flags", [
+        "Cannot control bleeding, haemodynamic compromise",
+        "Suspected posterior bleed",
+        "Bleeding disorder / anticoagulated with significant bleed"
+      ], "danger")}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" }
+      ])}
+    `,
+
+    vertigo: `
+      ${section("Definition", [
+        "BPPV: brief episodic vertigo triggered by head movement (otoliths in semicircular canals)."
+      ])}
+
+      ${section("Quick assessment", [
+        "Seconds-long vertigo with position change",
+        "No focal neurology (if present, not BPPV)",
+        "Consider Dix–Hallpike (if trained) to reproduce nystagmus"
+      ], "good")}
+
+      ${section("Management", [
+        "Repositioning manoeuvres (e.g., Epley) if appropriate",
+        "Advise slow movements, falls risk",
+        "Review if persistent or atypical"
+      ])}
+
+      ${section("Red flags (central causes)", [
+        "New focal neuro deficit, severe headache, ataxia",
+        "Continuous vertigo with central features",
+        "New unilateral hearing loss"
+      ], "danger")}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Vertigo", href: "https://cks.nice.org.uk/topics/vertigo/" }
+      ])}
+    `,
+
+    hearingloss: `
+      ${section("Definition", [
+        "Sudden sensorineural hearing loss (SSNHL) is an ENT emergency. Treat as urgent."
+      ])}
+
+      ${section("Quick assessment", [
+        "Onset <72 hours? unilateral? associated tinnitus/vertigo?",
+        "Otoscopic exam (exclude wax/OM)",
+        "Neuro symptoms? consider central causes"
+      ], "good")}
+
+      ${section("Action", [
+        "Urgent same-day ENT assessment/referral pathway",
+        "Consider steroids per local ENT guidance (do not delay referral)"
+      ])}
+
+      ${section("Red flags", [
+        "Focal neuro deficits / severe headache",
+        "New facial weakness",
+        "Signs of stroke/TIA"
+      ], "danger")}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Hearing loss (sudden onset)", href: "https://cks.nice.org.uk/topics/hearing-loss-sudden-onset/" }
+      ])}
+    `,
+
+    foreignbody: `
+      ${section("Definition", [
+        "Foreign body in the nose (common in children). Often unilateral discharge/odour."
+      ])}
+
+      ${section("Quick assessment", [
+        "Unilateral discharge ± foul smell",
+        "Ask about what object (button battery is emergency)",
+        "Check airway/breathing if any concern"
+      ], "good")}
+
+      ${section("Management", [
+        "If visible and safe: consider gentle removal by trained clinician",
+        "Do NOT probe blindly",
+        "If not easily removed → refer to ENT/ED per local pathway"
+      ])}
+
+      ${section("Red flags", [
+        "Button battery suspected/confirmed (urgent)",
+        "Breathing difficulty/aspiration concern",
+        "Significant bleeding"
+      ], "danger")}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Foreign body in nose", href: "https://cks.nice.org.uk/topics/foreign-body-in-nose/" }
+      ])}
+    `
+  };
+
+  createWindow(titleFor(key), content[key] || "<div class='section'><h4>Not found</h4><p>Content not found.</p></div>");
+}
+
+/* Red flags */
+function openRedFlags(topic) {
+  const flags = {
+    ent: [
+      "Airway compromise (stridor, drooling, tripod position)",
+      "Severe systemic illness / sepsis features",
+      "Severe unilateral facial swelling or orbital symptoms",
+      "Sudden sensorineural hearing loss",
+      "Neuro deficits (stroke/TIA concern)",
+      "Uncontrolled bleeding (epistaxis) / haemodynamic compromise"
+    ],
+    sorethroat: [
+      "Stridor/drooling/airway concern",
+      "Trismus/uvula deviation (peritonsillar abscess)",
+      "Neck swelling, severe pain out of proportion",
+      "Sepsis features / dehydration"
+    ],
+    otitismedia: [
+      "Mastoid swelling/tenderness, protruding ear",
+      "Facial nerve weakness",
+      "Meningism / severe systemic illness"
+    ],
+    otitisexterna: [
+      "Diabetes/immunocompromised with severe pain (malignant otitis externa)",
+      "Spreading cellulitis",
+      "Cranial nerve symptoms"
+    ],
+    sinusitis: [
+      "Periorbital swelling/redness, reduced vision, painful eye movements",
+      "Severe frontal headache / neurological signs",
+      "Sepsis features"
+    ],
+    epistaxis: [
+      "Cannot control bleeding",
+      "Suspected posterior bleed",
+      "Anticoagulated with significant bleed",
+      "Haemodynamic compromise"
+    ],
+    vertigo: [
+      "New focal neuro deficit / ataxia",
+      "Severe headache",
+      "Continuous vertigo with central features",
+      "New unilateral hearing loss"
+    ],
+    hearingloss: [
+      "Sudden unilateral hearing loss (<72 hours)",
+      "Neuro symptoms (stroke/TIA)",
+      "New facial weakness"
+    ],
+    foreignbody: [
+      "Button battery suspected",
+      "Breathing difficulty/aspiration concern",
+      "Significant bleeding"
+    ]
+  };
+
+  const list = flags[topic] || flags.ent;
+
+  const html = `
+    <div class="section danger">
+      <h4>FAST RED FLAGS</h4>
+      <ul>
+        ${list.map(x => `<li><strong>${x}</strong></li>`).join("")}
+      </ul>
+      <div class="mini-note">If concerned: follow local escalation pathways.</div>
+    </div>
+  `;
+
+  createWindow("🚩 Red Flags", html);
+}
+
+/* Titles */
+function titleFor(key){
+  const map = {
+    comparisons: "Comparisons",
+    sorethroat: "Sore Throat / Tonsillitis",
+    otitismedia: "Otitis Media",
+    otitisexterna: "Otitis Externa",
+    sinusitis: "Sinusitis",
+    epistaxis: "Epistaxis",
+    vertigo: "Vertigo (BPPV)",
+    hearingloss: "Sudden Hearing Loss",
+    foreignbody: "Nasal Foreign Body"
+  };
+  return map[key] || key;
+}
+</script>
+
 </body>
 </html>
