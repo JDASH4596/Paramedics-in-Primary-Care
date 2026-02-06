@@ -1,792 +1,626 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Respiratory – PIPC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Respiratory</title>
 
-<style>
-  :root{
-    --bg: #f3f5f8;
-    --card: #ffffff;
-    --text: #111827;
-    --muted: #6b7280;
-    --blue: #1e88e5;
-    --border: #e5e7eb;
-    --shadow: 0 6px 18px rgba(0,0,0,0.12);
+  <style>
+    :root{
+      --bg:#f4f6f8;
+      --card:#ffffff;
+      --text:#1c1c1c;
+      --muted:#666;
+      --shadow:0 10px 22px rgba(0,0,0,0.10);
+      --shadow-soft:0 6px 16px rgba(0,0,0,0.08);
+      --radius:16px;
+    }
 
-    --danger-bg: #fff1f2;
-    --danger-border: #fecdd3;
-    --danger-text: #b91c1c;
+    *{ box-sizing:border-box; }
 
-    --sec-bg: #f1f8ff;
-    --sec-border: #dbeafe;
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-    --sec2-bg: #f7f7ff;
-    --sec2-border: #e0e7ff;
+    header{
+      padding:18px 16px 10px;
+    }
 
-    --sec3-bg: #f6fffb;
-    --sec3-border: #bbf7d0;
-  }
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
 
-  body{
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-  }
+    .logo{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background:#e9eef5;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#2b4a7a;
+      user-select:none;
+    }
 
-  /* HEADER */
-  .topbar{
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  }
-  .topbar-inner{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .brand{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: inherit;
-  }
-  .brand img{ height: 44px; width: auto; display: block; }
-  .brand-title{ font-weight: 900; letter-spacing: 0.2px; }
-  .page-title{
-    margin-left: auto;
-    font-size: 1.05rem;
-    font-weight: 900;
-    color: #0f172a;
-  }
+    .home-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      color:#2b70c9;
+      font-weight:800;
+      margin:4px 0 10px;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  /* CONTENT */
-  .wrap{
-    max-width: 1100px;
-    margin: 18px auto;
-    padding: 0 16px 40px 16px;
-  }
-  .crumb{ margin: 8px 0 14px 0; }
-  .crumb a{
-    text-decoration: none;
-    color: var(--blue);
-    font-weight: 900;
-  }
-  h1{ margin: 6px 0 6px 0; font-size: 2.0rem; }
-  p.sub{ margin: 0 0 18px 0; color: var(--muted); line-height: 1.4; }
+    h1{
+      margin:0;
+      font-size:32px;
+      letter-spacing:-0.5px;
+    }
 
-  /* GRID */
-  .grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-  }
+    .subtitle{
+      margin:6px 0 0;
+      color:var(--muted);
+      line-height:1.35;
+    }
 
-  .tile{
-    position: relative;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    cursor: pointer;
-    transition: transform 0.06s ease, box-shadow 0.12s ease;
-  }
-  .tile:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
-  }
-  .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; }
-  .tile p{ margin: 0; color: var(--muted); font-size: 0.92rem; }
+    .wrap{
+      padding:0 16px 22px;
+    }
 
-  /* Subtle red flags pill */
-  .flag-pill{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: 1px solid var(--danger-border);
-    background: var(--danger-bg);
-    color: var(--danger-text);
-    font-weight: 900;
-    font-size: 0.78rem;
-    padding: 5px 8px;
-    border-radius: 999px;
-    cursor: pointer;
-    user-select: none;
-  }
+    .tile-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:12px;
+      margin-top:14px;
+    }
 
-  /* WINDOWS */
-  .window{
-    position: fixed;
-    top: 110px;
-    left: 120px;
-    width: min(820px, 92vw);
-    background: var(--card);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    z-index: 1000;
-  }
+    .tile{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:14px 14px;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(0,0,0,0.04);
+      text-decoration:none;
+      color:inherit;
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease;
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  .window-header{
-    padding: 10px 12px;
-    background: var(--blue);
-    color: white;
-    cursor: move;
-    border-radius: 14px 14px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    font-weight: 900;
-  }
+    .tile:active{ transform: translateY(1px); }
 
-  .window-body{
-    padding: 14px;
-    max-height: 70vh;
-    overflow-y: auto;
-  }
+    .tile-left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
 
-  .close{
-    cursor: pointer;
-    font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.15);
-  }
+    .tile-title{
+      font-size:18px;
+      font-weight:900;
+      margin:0;
+    }
 
-  /* SECTION CARDS */
-  .section{
-    border: 1px solid var(--sec-border);
-    background: var(--sec-bg);
-    border-radius: 12px;
-    padding: 12px;
-    margin: 10px 0;
-  }
-  .section.alt{
-    border-color: var(--sec2-border);
-    background: var(--sec2-bg);
-  }
-  .section.good{
-    border-color: var(--sec3-border);
-    background: var(--sec3-bg);
-  }
-  .section.danger{
-    border-color: var(--danger-border);
-    background: var(--danger-bg);
-  }
+    .tile-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
 
-  .section h4{
-    margin: 0 0 8px 0;
-    font-size: 0.95rem;
-    letter-spacing: 0.2px;
-    text-transform: uppercase;
-  }
+    .tile-emoji{
+      font-size:22px;
+      width:38px;
+      height:38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background:#f0f3f7;
+      flex:0 0 auto;
+    }
 
-  .section ul{
-    margin: 0;
-    padding-left: 18px;
-  }
-  .section li{ margin: 6px 0; }
+    /* ===== Modal overlay + box ===== */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.45);
+      z-index:999;
+      display:none;
+      touch-action: manipulation;
+    }
 
-  .mini-note{
-    margin-top: 8px;
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.35;
-  }
+    .modal-box{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      width:100%;
+      max-height:92vh;
+      background:var(--card);
+      border-radius:18px 18px 0 0;
+      z-index:1000;
+      transform:translateY(110%);
+      transition:transform .22s ease;
+      display:flex;
+      flex-direction:column;
+      box-shadow: var(--shadow);
+      border-top:1px solid rgba(0,0,0,0.08);
+    }
 
-  .links a{
-    color: var(--blue);
-    font-weight: 900;
-    text-decoration: none;
-  }
+    .modal-box.open{ transform:translateY(0); }
 
-  /* Comparison tables */
-  table.compare{
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 0.92rem;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-  }
-  .compare th{
-    background: #e3f2fd;
-    padding: 10px;
-    text-align: left;
-    font-weight: 900;
-  }
-  .compare td{
-    padding: 10px;
-    border-top: 1px solid var(--border);
-    vertical-align: top;
-  }
-  .goodTxt{ color: #1b5e20; font-weight: 900; }
-  .midTxt{  color: #e65100; font-weight: 900; }
-  .badTxt{  color: #b91c1c; font-weight: 900; }
+    .modal-handle{
+      width:44px;
+      height:5px;
+      background:#d3d7de;
+      border-radius:999px;
+      margin:10px auto 6px;
+      flex:0 0 auto;
+    }
 
-  @media (max-width: 520px){
-    .page-title{ display: none; }
-    .brand img{ height: 40px; }
-  }
-</style>
+    .modal-header{
+      padding:10px 16px 8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+
+    .modal-title{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .close-btn{
+      border:none;
+      background:#f2f4f7;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .modal-content{
+      padding:14px 16px 18px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* Section cards inside modal */
+    .info-card{
+      background:#f7f9fc;
+      border:1px solid rgba(0,0,0,0.06);
+      border-left:6px solid #cbd5e1;
+      border-radius:14px;
+      padding:12px 12px;
+      margin:10px 0;
+    }
+
+    .info-card h3{
+      margin:0 0 8px;
+      font-size:14px;
+      letter-spacing:0.4px;
+      text-transform:uppercase;
+      opacity:0.85;
+    }
+
+    .info-card ul{
+      margin:0;
+      padding-left:18px;
+    }
+
+    .info-card li{ margin:6px 0; }
+
+    .def { border-left-color:#4a90e2; }
+    .assess { border-left-color:#7ed321; }
+    .manage { border-left-color:#f5a623; }
+    .flags { border-left-color:#d0021b; }
+
+    .guidelines a{
+      color:#2b70c9;
+      font-weight:900;
+      text-decoration:none;
+    }
+    .guidelines a:hover{ text-decoration:underline; }
+
+    /* Prevent sideways overflow */
+    .modal-content, .info-card, .tile, header, .wrap { max-width:100%; }
+  </style>
 </head>
 
 <body>
+  <div id="top"></div>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="index.html" title="Back to Home">
-      <img src="assets/pipc-short.png" alt="PIPC logo" />
-      <div class="brand-title">PIPC</div>
-    </a>
-    <div class="page-title">Respiratory</div>
-  </div>
-</header>
-
-<div class="wrap">
-  <div class="crumb"><a href="index.html">← Home</a></div>
-
-  <h1>Respiratory</h1>
-  <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the small 🚩 pill for red flags.</p>
-
-  <div class="grid">
-    <div class="tile" onclick="openWindow('comparisons')">
-      <h3>📊 Comparisons</h3>
-      <p>Fast side-by-side tables (scan in seconds).</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('respiratory')">🚩</div>
+  <header>
+    <div class="topbar">
+      <div class="logo">PIPC</div>
+      <div style="font-weight:900;">PIPC</div>
     </div>
 
-    <div class="tile" onclick="openWindow('asthma')">
-      <h3>💨 Asthma</h3>
-      <p>Wheeze • tight chest • ↑ inhaler use</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('asthma')">🚩</div>
-    </div>
+    <!-- Optional: if your home is index.html, keep this; otherwise edit/remove -->
+    <a class="home-link" href="index.html">← Home</a>
 
-    <div class="tile" onclick="openWindow('urti')">
-      <h3>🤧 Viral URTI</h3>
-      <p>Runny nose • sore throat • headache</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('urti')">🚩</div>
-    </div>
+    <h1>Respiratory</h1>
+    <p class="subtitle">
+      Tap a tile for details. On mobile the info opens in a screen-fitting box. Tap outside to close.
+    </p>
+  </header>
 
-    <div class="tile" onclick="openWindow('bronchitis')">
-      <h3>🫁 Acute Bronchitis</h3>
-      <p>Post-viral cough • usually self-limiting</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('bronchitis')">🚩</div>
-    </div>
+  <div class="wrap">
+    <section class="tile-grid">
 
-    <div class="tile" onclick="openWindow('copd')">
-      <h3>🫁 COPD Exacerbation</h3>
-      <p>↑ breathlessness • sputum change</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('copd')">🚩</div>
-    </div>
-
-    <div class="tile" onclick="openWindow('pneumonia')">
-      <h3>🦠 Pneumonia</h3>
-      <p>Fever • pleuritic pain • focal signs</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pneumonia')">🚩</div>
-    </div>
-
-    <div class="tile" onclick="openWindow('pe')">
-      <h3>🩸 Pulmonary Embolism</h3>
-      <p>Sudden SOB • pleuritic pain • tachycardia</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pe')">🚩</div>
-    </div>
-
-    <div class="tile" onclick="openWindow('ptx')">
-      <h3>🎈 Pneumothorax</h3>
-      <p>Sudden pain • reduced air entry</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ptx')">🚩</div>
-    </div>
-
-    <div class="tile" onclick="openWindow('hf')">
-      <h3>💔 Heart Failure</h3>
-      <p>Orthopnoea/PND • oedema • crackles</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('hf')">🚩</div>
-    </div>
-  </div>
-</div>
-
-<script>
-let zIndexCounter = 1000;
-
-/* Window helpers */
-function createWindow(title, html) {
-  const win = document.createElement("div");
-  win.className = "window";
-  win.style.zIndex = ++zIndexCounter;
-
-  win.innerHTML = `
-    <div class="window-header">
-      ${title}
-      <span class="close" onclick="this.closest('.window').remove()">✖</span>
-    </div>
-    <div class="window-body">${html}</div>
-  `;
-
-  document.body.appendChild(win);
-  makeDraggable(win);
-}
-
-function makeDraggable(win) {
-  const header = win.querySelector(".window-header");
-  let dragging = false, offsetX = 0, offsetY = 0;
-
-  header.addEventListener("mousedown", (e) => {
-    dragging = true;
-    win.style.zIndex = ++zIndexCounter;
-    offsetX = e.clientX - win.offsetLeft;
-    offsetY = e.clientY - win.offsetTop;
-    document.body.style.userSelect = "none";
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (!dragging) return;
-    win.style.left = (e.clientX - offsetX) + "px";
-    win.style.top  = (e.clientY - offsetY) + "px";
-  });
-
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-    document.body.style.userSelect = "auto";
-  });
-}
-
-/* Section builder */
-function section(title, items, variant="") {
-  const cls = variant ? `section ${variant}` : "section";
-  const list = (items || []).map(x => `<li>${x}</li>`).join("");
-  return `
-    <div class="${cls}">
-      <h4>${title}</h4>
-      <ul>${list}</ul>
-    </div>
-  `;
-}
-function linksSection(title, links) {
-  const list = (links || []).map(l => `<li class="links"><a href="${l.href}" target="_blank">${l.label}</a></li>`).join("");
-  return `
-    <div class="section alt">
-      <h4>${title}</h4>
-      <ul>${list}</ul>
-    </div>
-  `;
-}
-
-/* Content windows */
-function openWindow(key) {
-  const content = {
-
-    comparisons: `
-      <div class="section">
-        <h4>URTI vs Bronchitis vs Pneumonia</h4>
-        <table class="compare">
-          <tr><th>Feature</th><th>URTI</th><th>Bronchitis</th><th>Pneumonia</th></tr>
-          <tr><td>Fever</td><td class="goodTxt">None / low</td><td class="midTxt">Mild</td><td class="badTxt">High / rigors</td></tr>
-          <tr><td>Key symptoms</td><td>Runny nose, sore throat, headache</td><td>Cough (often persistent)</td><td>Cough + systemically unwell</td></tr>
-          <tr><td>Chest exam</td><td class="goodTxt">Clear</td><td class="midTxt">Wheeze / rhonchi</td><td class="badTxt">Focal crackles / bronchial breathing</td></tr>
-          <tr><td>SpO₂</td><td class="goodTxt">Normal</td><td class="goodTxt">Usually normal</td><td class="badTxt">May be reduced</td></tr>
-          <tr><td>Antibiotics</td><td class="goodTxt">No</td><td class="goodTxt">No (usually)</td><td class="badTxt">Yes (local + NICE)</td></tr>
-        </table>
-      </div>
-
-      <div class="section alt">
-        <h4>Asthma vs COPD vs HF (quick cues)</h4>
-        <table class="compare">
-          <tr><th>Clue</th><th>Asthma</th><th>COPD</th><th>Heart failure</th></tr>
-          <tr><td>Typical history</td><td>Atopy/variable symptoms</td><td>Smoking/chronic symptoms</td><td>Cardiac history, fluid overload</td></tr>
-          <tr><td>Chest</td><td class="midTxt">Wheeze common</td><td class="midTxt">Wheeze + reduced air entry</td><td class="badTxt">Crackles ± wheeze (“cardiac”)</td></tr>
-          <tr><td>Other clues</td><td>Triggered by viral/allergen</td><td>Sputum change in exacerbation</td><td class="badTxt">Oedema, orthopnoea/PND</td></tr>
-        </table>
-        <div class="mini-note links">
-          <strong>NICE CKS search:</strong>
-          <a href="https://cks.nice.org.uk/" target="_blank">https://cks.nice.org.uk/</a>
+      <button class="tile" type="button" onclick="openCondition('Compare', compareBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Compare</p>
+          <p class="tile-desc">Fast side-by-side checks</p>
         </div>
-      </div>
-    `,
+        <div class="tile-emoji">📊</div>
+      </button>
 
-    asthma: `
-      ${section("Definition", [
-        "Inflammatory condition of the airways causing narrowing during exacerbations → wheeze."
-      ])}
+      <button class="tile" type="button" onclick="openCondition('Asthma', asthmaBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Asthma</p>
+          <p class="tile-desc">Wheeze • tight chest</p>
+        </div>
+        <div class="tile-emoji">💨</div>
+      </button>
 
-      ${section("Signs & symptoms", [
-        "Increased respiratory rate",
-        "Tight chest",
-        "Increased inhaler use",
-        "Peak flow varies with severity"
-      ], "alt")}
+      <button class="tile" type="button" onclick="openCondition('Viral URTI', urtiBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Viral URTI</p>
+          <p class="tile-desc">Runny nose • sore throat</p>
+        </div>
+        <div class="tile-emoji">🤒</div>
+      </button>
 
-      ${section("Quick assessment", [
-        "Work of breathing, speaking in sentences, fatigue",
-        "SpO₂ (baseline if known)",
-        "Wheeze? (silent chest is worrying)",
-        "Triggers: viral illness, allergens, technique/adherence",
-        "Check personal asthma action plan"
-      ], "good")}
+      <button class="tile" type="button" onclick="openCondition('Acute Bronchitis', bronchitisBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Acute Bronchitis</p>
+          <p class="tile-desc">Post-viral cough</p>
+        </div>
+        <div class="tile-emoji">🫁</div>
+      </button>
 
-      ${section("Treatment / management (Primary Care)", [
-        "Consider prednisolone (e.g. 40mg) if wheeze chest (follow local guidance)",
-        "Consider how much inhaler has been used (SABA/MART)",
-        "Clinical judgement: many exacerbations are viral",
-        "Check for LRTI signs: focal chest sounds, fever, reduced SpO₂",
-        "Review inhaler technique + spacer use",
-        "Consider asthma review if exacerbated or due"
-      ])}
+      <button class="tile" type="button" onclick="openCondition('COPD Exacerbation', copdBlock)">
+        <div class="tile-left">
+          <p class="tile-title">COPD Exacerbation</p>
+          <p class="tile-desc">↑ breathlessness • sputum</p>
+        </div>
+        <div class="tile-emoji">🚬</div>
+      </button>
 
-      ${section("Not just asthma (differentials)", [
-        "Fever + focal chest signs → consider pneumonia",
-        "Pleuritic chest pain + risk factors → consider PE",
-        "Orthopnoea + oedema + bibasal crackles → consider HF",
-        "Sudden unilateral reduced air entry → consider pneumothorax"
-      ], "alt")}
+      <button class="tile" type="button" onclick="openCondition('Pneumonia', pneumoniaBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Pneumonia</p>
+          <p class="tile-desc">Fever • focal signs</p>
+        </div>
+        <div class="tile-emoji">🩻</div>
+      </button>
 
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Asthma", href: "https://cks.nice.org.uk/topics/asthma/" },
-        { label: "BTS / SIGN Asthma Guideline", href: "https://www.brit-thoracic.org.uk/quality-improvement/guidelines/asthma/" }
-      ])}
-    `,
+      <button class="tile" type="button" onclick="openCondition('Pulmonary Embolism', peBlock)">
+        <div class="tile-left">
+          <p class="tile-title">Pulmonary Embolism</p>
+          <p class="tile-desc">Sudden SOB • pleuritic pain</p>
+        </div>
+        <div class="tile-emoji">⚡</div>
+      </button>
 
-    urti: `
-      ${section("Definition", [
-        "Self-limiting viral infection of the upper airway (nose/throat). Antibiotics usually not indicated."
-      ])}
-
-      ${section("Key features (KISS)", [
-        "Runny/blocked nose",
-        "Sore throat",
-        "Headache",
-        "Mild cough",
-        "Low-grade fever",
-        "Myalgia / fatigue"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "Duration + severity",
-        "Hydration",
-        "Baseline risk: frailty, immunosuppression, comorbidity"
-      ], "good")}
-
-      ${section("Management (Primary Care)", [
-        "Safety-net + expected course (often 7–10 days; cough can last longer)",
-        "Fluids + rest",
-        "Simple analgesia (if appropriate)",
-        "Saline sprays/irrigation",
-        "Avoid antibiotics unless clear indication (local + NICE CKS)"
-      ])}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Common cold", href: "https://cks.nice.org.uk/topics/common-cold/" },
-        { label: "NICE CKS – Sore throat (acute)", href: "https://cks.nice.org.uk/topics/sore-throat-acute/" }
-      ])}
-    `,
-
-    bronchitis: `
-      ${section("Definition", [
-        "Acute inflammation of the bronchi (usually viral), commonly after URTI."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Cough often 2–3 weeks",
-        "Sputum may be present (does not automatically mean bacterial)",
-        "Chest discomfort",
-        "Wheeze can occur"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "RR, HR, temperature, SpO₂",
-        "Chest: often wheeze/rhonchi; usually no focal crackles"
-      ], "good")}
-
-      ${section("Antibiotics", [
-        "Usually NO antibiotics",
-        "If high-risk/atypical course → follow local antimicrobial guidance + NICE CKS criteria"
-      ])}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Acute bronchitis", href: "https://cks.nice.org.uk/topics/acute-bronchitis/" }
-      ])}
-    `,
-
-    copd: `
-      ${section("Definition", [
-        "Acute worsening of COPD symptoms beyond day-to-day variation (often viral trigger)."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Increased breathlessness",
-        "Increased sputum volume and/or purulence",
-        "Increased cough/wheeze",
-        "Reduced exercise tolerance"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "ABCDE + SpO₂ (baseline if known)",
-        "Check for focal crackles (pneumonia)",
-        "Ask: rescue pack? prior NIV/admissions?"
-      ], "good")}
-
-      ${section("Treatment / management (Primary Care)", [
-        "Optimise bronchodilators per local pathway",
-        "Consider steroids if indicated (local guidance)",
-        "Safety-net + arrange review"
-      ])}
-
-      ${section("Antibiotics", [
-        "Not for all exacerbations",
-        "Consider if bacterial features or per local criteria",
-        "Choose first-line per LOCAL antimicrobial guidance; cross-check NICE CKS"
-      ], "alt")}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – COPD", href: "https://cks.nice.org.uk/topics/chronic-obstructive-pulmonary-disease/" }
-      ])}
-    `,
-
-    pneumonia: `
-      ${section("Definition", [
-        "Infection of lung tissue causing inflammation/consolidation."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Fever/rigors",
-        "Cough +/- sputum",
-        "Pleuritic chest pain",
-        "Breathlessness",
-        "Focal crackles/bronchial breathing",
-        "Confusion (esp. older adults)"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "Vitals + SpO₂",
-        "Sepsis screen / systemic unwell?",
-        "Focal chest findings?"
-      ], "good")}
-
-      ${section("Antibiotics (first-line)", [
-        "Choose first-line antibiotic per LOCAL antimicrobial guidance first",
-        "Cross-check NICE CKS for indications/alternatives (e.g. allergy)"
-      ])}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Pneumonia (adults)", href: "https://cks.nice.org.uk/topics/pneumonia-adults/" }
-      ])}
-    `,
-
-    pe: `
-      ${section("Definition", [
-        "Thrombus in pulmonary arterial circulation → V/Q mismatch. Potentially life-threatening."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Sudden breathlessness",
-        "Pleuritic chest pain",
-        "Tachycardia",
-        "Cough +/- haemoptysis",
-        "Syncope/pre-syncope (worrying)"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "ABCDE + SpO₂",
-        "Risk factors: immobility/surgery, cancer, prior VTE, pregnancy/post-partum, oestrogen, long travel",
-        "DVT signs: unilateral leg swelling/pain"
-      ], "good")}
-
-      ${section("Action", [
-        "If suspected → urgent same-day emergency assessment (follow local pathway)"
-      ])}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Pulmonary embolism", href: "https://cks.nice.org.uk/topics/pulmonary-embolism/" }
-      ])}
-    `,
-
-    ptx: `
-      ${section("Definition", [
-        "Air in pleural space causing lung collapse (spontaneous or traumatic)."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Sudden unilateral pleuritic chest pain",
-        "Sudden breathlessness",
-        "Reduced/absent breath sounds on affected side"
-      ], "alt")}
-
-      ${section("Action", [
-        "Suspected pneumothorax usually needs urgent same-day assessment/imaging",
-        "Escalate immediately if unstable / suspected tension"
-      ], "good")}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Pneumothorax", href: "https://cks.nice.org.uk/topics/pneumothorax/" }
-      ])}
-    `,
-
-    hf: `
-      ${section("Definition", [
-        "Impaired cardiac function → fluid overload and reduced perfusion. Can present as breathlessness."
-      ])}
-
-      ${section("Signs & symptoms", [
-        "Breathlessness",
-        "Orthopnoea / PND",
-        "Peripheral oedema",
-        "Weight gain",
-        "Bibasal crackles",
-        "Fatigue"
-      ], "alt")}
-
-      ${section("Quick assessment", [
-        "Vitals + SpO₂",
-        "Look for fluid overload signs",
-        "Triggers: infection, arrhythmia, ACS, non-adherence"
-      ], "good")}
-
-      ${section("Action", [
-        "Acute pulmonary oedema / severe distress → urgent escalation",
-        "If stable → follow local pathway/plan + arrange review"
-      ])}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Heart failure", href: "https://cks.nice.org.uk/topics/heart-failure/" }
-      ])}
-    `
-  };
-
-  createWindow(titleFor(key), content[key] || "<div class='section'><h4>Not found</h4><p>Content not found.</p></div>");
-}
-
-/* Red flags */
-function openRedFlags(topic) {
-  const flags = {
-    respiratory: [
-      "SpO₂ persistently low or dropping",
-      "Severe breathlessness / exhaustion",
-      "Chest pain suggestive of ACS/PE",
-      "Haemoptysis",
-      "Confusion / reduced consciousness",
-      "Sepsis features",
-      "Rapid deterioration"
-    ],
-    asthma: [
-      "Silent chest / very poor air entry",
-      "Unable to speak in sentences / exhaustion",
-      "SpO₂ low or falling",
-      "Cyanosis, agitation or drowsiness",
-      "Poor response to reliever / worsening work of breathing"
-    ],
-    urti: [
-      "Severe breathlessness / distress",
-      "SpO₂ low for patient",
-      "Stridor/drooling/airway concern",
-      "Sepsis features",
-      "Severe dehydration / unable to swallow fluids",
-      "Chest pain suggestive of ACS/PE"
-    ],
-    bronchitis: [
-      "SpO₂ low, increasing breathlessness",
-      "Focal chest signs + fever (consider pneumonia)",
-      "Significant haemoptysis",
-      "Sepsis features",
-      "High-risk patient deteriorating"
-    ],
-    copd: [
-      "Drowsiness/confusion/exhaustion (possible hypercapnia)",
-      "SpO₂ persistently low despite treatment",
-      "Severe distress/cyanosis",
-      "Sepsis features",
-      "New chest pain/arrhythmia"
-    ],
-    pneumonia: [
-      "SpO₂ low / respiratory distress",
-      "Sepsis features / hypotension",
-      "Confusion/exhaustion",
-      "Unable to maintain oral intake",
-      "Rapid deterioration"
-    ],
-    pe: [
-      "Syncope/collapse",
-      "Hypotension/shock",
-      "Severe hypoxia",
-      "Severe chest pain suggestive of ACS",
-      "Significant haemoptysis"
-    ],
-    ptx: [
-      "Suspected tension (shock/hypotension)",
-      "Severe respiratory distress",
-      "SpO₂ very low / rapidly worsening",
-      "Reduced consciousness"
-    ],
-    hf: [
-      "Acute pulmonary oedema / severe distress",
-      "SpO₂ low / exhaustion",
-      "Hypotension/syncope",
-      "Chest pain suggestive of ACS",
-      "New significant arrhythmia"
-    ]
-  };
-
-  const list = flags[topic] || flags.respiratory;
-
-  const html = `
-    <div class="section danger">
-      <h4>FAST RED FLAGS</h4>
-      <ul>
-        ${list.map(x => `<li><strong>${x}</strong></li>`).join("")}
-      </ul>
-      <div class="mini-note">If concerned: follow local escalation pathways.</div>
-    </div>
-  `;
-
-  createWindow("🚩 Red Flags", html);
-}
-
-/* Titles */
-function titleFor(key){
-  const map = {
-    comparisons: "Comparisons",
-    asthma: "Asthma",
-    urti: "Viral URTI",
-    bronchitis: "Acute Bronchitis",
-    copd: "COPD Exacerbation",
-    pneumonia: "Pneumonia",
-    pe: "Pulmonary Embolism",
-    ptx: "Pneumothorax",
-    hf: "Heart Failure"
-  };
-  return map[key] || key;
-}
-</script>
-<!-- Overlay -->
-<div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
-
-<!-- Modal -->
-<div id="modalBox" class="modal-box">
-  <div class="modal-handle"></div>
-  <div class="modal-content">
-    <!-- Your existing condition content gets injected here -->
+    </section>
   </div>
-</div>
+
+  <!-- ===== Modal overlay + box ===== -->
+  <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
+
+  <div id="modalBox" class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-handle"></div>
+
+    <div class="modal-header">
+      <h2 id="modalTitle" class="modal-title">Condition</h2>
+      <button class="close-btn" type="button" onclick="closeModal()">Close</button>
+    </div>
+
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('modalOverlay');
+    const modal = document.getElementById('modalBox');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+
+    function openCondition(title, html) {
+      modalTitle.textContent = title;
+      modalContent.innerHTML = html;
+
+      overlay.style.display = 'block';
+      overlay.setAttribute('aria-hidden', 'false');
+      modal.classList.add('open');
+
+      // Lock background scroll
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // Tap outside closes
+    overlay.addEventListener('click', closeModal);
+
+    // ESC closes (desktop)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    // ===== Content blocks (EDIT THESE FREELY) =====
+
+    const compareBlock = `
+      <div class="info-card def">
+        <h3>Quick Compare</h3>
+        <ul>
+          <li><b>Viral URTI:</b> Coryzal, sore throat, mild fever, chest usually clear</li>
+          <li><b>Acute bronchitis:</b> Cough dominant, often post-viral, chest can have wheeze/rhonchi</li>
+          <li><b>Pneumonia:</b> Fever, pleuritic pain, focal crackles, ↑ RR, low SpO₂</li>
+          <li><b>Asthma/COPD:</b> Wheeze + tight chest / chronic background</li>
+          <li><b>PE:</b> Sudden SOB, pleuritic pain, tachycardia, risk factors</li>
+        </ul>
+      </div>
+      <div class="info-card flags">
+        <h3>Always consider</h3>
+        <ul>
+          <li>SpO₂ low, cyanosis, exhaustion, confusion</li>
+          <li>Sepsis features / haemodynamic instability</li>
+          <li>Chest pain with red flags</li>
+        </ul>
+      </div>
+    `;
+
+    const asthmaBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Airway inflammation with variable airflow obstruction; episodic wheeze/tight chest/cough.</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>How breathless? speaking in sentences? exhaustion?</li>
+          <li>RR/HR, SpO₂, work of breathing, chest auscultation</li>
+          <li>Trigger/infection? how much reliever used?</li>
+          <li>Consider LRTI signs: fever, focal sounds, reduced SpO₂</li>
+          <li>Check inhaler technique + spacer use</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Follow your local acute asthma guidance</li>
+          <li>Safety net and arrange follow-up/asthma review after exacerbation</li>
+          <li>Consider whether this is <b>not just asthma</b> (see below)</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Not Just Asthma (Differentials)</h3>
+        <ul>
+          <li>Fever + focal chest signs → consider pneumonia</li>
+          <li>Pleuritic chest pain + risk factors → consider PE</li>
+          <li>Orthopnoea + oedema + bibasal crackles → consider HF</li>
+          <li>Sudden unilateral reduced air entry → consider pneumothorax</li>
+        </ul>
+      </div>
+
+      <div class="info-card guidelines">
+        <h3>Guidelines</h3>
+        <ul>
+          <li><a href="#" onclick="return false;">NICE CKS – Asthma (edit link)</a></li>
+          <li><a href="#" onclick="return false;">BTS/SIGN Asthma Guideline (edit link)</a></li>
+        </ul>
+      </div>
+    `;
+
+    const urtiBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Self-limiting viral infection (coryzal symptoms ± sore throat/cough).</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>Duration, fever, hydration, comorbidities</li>
+          <li>Chest symptoms: breathlessness, pleuritic pain</li>
+          <li>Vitals: RR/HR/SpO₂ if concern</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Symptomatic care (fluids, rest, analgesia)</li>
+          <li>Safety net: worsening breathlessness, persistent fever, chest pain</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Red Flags</h3>
+        <ul>
+          <li>SpO₂ low, RR high, significant breathlessness</li>
+          <li>Haemoptysis, pleuritic chest pain</li>
+          <li>Sepsis features / immunocompromised deterioration</li>
+        </ul>
+      </div>
+    `;
+
+    const bronchitisBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Acute cough with lower respiratory tract features, usually viral/post-viral.</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>Cough duration, sputum, wheeze, chest pain</li>
+          <li>Vitals if unwell; SpO₂ if breathless</li>
+          <li>Exclude pneumonia: fever, focal signs, low SpO₂, tachypnoea</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Self-care + reassurance (cough can last weeks)</li>
+          <li>Consider bronchodilator trial if wheeze/bronchospasm (local guidance)</li>
+          <li>Antibiotics usually not indicated unless criteria met (local guidance)</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Red Flags</h3>
+        <ul>
+          <li>SpO₂ low, RR high, focal chest signs, persistent high fever</li>
+          <li>Haemoptysis, severe pleuritic pain</li>
+          <li>Frailty/significant comorbidity with deterioration</li>
+        </ul>
+      </div>
+    `;
+
+    const copdBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Acute worsening of COPD symptoms (breathlessness, cough, sputum change).</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>Baseline vs current symptoms, triggers (infection)</li>
+          <li>RR/HR/SpO₂, work of breathing, exhaustion</li>
+          <li>Sputum volume/colour, fever, chest pain</li>
+          <li>Consider pneumonia / PE if atypical</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Follow local COPD exacerbation guidance</li>
+          <li>Bronchodilators, steroids/antibiotics if indicated (local guidance)</li>
+          <li>Safety net + arrange follow-up</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Red Flags</h3>
+        <ul>
+          <li>SpO₂ low despite usual treatment / severe breathlessness</li>
+          <li>Confusion, drowsiness, exhaustion</li>
+          <li>Sepsis features / haemodynamic compromise</li>
+        </ul>
+      </div>
+    `;
+
+    const pneumoniaBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Lower respiratory infection with alveolar involvement; may present with focal signs.</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>Fever/rigors, pleuritic pain, sputum, breathlessness</li>
+          <li>RR/HR, SpO₂, BP, temperature</li>
+          <li>Chest exam: focal crackles/bronchial breathing</li>
+          <li>Risk: age, frailty, comorbidities</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Follow local CAP guidance for antibiotics and disposition</li>
+          <li>Safety net and review plan</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Red Flags</h3>
+        <ul>
+          <li>SpO₂ low, RR high, hypotension, confusion</li>
+          <li>Sepsis features / rapid deterioration</li>
+          <li>Significant comorbidity or immunosuppression</li>
+        </ul>
+      </div>
+    `;
+
+    const peBlock = `
+      <div class="info-card def">
+        <h3>Definition</h3>
+        <ul>
+          <li>Thrombus in pulmonary vasculature causing ventilation-perfusion mismatch.</li>
+        </ul>
+      </div>
+
+      <div class="info-card assess">
+        <h3>Quick Assessment</h3>
+        <ul>
+          <li>Sudden SOB, pleuritic chest pain, haemoptysis, syncope</li>
+          <li>HR, RR, SpO₂, BP; look for DVT signs</li>
+          <li>Risk factors: recent immobility/surgery, cancer, previous VTE, OCP/HRT</li>
+          <li>Use local pathway (e.g. Wells/PERC/D-dimer where applicable)</li>
+        </ul>
+      </div>
+
+      <div class="info-card manage">
+        <h3>Management</h3>
+        <ul>
+          <li>Urgent escalation if suspected PE with instability</li>
+          <li>Follow local PE pathway for investigation/referral</li>
+        </ul>
+      </div>
+
+      <div class="info-card flags">
+        <h3>Red Flags</h3>
+        <ul>
+          <li>Haemodynamic instability, syncope, severe hypoxia</li>
+          <li>Persistent tachycardia/tachypnoea with chest pain</li>
+          <li>High clinical suspicion → urgent assessment</li>
+        </ul>
+      </div>
+    `;
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
