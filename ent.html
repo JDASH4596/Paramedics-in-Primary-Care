@@ -132,17 +132,33 @@
 
   /* WINDOWS */
   .window{
-    position: fixed;
-    top: 110px;
-    left: 120px;
-    width: min(820px, 92vw);
-    background: var(--card);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    z-index: 1000; /* above overlay */
-    box-sizing: border-box;
-  }
+  position: fixed;
+  top: 110px;
+  left: 120px;
+  width: min(820px, 92vw);
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  z-index: 1000;
+  box-sizing: border-box;
+
+  /* NEW: keep content inside window */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 140px); /* viewport minus header/bottom padding */
+  overflow: hidden;               /* IMPORTANT */
+}
+
+.window-body{
+  padding: 14px;
+
+  /* NEW: body becomes the scroll area */
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0; /* IMPORTANT for flex scroll containers */
+}
 
   .window-header{
     padding: 10px 12px;
@@ -247,28 +263,35 @@
 
   /* ===== Mobile window behaviour: fit screen + no sideways overflow ===== */
   @media (max-width: 820px){
-    .window{
-      left: 12px;
-      right: 12px;
-      top: 88px;     /* below topbar */
-      bottom: 14px;  /* keep off the very bottom */
-      width: auto;
-      max-width: none;
-    }
-    .window-header{
-      cursor: default; /* dragging is awkward on mobile */
-    }
-    .window-body{
-      max-height: calc(100vh - 88px - 14px - 44px);
-      overflow-y: auto;
-    }
-    .window, .window *{
-      max-width: 100%;
-      box-sizing: border-box;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
+  .window{
+    left: 12px;
+    right: 12px;
+    top: 88px;
+    bottom: 14px;
+    width: auto;
+    max-width: none;
+
+    /* NEW: exact fit on phone screen */
+    max-height: none;
+    height: calc(100vh - 88px - 14px);
   }
+
+  .window-header{ cursor: default; }
+
+  .window-body{
+    /* NEW: just fill remaining space + scroll */
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .window, .window *{
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
 
   @media (max-width: 520px){
     .page-title{ display: none; }
