@@ -119,46 +119,31 @@
     border-radius: 999px;
     cursor: pointer;
     user-select: none;
+    transition: opacity 0.12s ease;
   }
 
-  /* ===== Overlay (tap outside to close) ===== */
-  .overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.35);
-    z-index: 999; /* below window */
-    display: none;
+  /* Desktop: hide until hover */
+  @media (hover: hover) and (pointer: fine) {
+    .flag-pill { opacity: 0; }
+    .tile:hover .flag-pill { opacity: 1; }
+  }
+  /* Touch (iPhone): always visible */
+  @media (hover: none) and (pointer: coarse) {
+    .flag-pill { opacity: 1; }
   }
 
   /* WINDOWS */
   .window{
-  position: fixed;
-  top: 110px;
-  left: 120px;
-  width: min(820px, 92vw);
-  background: var(--card);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-  z-index: 1000;
-  box-sizing: border-box;
-
-  /* NEW: keep content inside window */
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 140px); /* viewport minus header/bottom padding */
-  overflow: hidden;               /* IMPORTANT */
-}
-
-.window-body{
-  padding: 14px;
-
-  /* NEW: body becomes the scroll area */
-  flex: 1 1 auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  min-height: 0; /* IMPORTANT for flex scroll containers */
-}
+    position: fixed;
+    top: 110px;
+    left: 120px;
+    width: min(860px, 92vw);
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    z-index: 1000;
+  }
 
   .window-header{
     padding: 10px 12px;
@@ -177,7 +162,6 @@
     padding: 14px;
     max-height: 70vh;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .close{
@@ -228,11 +212,21 @@
     font-size: 0.9rem;
     line-height: 1.35;
   }
+  .mini-note a{ color: var(--blue); font-weight: 900; text-decoration: none; }
 
-  .links a{
-    color: var(--blue);
-    font-weight: 900;
-    text-decoration: none;
+  /* Image block */
+  .img-wrap{
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .img-wrap img{
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    display: block;
+    background: white;
   }
 
   /* Comparison tables */
@@ -261,38 +255,6 @@
   .midTxt{  color: #e65100; font-weight: 900; }
   .badTxt{  color: #b91c1c; font-weight: 900; }
 
-  /* ===== Mobile window behaviour: fit screen + no sideways overflow ===== */
-  @media (max-width: 820px){
-  .window{
-    left: 12px;
-    right: 12px;
-    top: 88px;
-    bottom: 14px;
-    width: auto;
-    max-width: none;
-
-    /* NEW: exact fit on phone screen */
-    max-height: none;
-    height: calc(100vh - 88px - 14px);
-  }
-
-  .window-header{ cursor: default; }
-
-  .window-body{
-    /* NEW: just fill remaining space + scroll */
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-  }
-
-  .window, .window *{
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-}
-
   @media (max-width: 520px){
     .page-title{ display: none; }
     .brand img{ height: 40px; }
@@ -301,9 +263,6 @@
 </head>
 
 <body>
-
-<!-- Overlay (tap anywhere outside the window to close) -->
-<div id="overlay" class="overlay" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -319,61 +278,67 @@
   <div class="crumb"><a href="index.html">← Home</a></div>
 
   <h1>ENT</h1>
-  <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the small 🚩 pill for red flags.</p>
+  <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the subtle 🚩 pill for red flags.</p>
 
   <div class="grid">
     <div class="tile" onclick="openWindow('comparisons')">
       <h3>📊 Comparisons</h3>
-      <p>Fast side-by-side tables (scan in seconds).</p>
+      <p>Otitis externa vs media • sore throat causes • sinusitis vs rhinitis</p>
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ent')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('sorethroat')">
-      <h3>🗣️ Sore Throat / Tonsillitis</h3>
-      <p>Viral vs bacterial • peritonsillar abscess cues</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sorethroat')">🚩</div>
+    <div class="tile" onclick="openWindow('otitis_externa')">
+      <h3>👂 Otitis Externa</h3>
+      <p>Ear pain • itch • tragal tenderness • discharge</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ear')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('otitismedia')">
-      <h3>👂 Otitis Media</h3>
-      <p>Ear pain • fever • bulging TM</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('otitismedia')">🚩</div>
+    <div class="tile" onclick="openWindow('otitis_media')">
+      <h3>🦻 Otitis Media (AOM)</h3>
+      <p>Otalgia • fever • bulging TM • unwell</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ear')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('otitisexterna')">
-      <h3>💧 Otitis Externa</h3>
-      <p>Tragal tenderness • swollen canal • discharge</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('otitisexterna')">🚩</div>
+    <div class="tile" onclick="openWindow('mastoiditis')">
+      <h3>🚨 Mastoiditis</h3>
+      <p>Post-auricular swelling • protruding pinna • systemic illness</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('mastoid')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('sore_throat')">
+      <h3>😮‍💨 Sore Throat / Tonsillitis</h3>
+      <p>Odynophagia • fever • exudate • cervical nodes</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('throat')">🚩</div>
+    </div>
+
+    <div class="tile" onclick="openWindow('peritonsillar')">
+      <h3>🚨 Peritonsillar Abscess (Quinsy)</h3>
+      <p>Hot potato voice • trismus • uvula deviation</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('quinsy')">🚩</div>
     </div>
 
     <div class="tile" onclick="openWindow('sinusitis')">
-      <h3>🤧 Sinusitis</h3>
-      <p>Facial pain • nasal discharge • fever</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sinusitis')">🚩</div>
+      <h3>🤧 Acute Sinusitis</h3>
+      <p>Facial pain • purulent discharge • worse on bending</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sinus')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('epistaxis')">
-      <h3>👃 Epistaxis</h3>
-      <p>First aid • packing cues • posterior bleed red flags</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('epistaxis')">🚩</div>
+    <div class="tile" onclick="openWindow('rhinitis')">
+      <h3>🌿 Allergic Rhinitis</h3>
+      <p>Sneezing • itch • watery rhinorrhoea • seasonal</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sinus')">🚩</div>
     </div>
 
     <div class="tile" onclick="openWindow('vertigo')">
-      <h3>🌀 Vertigo (BPPV)</h3>
-      <p>Triggered by position • Epley overview • central red flags</p>
+      <h3>🌀 Vertigo (BPPV vs Vestibular Neuritis)</h3>
+      <p>Spinning • triggers • neuro red flags matter</p>
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('vertigo')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('hearingloss')">
-      <h3>🔇 Sudden Hearing Loss</h3>
-      <p>Urgent ENT referral • exclude stroke/central causes</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('hearingloss')">🚩</div>
-    </div>
-
-    <div class="tile" onclick="openWindow('foreignbody')">
-      <h3>🧸 Nasal Foreign Body</h3>
-      <p>Unilateral discharge/odour • removal tips • button battery warning</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('foreignbody')">🚩</div>
+    <div class="tile" onclick="openWindow('epistaxis')">
+      <h3>🩸 Epistaxis</h3>
+      <p>Nosebleed • anticoagulants • posterior bleed risk</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('bleed')">🚩</div>
     </div>
   </div>
 </div>
@@ -381,38 +346,7 @@
 <script>
 let zIndexCounter = 1000;
 
-const overlay = document.getElementById("overlay");
-
-function showOverlay(){
-  overlay.style.display = "block";
-  overlay.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-}
-function hideOverlay(){
-  overlay.style.display = "none";
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-}
-
-/* Close any open window (ONE open at a time for clean mobile UX) */
-function closeAllWindows(){
-  document.querySelectorAll(".window").forEach(w => w.remove());
-  hideOverlay();
-}
-
-/* Tap outside to close */
-overlay.addEventListener("click", closeAllWindows);
-
-/* ESC to close (desktop) */
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape") closeAllWindows();
-});
-
-/* Window helpers */
 function createWindow(title, html) {
-  closeAllWindows();
-  showOverlay();
-
   const win = document.createElement("div");
   win.className = "window";
   win.style.zIndex = ++zIndexCounter;
@@ -420,35 +354,20 @@ function createWindow(title, html) {
   win.innerHTML = `
     <div class="window-header">
       ${title}
-      <span class="close" onclick="closeWindow(this)">✖</span>
+      <span class="close" onclick="this.closest('.window').remove()">✖</span>
     </div>
     <div class="window-body">${html}</div>
   `;
 
   document.body.appendChild(win);
   makeDraggable(win);
-
-  win.addEventListener("mousedown", () => {
-    win.style.zIndex = ++zIndexCounter;
-  });
-}
-
-function closeWindow(closeEl){
-  const win = closeEl.closest(".window");
-  if(win) win.remove();
-  hideOverlay();
 }
 
 function makeDraggable(win) {
   const header = win.querySelector(".window-header");
   let dragging = false, offsetX = 0, offsetY = 0;
 
-  function canDrag(){
-    return window.matchMedia("(min-width: 821px)").matches;
-  }
-
   header.addEventListener("mousedown", (e) => {
-    if(!canDrag()) return;
     dragging = true;
     win.style.zIndex = ++zIndexCounter;
     offsetX = e.clientX - win.offsetLeft;
@@ -468,7 +387,7 @@ function makeDraggable(win) {
   });
 }
 
-/* Section builder */
+/* Section helpers */
 function section(title, items, variant="") {
   const cls = variant ? `section ${variant}` : "section";
   const list = (items || []).map(x => `<li>${x}</li>`).join("");
@@ -480,7 +399,7 @@ function section(title, items, variant="") {
   `;
 }
 function linksSection(title, links) {
-  const list = (links || []).map(l => `<li class="links"><a href="${l.href}" target="_blank">${l.label}</a></li>`).join("");
+  const list = (links || []).map(l => `<li><a href="${l.href}" target="_blank">${l.label}</a></li>`).join("");
   return `
     <div class="section alt">
       <h4>${title}</h4>
@@ -488,60 +407,218 @@ function linksSection(title, links) {
     </div>
   `;
 }
+function imageSection(title, src, alt, creditHtml){
+  return `
+    <div class="section alt">
+      <h4>${title}</h4>
+      <div class="img-wrap">
+        <img src="${src}" alt="${alt}">
+      </div>
+      <div class="mini-note">${creditHtml}</div>
+    </div>
+  `;
+}
 
-/* Content windows */
+/* Content */
 function openWindow(key) {
   const content = {
 
     comparisons: `
       <div class="section">
-        <h4>Sore throat vs Peritonsillar abscess vs Epiglottitis (cues)</h4>
+        <h4>Otitis externa vs Otitis media (quick cues)</h4>
         <table class="compare">
-          <tr><th>Feature</th><th>Sore throat</th><th>Peritonsillar abscess</th><th>Epiglottitis</th></tr>
-          <tr><td>Voice</td><td>Normal</td><td class="midTxt">“Hot potato” voice</td><td class="badTxt">Muffled + distress</td></tr>
-          <tr><td>Mouth opening</td><td>Normal</td><td class="badTxt">Trismus</td><td class="midTxt">Often painful</td></tr>
-          <tr><td>Drooling/stridor</td><td class="goodTxt">No</td><td class="midTxt">Possible</td><td class="badTxt">Yes / airway risk</td></tr>
-          <tr><td>Urgency</td><td class="goodTxt">Routine</td><td class="midTxt">Same day</td><td class="badTxt">Emergency</td></tr>
+          <tr><th>Feature</th><th>Otitis externa</th><th>Otitis media (AOM)</th></tr>
+          <tr><td>Pain</td><td class="midTxt">Often severe, worse with tragal/pinna movement</td><td class="midTxt">Deep ear pain, often with systemic symptoms</td></tr>
+          <tr><td>Discharge</td><td class="midTxt">Common</td><td class="goodTxt">Less common (unless perforation)</td></tr>
+          <tr><td>TM view</td><td class="goodTxt">May be hard to see (canal swollen)</td><td class="badTxt">Bulging/erythematous TM</td></tr>
+          <tr><td>Hearing</td><td class="midTxt">Reduced (blocked canal)</td><td class="midTxt">Reduced (middle ear effusion)</td></tr>
+          <tr><td>Tx</td><td>Topical drops + analgesia (local/NICE)</td><td>Analgesia; antibiotics only if indicated (local/NICE)</td></tr>
         </table>
       </div>
 
       <div class="section alt">
-        <h4>Otitis media vs externa (quick cues)</h4>
+        <h4>Sore throat: viral vs bacterial vs quinsy</h4>
         <table class="compare">
-          <tr><th>Clue</th><th>Otitis media</th><th>Otitis externa</th></tr>
-          <tr><td>Pain</td><td>Deep ear pain</td><td class="midTxt">Tragal/pinna tenderness</td></tr>
-          <tr><td>Discharge</td><td>± if perforated</td><td class="midTxt">Common</td></tr>
-          <tr><td>Canal</td><td class="goodTxt">Usually not swollen</td><td class="badTxt">Swollen/tender canal</td></tr>
+          <tr><th>Clue</th><th>Viral</th><th>Bacterial (likely)</th><th>Quinsy</th></tr>
+          <tr><td>Systemic</td><td class="goodTxt">Mild</td><td class="midTxt">Fever, unwell</td><td class="badTxt">Very unwell</td></tr>
+          <tr><td>Exam</td><td>Coryza/cough common</td><td>Exudate + tender nodes</td><td class="badTxt">Trismus, uvula deviation, unilateral swelling</td></tr>
+          <tr><td>Voice</td><td>Normal</td><td>Normal</td><td class="badTxt">“Hot potato” voice</td></tr>
+          <tr><td>Action</td><td>Supportive</td><td>Score + consider antibiotics</td><td class="badTxt">Urgent same-day ENT/ED</td></tr>
         </table>
-        <div class="mini-note links">
-          <strong>NICE CKS search:</strong>
-          <a href="https://cks.nice.org.uk/" target="_blank">https://cks.nice.org.uk/</a>
-        </div>
+      </div>
+
+      <div class="section good">
+        <h4>Sinusitis vs allergic rhinitis</h4>
+        <table class="compare">
+          <tr><th>Feature</th><th>Sinusitis</th><th>Allergic rhinitis</th></tr>
+          <tr><td>Discharge</td><td class="midTxt">Often purulent</td><td class="goodTxt">Clear/watery</td></tr>
+          <tr><td>Pain/pressure</td><td class="midTxt">Facial pain/pressure, worse bending</td><td class="goodTxt">Itch more prominent</td></tr>
+          <tr><td>Sneezing/itch</td><td class="goodTxt">Less prominent</td><td class="badTxt">Prominent</td></tr>
+          <tr><td>Fever</td><td class="midTxt">Sometimes</td><td class="goodTxt">No</td></tr>
+        </table>
       </div>
     `,
 
-    sorethroat: `
+    otitis_externa: `
+      ${imageSection(
+        "Example appearance (licensed)",
+        "https://upload.wikimedia.org/wikipedia/commons/a/ab/Otite_externe.jpg",
+        "Otitis externa with inflamed external ear canal",
+        `Image: “Otite externe” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:Otite_externe.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+      )}
+
       ${section("Definition", [
-        "Inflammation of pharynx/tonsils. Most are viral; consider bacterial features (Centor/FeverPAIN)."
+        "Inflammation/infection of the external auditory canal (often bacterial; can be fungal)."
       ])}
 
+      ${section("Key features", [
+        "Otalgia (often severe), itch",
+        "Tragal/pinna tenderness",
+        "Otorrhoea",
+        "Canal swollen/debris; hearing reduced"
+      ], "alt")}
+
       ${section("Quick assessment", [
-        "Duration, fever, unilateral vs bilateral pain",
-        "Swallowing, voice change, trismus",
-        "Examine tonsils/uvula, cervical nodes, hydration",
-        "Consider scarlet fever features (rash, strawberry tongue)"
+        "Check for fever/systemic illness",
+        "Look for cellulitis around ear",
+        "Diabetes/immunosuppression (risk of malignant otitis externa)",
+        "Can you see the tympanic membrane?"
       ], "good")}
 
       ${section("Management (Primary Care)", [
-        "Analgesia, fluids, rest",
-        "Consider Centor/FeverPAIN approach per local guidance",
-        "Safety net if worsening or not improving"
+        "Analgesia",
+        "Topical drops per local/NICE guidance",
+        "Keep ear dry; avoid cotton buds",
+        "Review if not improving"
       ])}
 
-      ${section("Red flags / complications", [
-        "Airway compromise, drooling, stridor",
-        "Trismus / uvula deviation (consider peritonsillar abscess)",
-        "Systemically very unwell / dehydration"
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
+      ])}
+    `,
+
+    otitis_media: `
+      ${imageSection(
+        "Example appearance (licensed)",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f3/Acute_Otitis_Media_Stage_of_Resolution.jpg",
+        "Bulging tympanic membrane in acute otitis media",
+        `Image: “Acute Otitis Media Stage of Resolution” — CC BY 4.0. <a href="https://commons.wikimedia.org/wiki/File:Acute_Otitis_Media_Stage_of_Resolution.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence</a>`
+      )}
+
+      ${section("Definition", [
+        "Acute infection of the middle ear (often viral; can be bacterial)."
+      ])}
+
+      ${section("Key features", [
+        "Otalgia, fever, irritability (children)",
+        "Bulging/erythematous tympanic membrane",
+        "Hearing reduction",
+        "Possible otorrhoea if perforation"
+      ], "alt")}
+
+      ${section("Quick assessment", [
+        "Systemic illness/sepsis features?",
+        "Mastoid tenderness/swelling?",
+        "Immunosuppression/frailty",
+        "Duration and severity"
+      ], "good")}
+
+      ${section("Management (Primary Care)", [
+        "Analgesia first-line",
+        "Antibiotics only if indicated (local + NICE CKS criteria)",
+        "Safety-net: worsening pain, fever, mastoid symptoms"
+      ])}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Otitis media (acute)", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
+      ])}
+    `,
+
+    mastoiditis: `
+      ${imageSection(
+        "Example appearance (licensed)",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f9/Mastoiditis1.jpg",
+        "Post-auricular erythema and swelling consistent with mastoiditis",
+        `Image: “Mastoiditis1” — CC BY-SA 3.0 (licence options listed on file page). <a href="https://commons.wikimedia.org/wiki/File:Mastoiditis1.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+      )}
+
+      ${section("Definition", [
+        "Complication of otitis media with infection/inflammation of the mastoid air cells.",
+        "Treat as time-critical: often needs same-day hospital assessment."
+      ])}
+
+      ${section("Key features", [
+        "Post-auricular erythema/swelling/tenderness",
+        "Protruding pinna",
+        "Fever, systemic illness",
+        "Otalgia +/- otorrhoea"
+      ], "alt")}
+
+      ${section("Action", [
+        "Urgent same-day ED/ENT assessment",
+        "Consider sepsis pathway if indicated",
+        "Do not delay if red flags present"
+      ], "danger")}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Otitis media (acute)", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
+      ])}
+    `,
+
+    sore_throat: `
+      ${section("Definition", [
+        "Acute sore throat may be viral or bacterial tonsillitis/pharyngitis."
+      ])}
+
+      ${section("Key features", [
+        "Odynophagia",
+        "Fever, malaise",
+        "Tonsillar exudate (sometimes)",
+        "Tender anterior cervical nodes",
+        "Cough/coryza suggests viral"
+      ], "alt")}
+
+      ${section("Quick assessment", [
+        "Hydration + ability to swallow",
+        "Airway risk? drooling/stridor?",
+        "Consider scoring (e.g. FeverPAIN/Centor) per local approach",
+        "Consider EBV if significant fatigue/generalised lymphadenopathy"
+      ], "good")}
+
+      ${section("Management (Primary Care)", [
+        "Analgesia, fluids, safety-net",
+        "Consider antibiotics if criteria met (local + NICE CKS)",
+        "Advise return if worsening, unilateral swelling, trismus, breathing difficulty"
+      ])}
+
+      ${linksSection("Guidelines", [
+        { label: "NICE CKS – Sore throat (acute)", href: "https://cks.nice.org.uk/topics/sore-throat-acute/" }
+      ])}
+    `,
+
+    peritonsillar: `
+      ${imageSection(
+        "Example appearance (licensed)",
+        "https://upload.wikimedia.org/wikipedia/commons/3/39/PeritonsilarAbsess.jpg",
+        "Right-sided peritonsillar abscess with uvula deviation",
+        `Image: “PeritonsilarAbsess” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:PeritonsilarAbsess.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+      )}
+
+      ${section("Definition", [
+        "Peritonsillar abscess (quinsy) – complication of tonsillitis; urgent condition."
+      ])}
+
+      ${section("Key features (classic)", [
+        "Severe unilateral sore throat",
+        "Trismus",
+        "“Hot potato” voice",
+        "Uvula deviation",
+        "Drooling; unable to swallow"
+      ], "alt")}
+
+      ${section("Action", [
+        "Same-day urgent ENT/ED assessment",
+        "Airway risk: escalate immediately if breathing difficulty"
       ], "danger")}
 
       ${linksSection("Guidelines", [
@@ -549,140 +626,85 @@ function openWindow(key) {
       ])}
     `,
 
-    otitismedia: `
-      ${section("Definition", [
-        "Acute middle ear infection, often after URTI."
-      ])}
-
-      ${section("Quick assessment", [
-        "Pain, fever, discharge, hearing change",
-        "Otoscopy: bulging/erythematous TM, perforation",
-        "Look for mastoid tenderness/swelling"
-      ], "good")}
-
-      ${section("Management (Primary Care)", [
-        "Analgesia first-line",
-        "Consider delayed antibiotics where appropriate (local guidance)",
-        "Advice: return if worsening, persistent fever, or complications"
-      ])}
-
-      ${section("Red flags", [
-        "Mastoiditis signs (post-auricular swelling, protruding ear)",
-        "Facial nerve weakness",
-        "Severe systemic illness / meningism"
-      ], "danger")}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Acute otitis media", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
-      ])}
-    `,
-
-    otitisexterna: `
-      ${section("Definition", [
-        "Inflammation/infection of external ear canal."
-      ])}
-
-      ${section("Quick assessment", [
-        "Canal pain/itch, discharge, hearing reduction",
-        "Tragal tenderness, swollen canal",
-        "Risk factors: swimming, trauma, diabetes/immunocompromise"
-      ], "good")}
-
-      ${section("Management (Primary Care)", [
-        "Topical drops per local guidance",
-        "Keep ear dry; avoid cotton buds",
-        "Consider wick if canal very swollen (service dependent)"
-      ])}
-
-      ${section("Red flags", [
-        "Diabetes/immunocompromised with severe pain (consider malignant otitis externa)",
-        "Spreading cellulitis, cranial nerve symptoms",
-        "Systemically unwell"
-      ], "danger")}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
-      ])}
-    `,
-
     sinusitis: `
       ${section("Definition", [
-        "Inflammation of paranasal sinuses; often viral. Bacterial more likely if prolonged/severe."
+        "Inflammation/infection of the paranasal sinuses (often viral; sometimes bacterial)."
       ])}
 
+      ${section("Key features", [
+        "Facial pain/pressure (worse bending)",
+        "Nasal obstruction",
+        "Purulent discharge",
+        "Hyposmia",
+        "Tooth pain (sometimes)"
+      ], "alt")}
+
       ${section("Quick assessment", [
-        "Duration (e.g. >10 days), fever, unilateral facial pain",
-        "Purulent discharge, anosmia, dental pain",
-        "Check for orbital symptoms"
+        "Duration: <10 days often viral",
+        "High fever, severe pain, worsening after initial improvement → consider bacterial",
+        "Eye symptoms/neuro symptoms are red flags"
       ], "good")}
 
       ${section("Management (Primary Care)", [
         "Analgesia, saline irrigation",
-        "Consider intranasal steroid (esp. rhinitis/allergy features)",
-        "Antibiotics only if criteria met (local guidance)"
+        "Intranasal steroid if appropriate",
+        "Antibiotics only if indicated (local + NICE CKS)",
+        "Safety-net for orbital/neuro features"
       ])}
-
-      ${section("Red flags", [
-        "Periorbital swelling/erythema, reduced vision, painful eye movements",
-        "Severe frontal headache, neurological signs",
-        "Signs of sepsis"
-      ], "danger")}
 
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" }
       ])}
     `,
 
-    epistaxis: `
+    rhinitis: `
       ${section("Definition", [
-        "Nasal bleeding, commonly anterior (Little’s area)."
+        "Inflammation of nasal mucosa due to allergy (seasonal/perennial)."
       ])}
 
-      ${section("First aid (Primary Care)", [
-        "Sit forward, pinch soft part of nose 10–15 minutes",
-        "Clear visible clots if possible before pinching",
-        "Ice to bridge can help",
-        "Avoid nose picking/blowing afterwards"
+      ${section("Key features", [
+        "Sneezing",
+        "Nasal itch",
+        "Watery rhinorrhoea",
+        "Itchy/watery eyes",
+        "Often seasonal triggers"
+      ], "alt")}
+
+      ${section("Management (Primary Care)", [
+        "Trigger avoidance where possible",
+        "Intranasal steroid (most effective) if appropriate",
+        "Non-sedating antihistamine",
+        "Saline sprays/irrigation"
       ], "good")}
 
-      ${section("Quick assessment", [
-        "ABCDE if heavy bleed; quantify blood loss",
-        "Anticoagulants/antiplatelets, trauma, HTN history",
-        "Posterior bleed cues: blood into throat, hard to control"
-      ])}
-
-      ${section("Red flags", [
-        "Cannot control bleeding, haemodynamic compromise",
-        "Suspected posterior bleed",
-        "Bleeding disorder / anticoagulated with significant bleed"
-      ], "danger")}
-
       ${linksSection("Guidelines", [
-        { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" }
+        { label: "NICE CKS – Allergic rhinitis", href: "https://cks.nice.org.uk/topics/allergic-rhinitis/" }
       ])}
     `,
 
     vertigo: `
       ${section("Definition", [
-        "BPPV: brief episodic vertigo triggered by head movement (otoliths in semicircular canals)."
+        "Vertigo is a symptom. Differentiate peripheral causes from central causes (stroke)."
       ])}
 
-      ${section("Quick assessment", [
-        "Seconds-long vertigo with position change",
-        "No focal neurology (if present, not BPPV)",
-        "Consider Dix–Hallpike (if trained) to reproduce nystagmus"
+      ${section("BPPV (classic)", [
+        "Brief episodes (seconds–minutes)",
+        "Triggered by head movement/position change",
+        "No neuro deficits"
+      ], "alt")}
+
+      ${section("Vestibular neuritis/labyrinthitis", [
+        "Acute prolonged vertigo (hours–days)",
+        "Nausea/vomiting, gait unsteadiness",
+        "Hearing loss suggests labyrinthitis"
       ], "good")}
 
-      ${section("Management", [
-        "Repositioning manoeuvres (e.g., Epley) if appropriate",
-        "Advise slow movements, falls risk",
-        "Review if persistent or atypical"
-      ])}
-
-      ${section("Red flags (central causes)", [
-        "New focal neuro deficit, severe headache, ataxia",
-        "Continuous vertigo with central features",
-        "New unilateral hearing loss"
+      ${section("Red flags (central)", [
+        "New focal neuro deficit",
+        "Severe headache",
+        "New ataxia/inability to walk",
+        "Diplopia, dysarthria, limb weakness",
+        "Risk factors for stroke"
       ], "danger")}
 
       ${linksSection("Guidelines", [
@@ -690,118 +712,87 @@ function openWindow(key) {
       ])}
     `,
 
-    hearingloss: `
+    epistaxis: `
       ${section("Definition", [
-        "Sudden sensorineural hearing loss (SSNHL) is an ENT emergency. Treat as urgent."
+        "Bleeding from the nose (usually anterior; posterior bleeds can be significant)."
       ])}
 
       ${section("Quick assessment", [
-        "Onset <72 hours? unilateral? associated tinnitus/vertigo?",
-        "Otoscopic exam (exclude wax/OM)",
-        "Neuro symptoms? consider central causes"
+        "ABC approach if heavy bleed",
+        "Anticoagulants/antiplatelets?",
+        "Trauma?",
+        "Haemodynamic compromise?",
+        "Posterior bleed clues: bleeding into throat, hard to visualise"
       ], "good")}
 
-      ${section("Action", [
-        "Urgent same-day ENT assessment/referral pathway",
-        "Consider steroids per local ENT guidance (do not delay referral)"
-      ])}
-
-      ${section("Red flags", [
-        "Focal neuro deficits / severe headache",
-        "New facial weakness",
-        "Signs of stroke/TIA"
-      ], "danger")}
+      ${section("Management (Primary Care)", [
+        "Sit forward, pinch soft part of nose 10–15 minutes",
+        "Avoid swallowing blood",
+        "Topical vasoconstrictor if available per local protocol",
+        "Safety-net: recurrent bleeds, heavy bleed, syncope, anticoagulated"
+      ], "alt")}
 
       ${linksSection("Guidelines", [
-        { label: "NICE CKS – Hearing loss (sudden onset)", href: "https://cks.nice.org.uk/topics/hearing-loss-sudden-onset/" }
-      ])}
-    `,
-
-    foreignbody: `
-      ${section("Definition", [
-        "Foreign body in the nose (common in children). Often unilateral discharge/odour."
-      ])}
-
-      ${section("Quick assessment", [
-        "Unilateral discharge ± foul smell",
-        "Ask about what object (button battery is emergency)",
-        "Check airway/breathing if any concern"
-      ], "good")}
-
-      ${section("Management", [
-        "If visible and safe: consider gentle removal by trained clinician",
-        "Do NOT probe blindly",
-        "If not easily removed → refer to ENT/ED per local pathway"
-      ])}
-
-      ${section("Red flags", [
-        "Button battery suspected/confirmed (urgent)",
-        "Breathing difficulty/aspiration concern",
-        "Significant bleeding"
-      ], "danger")}
-
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Foreign body in nose", href: "https://cks.nice.org.uk/topics/foreign-body-in-nose/" }
+        { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" }
       ])}
     `
   };
 
-  createWindow(titleFor(key), content[key] || "<div class='section'><h4>Not found</h4><p>Content not found.</p></div>");
+  createWindow(titleFor(key), content[key] || section("Not found", ["Content not found."]));
 }
 
 /* Red flags */
 function openRedFlags(topic) {
   const flags = {
     ent: [
-      "Airway compromise (stridor, drooling, tripod position)",
-      "Severe systemic illness / sepsis features",
-      "Severe unilateral facial swelling or orbital symptoms",
-      "Sudden sensorineural hearing loss",
-      "Neuro deficits (stroke/TIA concern)",
-      "Uncontrolled bleeding (epistaxis) / haemodynamic compromise"
+      "Stridor, drooling, airway compromise",
+      "Sepsis features / rapidly worsening condition",
+      "Severe unilateral throat pain + trismus (quinsy)",
+      "Facial swelling/eye pain/vision changes (orbital complication)",
+      "Severe headache, meningism, neuro deficit (intracranial spread)",
+      "Heavy epistaxis or haemodynamic compromise"
     ],
-    sorethroat: [
-      "Stridor/drooling/airway concern",
-      "Trismus/uvula deviation (peritonsillar abscess)",
-      "Neck swelling, severe pain out of proportion",
-      "Sepsis features / dehydration"
-    ],
-    otitismedia: [
-      "Mastoid swelling/tenderness, protruding ear",
+    ear: [
+      "Mastoid swelling/tenderness",
       "Facial nerve weakness",
-      "Meningism / severe systemic illness"
+      "Severe pain in diabetes/immunosuppressed (malignant otitis externa)",
+      "Systemically unwell / sepsis"
     ],
-    otitisexterna: [
-      "Diabetes/immunocompromised with severe pain (malignant otitis externa)",
-      "Spreading cellulitis",
-      "Cranial nerve symptoms"
-    ],
-    sinusitis: [
-      "Periorbital swelling/redness, reduced vision, painful eye movements",
-      "Severe frontal headache / neurological signs",
+    mastoid: [
+      "Post-auricular swelling + protruding pinna",
+      "Fever/systemic illness",
+      "Facial nerve weakness",
       "Sepsis features"
     ],
-    epistaxis: [
-      "Cannot control bleeding",
-      "Suspected posterior bleed",
-      "Anticoagulated with significant bleed",
-      "Haemodynamic compromise"
+    throat: [
+      "Unable to swallow fluids / dehydration",
+      "Drooling/stridor/airway concern",
+      "Trismus, uvula deviation, hot potato voice (quinsy)",
+      "Unilateral neck swelling / significant voice change"
+    ],
+    quinsy: [
+      "Airway compromise",
+      "Unable to swallow, drooling",
+      "Significant trismus, uvula deviation",
+      "Sepsis features"
+    ],
+    sinus: [
+      "Periorbital swelling/redness",
+      "Painful eye movements / visual change",
+      "Severe frontal headache / meningism",
+      "Neuro deficit or reduced consciousness"
     ],
     vertigo: [
-      "New focal neuro deficit / ataxia",
+      "Any focal neuro deficit",
+      "New inability to walk/ataxia",
       "Severe headache",
-      "Continuous vertigo with central features",
-      "New unilateral hearing loss"
+      "Diplopia/dysarthria/limb weakness"
     ],
-    hearingloss: [
-      "Sudden unilateral hearing loss (<72 hours)",
-      "Neuro symptoms (stroke/TIA)",
-      "New facial weakness"
-    ],
-    foreignbody: [
-      "Button battery suspected",
-      "Breathing difficulty/aspiration concern",
-      "Significant bleeding"
+    bleed: [
+      "Heavy bleeding not stopping with pressure",
+      "Anticoagulated + ongoing bleed",
+      "Syncope/haemodynamic compromise",
+      "Suspected posterior bleed"
     ]
   };
 
@@ -824,14 +815,15 @@ function openRedFlags(topic) {
 function titleFor(key){
   const map = {
     comparisons: "Comparisons",
-    sorethroat: "Sore Throat / Tonsillitis",
-    otitismedia: "Otitis Media",
-    otitisexterna: "Otitis Externa",
-    sinusitis: "Sinusitis",
-    epistaxis: "Epistaxis",
-    vertigo: "Vertigo (BPPV)",
-    hearingloss: "Sudden Hearing Loss",
-    foreignbody: "Nasal Foreign Body"
+    otitis_externa: "Otitis Externa",
+    otitis_media: "Otitis Media (Acute)",
+    mastoiditis: "Mastoiditis",
+    sore_throat: "Sore Throat / Tonsillitis",
+    peritonsillar: "Peritonsillar Abscess (Quinsy)",
+    sinusitis: "Acute Sinusitis",
+    rhinitis: "Allergic Rhinitis",
+    vertigo: "Vertigo",
+    epistaxis: "Epistaxis"
   };
   return map[key] || key;
 }
