@@ -144,7 +144,23 @@
     border: 1px solid var(--border);
     z-index: 1000;
   }
+/* Mobile full-screen window fix */
+@media (max-width: 640px) {
+  .window{
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
 
+  .window-body{
+    max-height: calc(100vh - 54px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
   .window-header{
     padding: 10px 12px;
     background: var(--blue);
