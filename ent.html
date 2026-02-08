@@ -470,38 +470,69 @@ function openWindow(key) {
       </div>
     `,
 
-    otitis_externa: `
-      ${imageSection(
-        "Example appearance (licensed)",
-        "https://upload.wikimedia.org/wikipedia/commons/a/ab/Otite_externe.jpg",
-        "Otitis externa with inflamed external ear canal",
-        `Image: “Otite externe” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:Otite_externe.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
-      )}
-      ${section("Definition", [
-        "Inflammation/infection of the external auditory canal (often bacterial; can be fungal)."
-      ])}
-      ${section("Key features", [
-        "Otalgia (often severe), itch",
-        "Tragal/pinna tenderness",
-        "Otorrhoea",
-        "Canal swollen/debris; hearing reduced"
-      ], "alt")}
-      ${section("Quick assessment", [
-        "Fever/systemic illness?",
-        "Cellulitis around ear?",
-        "Diabetes/immunosuppression (risk malignant OE)",
-        "Can you see the tympanic membrane?"
-      ], "good")}
-      ${section("Management (Primary Care)", [
-        "Analgesia",
-        "Topical drops per local/NICE guidance",
-        "Keep ear dry; avoid cotton buds",
-        "Review if not improving"
-      ])}
-      ${linksSection("Guidelines", [
-        { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
-      ])}
-    `,
+  otitis_externa: `
+  ${imageSection(
+    "Example appearance (licensed)",
+    "https://upload.wikimedia.org/wikipedia/commons/a/ab/Otite_externe.jpg",
+    "Otitis externa with inflamed external ear canal",
+    `Image: “Otite externe” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:Otite_externe.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+  )}
+
+  ${section("Definition", [
+    "Inflammation/infection of the external auditory canal (often bacterial; can be fungal).",
+    "Common triggers: water exposure, trauma from cotton buds/hearing aids, eczema."
+  ])}
+
+  ${section("Typical presentation", [
+    "Otalgia (often severe) and itch",
+    "Pain worse with tragal pressure or pulling the pinna",
+    "Otorrhoea",
+    "Conductive hearing reduction (blocked canal)",
+    "Canal erythema/swelling ± debris"
+  ], "alt")}
+
+  ${section("Risk factors", [
+    "Swimming / water exposure",
+    "Cotton buds / scratching (micro-trauma)",
+    "Hearing aids / earplugs",
+    "Eczema/psoriasis of ear canal",
+    "Diabetes / immunosuppression (higher risk of complications)"
+  ], "good")}
+
+  ${section("Quick assessment (what to check)", [
+    "Vital signs if systemically unwell",
+    "Examine pinna/canal: swelling, discharge, debris",
+    "Can you visualise the tympanic membrane? (If not, be cautious about AOM perforation)",
+    "Peri-auricular cellulitis?",
+    "Cranial nerve symptoms? (facial weakness)",
+    "Diabetes/immunosuppression screen"
+  ])}
+
+  ${section("Treatment (Primary Care – use local guidance)", [
+    "Analgesia (often needs regular dosing initially)",
+    "Topical ear drops as per local/NICE (± steroid/antibiotic combinations)",
+    "Advise ear care: keep ear dry, avoid cotton buds",
+    "Consider ear wick if canal very swollen (depends on local service/skills)"
+  ], "alt")}
+
+  ${section("Safety net / follow-up", [
+    "Review if not improving in 48–72 hours or if worsening",
+    "Return urgently if fever/systemic illness develops",
+    "Return if spreading redness/swelling around ear"
+  ], "good")}
+
+  ${section("Red flags (think malignant otitis externa)", [
+    "Severe deep pain (especially night pain) in diabetes/immunosuppression",
+    "Granulation tissue in canal (if seen)",
+    "Cranial nerve palsy (e.g., facial weakness)",
+    "Systemically unwell / sepsis features"
+  ], "danger")}
+
+  ${linksSection("Guidelines", [
+    { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
+  ])}
+`,
+
 
     otitis_media: `
       ${imageSection(
