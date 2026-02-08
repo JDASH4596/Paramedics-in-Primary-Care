@@ -70,7 +70,7 @@
   .wrap{
     max-width: 1100px;
     margin: 18px auto;
-    padding: 0 16px 40px 16px;
+    padding: 0 16px 110px 16px; /* extra space for footer/banner */
   }
   .crumb{ margin: 8px 0 14px 0; }
   .crumb a{
@@ -259,11 +259,9 @@
       cursor: default; /* dragging is awkward on mobile */
     }
     .window-body{
-      /* make the body scroll inside the window and fill the remaining height */
       max-height: calc(100vh - 88px - 14px - 44px);
       overflow-y: auto;
     }
-    /* stop inner content forcing width */
     .window, .window *{
       max-width: 100%;
       box-sizing: border-box;
@@ -275,6 +273,120 @@
   @media (max-width: 520px){
     .page-title{ display: none; }
     .brand img{ height: 40px; }
+  }
+
+  /* ===== Site-wide footer + disclaimer banner + first-visit modal ===== */
+
+  .site-footer{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  }
+  .site-footer-inner{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .site-footer a{
+    color: var(--blue);
+    font-weight: 900;
+    text-decoration: none;
+  }
+  .site-footer a:hover{ text-decoration: underline; }
+
+  .disclaimer-banner{
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 54px; /* above footer */
+    width: min(1100px, calc(100% - 24px));
+    z-index: 60;
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+  }
+  .disclaimer-banner strong{ color: #0f172a; }
+  .banner-actions{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .btn{
+    border: 1px solid var(--border);
+    background: white;
+    color: #0f172a;
+    font-weight: 900;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .btn:hover{ filter: brightness(0.98); }
+
+  .modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.40);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* above your overlay/window */
+    padding: 16px;
+  }
+  .modal{
+    width: min(720px, 100%);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .modal-head{
+    padding: 12px 14px;
+    background: var(--blue);
+    color: white;
+    font-weight: 900;
+  }
+  .modal-body{
+    padding: 14px;
+    color: var(--text);
+  }
+  .modal-body p{
+    margin: 0 0 10px 0;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .modal-body ul{ margin: 0; padding-left: 18px; }
+  .modal-body li{ margin: 6px 0; }
+  .modal-foot{
+    padding: 12px 14px 14px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+  }
+
+  @media (max-width: 520px){
+    .site-footer-inner{ flex-direction: column; align-items: flex-start; }
+    .banner-actions{ flex-wrap: wrap; justify-content: flex-end; }
   }
 </style>
 </head>
@@ -855,7 +967,87 @@ function titleFor(key){
   };
   return map[key] || key;
 }
+
+/* ===== Persistent banner + first-visit modal logic ===== */
+(function initDisclaimers(){
+  // Banner dismiss
+  const bannerKey = "pipc_disclaimer_banner_dismissed";
+  const banner = document.getElementById("disclaimerBanner");
+  const dismissBtn = document.getElementById("bannerDismissBtn");
+
+  if (localStorage.getItem(bannerKey) === "1") {
+    banner.style.display = "none";
+  }
+  dismissBtn.addEventListener("click", () => {
+    localStorage.setItem(bannerKey, "1");
+    banner.style.display = "none";
+  });
+
+  // First visit modal
+  const firstVisitKey = "pipc_first_visit_ack";
+  const firstOverlay = document.getElementById("firstVisitOverlay");
+  const acknowledgeBtn = document.getElementById("acknowledgeBtn");
+
+  function lockScroll(){
+    document.body.style.overflow = "hidden";
+  }
+  function unlockScrollIfSafe(){
+    // only unlock if your clinical overlay isn't open
+    const clinicalOverlayOpen = overlay && overlay.style.display === "block";
+    if (!clinicalOverlayOpen) document.body.style.overflow = "";
+  }
+
+  if (localStorage.getItem(firstVisitKey) !== "1") {
+    firstOverlay.style.display = "flex";
+    lockScroll();
+  }
+
+  acknowledgeBtn.addEventListener("click", () => {
+    localStorage.setItem(firstVisitKey, "1");
+    firstOverlay.style.display = "none";
+    unlockScrollIfSafe();
+  });
+})();
 </script>
+
+<!-- Persistent disclaimer banner -->
+<div class="disclaimer-banner" id="disclaimerBanner" role="note" aria-label="Clinical disclaimer">
+  <div>
+    <strong>Clinical support only.</strong>
+    This site is a quick reference tool and does not replace clinical judgement or current guidelines.
+  </div>
+  <div class="banner-actions">
+    <button class="btn" id="bannerDismissBtn" type="button">Dismiss</button>
+    <a class="btn" href="about.html">Read more</a>
+  </div>
+</div>
+
+<!-- Site-wide footer -->
+<footer class="site-footer" aria-label="Footer">
+  <div class="site-footer-inner">
+    <div>© Paramedics in Primary Care · Quick reference only</div>
+    <div><a href="about.html">About / Disclaimer</a></div>
+  </div>
+</footer>
+
+<!-- First-visit modal -->
+<div class="modal-overlay" id="firstVisitOverlay" role="dialog" aria-modal="true" aria-label="First visit disclaimer">
+  <div class="modal">
+    <div class="modal-head">Before you use this tool</div>
+    <div class="modal-body">
+      <p>This resource is designed as a quick-reference aid for same-day, sudden and serious presentations.</p>
+      <ul>
+        <li>It does <strong>not</strong> replace clinical judgement.</li>
+        <li>It does <strong>not</strong> replace national/local guidance (e.g. NICE) or service protocols.</li>
+        <li>Escalate and follow emergency pathways if concerned.</li>
+      </ul>
+    </div>
+    <div class="modal-foot">
+      <a class="btn" href="about.html">Read full disclaimer</a>
+      <button class="btn" id="acknowledgeBtn" type="button">I understand</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
