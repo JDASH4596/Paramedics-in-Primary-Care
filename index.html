@@ -19,114 +19,156 @@
   }
 
   body{
-    font-family:Arial,sans-serif;
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
   }
 
+  /* HEADER (FULL LOGO) */
   .topbar{
-    background:var(--card);
-    border-bottom:1px solid var(--border);
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
 
   .topbar-inner{
-    max-width:1100px;
-    margin:0 auto;
-    padding:14px 16px;
-    display:flex;
-    align-items:center;
-    gap:14px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
 
   .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    text-decoration:none;
-    color:inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
   }
 
-  .brand img{height:56px}
+  .brand img{
+    height: 56px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-sub{
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
 
   .account{
-    margin-left:auto;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    font-weight:900;
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-weight: 900;
   }
 
-  .account a,.account button{
-    padding:8px 12px;
-    border-radius:10px;
-    font-weight:900;
-    cursor:pointer;
-    font-size:0.9rem;
-    border:1px solid var(--border);
-    background:white;
+  .account a, .account button{
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    background: white;
+    color: #0f172a;
+    text-decoration: none;
   }
 
-  .account a{
-    background:var(--blue);
+  .account a#loginBtn{
+    background: var(--blue);
+    color: white;
+    border: 0;
+  }
+
+  .dev-pill{
+    background:#065f46;
     color:white;
-    border:0;
-    text-decoration:none;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:900;
   }
 
+  /* CONTENT */
   .wrap{
-    max-width:1100px;
-    margin:20px auto;
-    padding:0 16px 40px;
+    max-width: 1100px;
+    margin: 18px auto;
+    padding: 0 16px 40px 16px;
   }
 
-  h1{margin:18px 0 8px}
-  p.sub{color:var(--muted)}
+  h1{
+    margin: 18px 0 8px 0;
+    font-size: 2.1rem;
+  }
 
+  p.sub{
+    margin: 0 0 18px 0;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* SYSTEM TILES */
   .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:14px;
-    margin-top:16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
   }
 
   .tile{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-    position:relative;
-    cursor:pointer;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative;
+    cursor: pointer; /* whole tile clickable */
+    transition: transform 0.06s ease, box-shadow 0.12s ease;
   }
 
   .tile:hover{
-    box-shadow:0 10px 22px rgba(0,0,0,0.08);
-    transform:translateY(-1px);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
   }
 
-  .tile h3{margin:0 0 6px}
-  .tile p{margin:0 0 12px;color:var(--muted);font-size:.92rem}
+  .tile h3{
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+  }
+
+  .tile p{
+    margin: 0 0 12px 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
 
   .tile a{
-    background:var(--blue);
-    color:white;
-    padding:8px 10px;
-    border-radius:9px;
-    font-weight:900;
-    font-size:.86rem;
-    text-decoration:none;
+    display: inline-block;
+    text-decoration: none;
+    background: var(--blue);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 9px;
+    font-weight: 800;
+    font-size: 0.86rem;
   }
 
   /* LOCKED STATE */
-  .locked{
-    opacity:.45;
-    filter:grayscale(50%);
+  .tile.locked{
+    opacity: 0.55;
+    filter: grayscale(35%);
   }
 
-  .locked a{
-    background:#cbd5e1;
-    color:#334155;
+  .tile.locked a{
+    background: #cbd5e1;
+    color: #334155;
   }
 
   .lock-badge{
@@ -141,13 +183,9 @@
     font-weight:900;
   }
 
-  .dev-pill{
-    background:#065f46;
-    color:white;
-    padding:6px 10px;
-    border-radius:999px;
-    font-size:.78rem;
-    font-weight:900;
+  @media (max-width: 520px){
+    .brand img{ height: 50px; }
+    .brand-sub{ display:none; }
   }
 </style>
 </head>
@@ -156,52 +194,86 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html">
-      <img src="assets/pipc-full.png" alt="PIPC logo">
+    <a class="brand" href="index.html" title="PIPC Home">
+      <img src="assets/pipc-full.png" alt="Paramedics in Primary Care (PIPC) logo" />
+      <div>
+        <div class="brand-sub">Clinical quick-reference for paramedics in Primary Care</div>
+      </div>
     </a>
 
     <div class="account">
       <span id="modeLabel">Guest</span>
-      <button id="devBtn">Dev mode</button>
+      <button id="devBtn" type="button">Dev mode</button>
       <a id="loginBtn" href="login.html">Log in</a>
-      <button id="logoutBtn" style="display:none;">Log out</button>
+      <button id="logoutBtn" type="button" style="display:none;">Log out</button>
     </div>
   </div>
 </header>
 
 <div class="wrap">
   <h1>Systems</h1>
-  <p class="sub">Free access to Respiratory. Create an account to unlock the rest.</p>
+  <p class="sub">
+    Click a system to open quick clinical summaries, red flags, and guideline links.
+    Built for paramedics new to Primary Care: simple, fast, and practical.
+  </p>
 
   <div class="grid">
 
     <!-- FREE -->
     <div class="tile" data-href="respiratory.html">
       <h3>🫁 Respiratory</h3>
-      <p>Asthma, URTI, COPD, pneumonia, PE, red flags.</p>
+      <p>Asthma, URTI, bronchitis, COPD, pneumonia, PE, pneumothorax, HF + comparisons + red flags.</p>
       <a href="respiratory.html" onclick="event.stopPropagation();">Open</a>
     </div>
 
-    <!-- LOCKED -->
-    <div class="tile locked" data-lock data-href="neuro.html">
-      <div class="lock-badge">🔒 Account</div>
-      <h3>🧠 Neurology</h3>
-      <p>Headache, seizures, TIA/stroke.</p>
-      <a href="neuro.html" onclick="event.stopPropagation();">Locked</a>
-    </div>
-
+    <!-- LOCKED UNTIL LOGIN -->
     <div class="tile locked" data-lock data-href="ent.html">
       <div class="lock-badge">🔒 Account</div>
       <h3>👂 ENT</h3>
-      <p>Otitis, sinusitis, sore throat.</p>
+      <p>Otitis, sinusitis, sore throat, vertigo + red flags + comparisons.</p>
       <a href="ent.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="neuro.html">
+      <div class="lock-badge">🔒 Account</div>
+      <h3>🧠 Neurology</h3>
+      <p>Headache, seizures, TIA/stroke, red flags.</p>
+      <a href="neuro.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="cv.html">
+      <div class="lock-badge">🔒 Account</div>
+      <h3>💓 Cardiovascular</h3>
+      <p>Chest pain, AF, HTN urgency, heart failure.</p>
+      <a href="cv.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="abdo.html">
+      <div class="lock-badge">🔒 Account</div>
+      <h3>🍽️ Abdominal</h3>
+      <p>Abdo pain pathways, appendicitis clues, biliary, gastroenteritis.</p>
+      <a href="abdo.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="gu.html">
+      <div class="lock-badge">🔒 Account</div>
+      <h3>🚻 Genitourinary</h3>
+      <p>UTI, pyelonephritis, renal colic, testicular pain red flags.</p>
+      <a href="gu.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="skin.html">
+      <div class="lock-badge">🔒 Account</div>
+      <h3>🧴 Skin</h3>
+      <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
+      <a href="skin.html" onclick="event.stopPropagation();">Locked</a>
     </div>
 
   </div>
 </div>
 
 <script>
-/* ===== CONFIG ===== */
+/* ===== CONFIG: paste yours ===== */
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
 
@@ -221,11 +293,11 @@ function go(href){ window.location.href = href; }
 async function init(){
   let loggedIn = false;
 
-  if(DEV_MODE){
+  if (DEV_MODE){
     loggedIn = true;
     modeLabel.innerHTML = '<span class="dev-pill">DEV MODE</span>';
     devBtn.style.display = "none";
-  }else{
+  } else {
     try{
       const { data } = await sb.auth.getSession();
       loggedIn = !!data.session;
@@ -237,21 +309,22 @@ async function init(){
   }
 
   loginBtn.style.display = loggedIn ? "none" : "inline-block";
-  logoutBtn.style.display = loggedIn && !DEV_MODE ? "inline-block" : "none";
+  logoutBtn.style.display = (loggedIn && !DEV_MODE) ? "inline-block" : "none";
 
-  document.querySelectorAll(".tile").forEach(tile=>{
+  document.querySelectorAll(".tile").forEach(tile => {
     const href = tile.getAttribute("data-href");
-    const locked = tile.hasAttribute("data-lock");
+    const requiresLogin = tile.hasAttribute("data-lock");
 
-    if(loggedIn){
+    if (loggedIn){
       tile.classList.remove("locked");
       tile.querySelector(".lock-badge")?.remove();
       tile.onclick = () => go(href);
+
       const a = tile.querySelector("a");
-      if(a && a.textContent === "Locked") a.textContent = "Open";
-    }else{
+      if (a && a.textContent.trim().toLowerCase() === "locked") a.textContent = "Open";
+    } else {
       tile.onclick = () => {
-        if(locked) go("signup.html");
+        if (requiresLogin) go("signup.html");
         else go(href);
       };
     }
@@ -262,7 +335,7 @@ devBtn.onclick = () => {
   window.location.href = "index.html?dev=true";
 };
 
-logoutBtn.onclick = async ()=>{
+logoutBtn.onclick = async () => {
   await sb.auth.signOut();
   window.location.href = "index.html";
 };
@@ -272,4 +345,3 @@ init();
 
 </body>
 </html>
-
