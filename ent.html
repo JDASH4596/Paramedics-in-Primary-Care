@@ -143,24 +143,14 @@
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
     z-index: 1000;
-  }
-/* Mobile full-screen window fix */
-@media (max-width: 640px) {
-  .window{
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0;
+
+    /* NEW: makes side-by-side comparisons possible on desktop */
+    resize: both;
+    overflow: hidden;
+    min-width: 320px;
+    min-height: 260px;
   }
 
-  .window-body{
-    max-height: calc(100vh - 54px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
   .window-header{
     padding: 10px 12px;
     background: var(--blue);
@@ -188,6 +178,33 @@
     background: rgba(255,255,255,0.15);
   }
 
+  /* ✅ MOBILE FIX: window becomes full screen; body becomes true scroll area */
+  @media (max-width: 640px){
+    .window{
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      resize: none;
+      min-width: 0;
+      min-height: 0;
+    }
+    .window-header{
+      border-radius: 0;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .window-body{
+      height: calc(100vh - 54px); /* real height = reliable scrolling */
+      max-height: none;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* iPhone momentum scroll */
+      overscroll-behavior: contain;
+    }
+  }
+
   /* SECTION CARDS */
   .section{
     border: 1px solid var(--sec-border);
@@ -196,18 +213,9 @@
     padding: 12px;
     margin: 10px 0;
   }
-  .section.alt{
-    border-color: var(--sec2-border);
-    background: var(--sec2-bg);
-  }
-  .section.good{
-    border-color: var(--sec3-border);
-    background: var(--sec3-bg);
-  }
-  .section.danger{
-    border-color: var(--danger-border);
-    background: var(--danger-bg);
-  }
+  .section.alt{ border-color: var(--sec2-border); background: var(--sec2-bg); }
+  .section.good{ border-color: var(--sec3-border); background: var(--sec3-bg); }
+  .section.danger{ border-color: var(--danger-border); background: var(--danger-bg); }
 
   .section h4{
     margin: 0 0 8px 0;
@@ -215,11 +223,7 @@
     letter-spacing: 0.2px;
     text-transform: uppercase;
   }
-
-  .section ul{
-    margin: 0;
-    padding-left: 18px;
-  }
+  .section ul{ margin: 0; padding-left: 18px; }
   .section li{ margin: 6px 0; }
 
   .mini-note{
@@ -294,7 +298,7 @@
   <div class="crumb"><a href="index.html">← Home</a></div>
 
   <h1>ENT</h1>
-  <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the subtle 🚩 pill for red flags.</p>
+  <p class="sub">Tap a tile for detail. On desktop you can open multiple windows and drag/resize them for side-by-side comparison.</p>
 
   <div class="grid">
     <div class="tile" onclick="openWindow('comparisons')">
@@ -346,8 +350,8 @@
     </div>
 
     <div class="tile" onclick="openWindow('vertigo')">
-      <h3>🌀 Vertigo (BPPV vs Vestibular Neuritis)</h3>
-      <p>Spinning • triggers • neuro red flags matter</p>
+      <h3>🌀 Vertigo</h3>
+      <p>BPPV vs vestibular neuritis • central red flags</p>
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('vertigo')">🚩</div>
     </div>
 
@@ -361,11 +365,18 @@
 
 <script>
 let zIndexCounter = 1000;
+let windowCount = 0;
 
 function createWindow(title, html) {
   const win = document.createElement("div");
   win.className = "window";
   win.style.zIndex = ++zIndexCounter;
+
+  // NEW: cascade windows so you can open two and actually see both
+  windowCount++;
+  const offset = (windowCount % 6) * 26; // gentle cascade
+  win.style.top = (110 + offset) + "px";
+  win.style.left = (120 + offset) + "px";
 
   win.innerHTML = `
     <div class="window-header">
@@ -375,6 +386,10 @@ function createWindow(title, html) {
     <div class="window-body">${html}</div>
   `;
 
+  // NEW: click anywhere on window to bring to front
+  win.addEventListener("mousedown", () => { win.style.zIndex = ++zIndexCounter; });
+  win.addEventListener("touchstart", () => { win.style.zIndex = ++zIndexCounter; }, {passive:true});
+
   document.body.appendChild(win);
   makeDraggable(win);
 }
@@ -383,6 +398,7 @@ function makeDraggable(win) {
   const header = win.querySelector(".window-header");
   let dragging = false, offsetX = 0, offsetY = 0;
 
+  // Desktop drag only (mobile is full-screen; dragging not needed)
   header.addEventListener("mousedown", (e) => {
     dragging = true;
     win.style.zIndex = ++zIndexCounter;
@@ -444,34 +460,13 @@ function openWindow(key) {
         <h4>Otitis externa vs Otitis media (quick cues)</h4>
         <table class="compare">
           <tr><th>Feature</th><th>Otitis externa</th><th>Otitis media (AOM)</th></tr>
-          <tr><td>Pain</td><td class="midTxt">Often severe, worse with tragal/pinna movement</td><td class="midTxt">Deep ear pain, often with systemic symptoms</td></tr>
+          <tr><td>Pain</td><td class="midTxt">Severe, worse with tragal/pinna movement</td><td class="midTxt">Deep ear pain + systemic symptoms</td></tr>
           <tr><td>Discharge</td><td class="midTxt">Common</td><td class="goodTxt">Less common (unless perforation)</td></tr>
-          <tr><td>TM view</td><td class="goodTxt">May be hard to see (canal swollen)</td><td class="badTxt">Bulging/erythematous TM</td></tr>
+          <tr><td>TM view</td><td class="goodTxt">Often obscured (swollen canal)</td><td class="badTxt">Bulging/erythematous TM</td></tr>
           <tr><td>Hearing</td><td class="midTxt">Reduced (blocked canal)</td><td class="midTxt">Reduced (middle ear effusion)</td></tr>
-          <tr><td>Tx</td><td>Topical drops + analgesia (local/NICE)</td><td>Analgesia; antibiotics only if indicated (local/NICE)</td></tr>
+          <tr><td>Tx</td><td>Topical drops + analgesia (local/NICE)</td><td>Analgesia; abx if indicated (local/NICE)</td></tr>
         </table>
-      </div>
-
-      <div class="section alt">
-        <h4>Sore throat: viral vs bacterial vs quinsy</h4>
-        <table class="compare">
-          <tr><th>Clue</th><th>Viral</th><th>Bacterial (likely)</th><th>Quinsy</th></tr>
-          <tr><td>Systemic</td><td class="goodTxt">Mild</td><td class="midTxt">Fever, unwell</td><td class="badTxt">Very unwell</td></tr>
-          <tr><td>Exam</td><td>Coryza/cough common</td><td>Exudate + tender nodes</td><td class="badTxt">Trismus, uvula deviation, unilateral swelling</td></tr>
-          <tr><td>Voice</td><td>Normal</td><td>Normal</td><td class="badTxt">“Hot potato” voice</td></tr>
-          <tr><td>Action</td><td>Supportive</td><td>Score + consider antibiotics</td><td class="badTxt">Urgent same-day ENT/ED</td></tr>
-        </table>
-      </div>
-
-      <div class="section good">
-        <h4>Sinusitis vs allergic rhinitis</h4>
-        <table class="compare">
-          <tr><th>Feature</th><th>Sinusitis</th><th>Allergic rhinitis</th></tr>
-          <tr><td>Discharge</td><td class="midTxt">Often purulent</td><td class="goodTxt">Clear/watery</td></tr>
-          <tr><td>Pain/pressure</td><td class="midTxt">Facial pain/pressure, worse bending</td><td class="goodTxt">Itch more prominent</td></tr>
-          <tr><td>Sneezing/itch</td><td class="goodTxt">Less prominent</td><td class="badTxt">Prominent</td></tr>
-          <tr><td>Fever</td><td class="midTxt">Sometimes</td><td class="goodTxt">No</td></tr>
-        </table>
+        <div class="mini-note">Tip: open this window + another condition window and resize them side-by-side.</div>
       </div>
     `,
 
@@ -482,32 +477,27 @@ function openWindow(key) {
         "Otitis externa with inflamed external ear canal",
         `Image: “Otite externe” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:Otite_externe.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
       )}
-
       ${section("Definition", [
         "Inflammation/infection of the external auditory canal (often bacterial; can be fungal)."
       ])}
-
       ${section("Key features", [
         "Otalgia (often severe), itch",
         "Tragal/pinna tenderness",
         "Otorrhoea",
         "Canal swollen/debris; hearing reduced"
       ], "alt")}
-
       ${section("Quick assessment", [
-        "Check for fever/systemic illness",
-        "Look for cellulitis around ear",
-        "Diabetes/immunosuppression (risk of malignant otitis externa)",
+        "Fever/systemic illness?",
+        "Cellulitis around ear?",
+        "Diabetes/immunosuppression (risk malignant OE)",
         "Can you see the tympanic membrane?"
       ], "good")}
-
       ${section("Management (Primary Care)", [
         "Analgesia",
         "Topical drops per local/NICE guidance",
         "Keep ear dry; avoid cotton buds",
         "Review if not improving"
       ])}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
       ])}
@@ -520,31 +510,26 @@ function openWindow(key) {
         "Bulging tympanic membrane in acute otitis media",
         `Image: “Acute Otitis Media Stage of Resolution” — CC BY 4.0. <a href="https://commons.wikimedia.org/wiki/File:Acute_Otitis_Media_Stage_of_Resolution.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence</a>`
       )}
-
       ${section("Definition", [
         "Acute infection of the middle ear (often viral; can be bacterial)."
       ])}
-
       ${section("Key features", [
         "Otalgia, fever, irritability (children)",
         "Bulging/erythematous tympanic membrane",
         "Hearing reduction",
         "Possible otorrhoea if perforation"
       ], "alt")}
-
       ${section("Quick assessment", [
         "Systemic illness/sepsis features?",
         "Mastoid tenderness/swelling?",
         "Immunosuppression/frailty",
         "Duration and severity"
       ], "good")}
-
       ${section("Management (Primary Care)", [
         "Analgesia first-line",
         "Antibiotics only if indicated (local + NICE CKS criteria)",
         "Safety-net: worsening pain, fever, mastoid symptoms"
       ])}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Otitis media (acute)", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
       ])}
@@ -555,27 +540,23 @@ function openWindow(key) {
         "Example appearance (licensed)",
         "https://upload.wikimedia.org/wikipedia/commons/f/f9/Mastoiditis1.jpg",
         "Post-auricular erythema and swelling consistent with mastoiditis",
-        `Image: “Mastoiditis1” — CC BY-SA 3.0 (licence options listed on file page). <a href="https://commons.wikimedia.org/wiki/File:Mastoiditis1.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+        `Image: “Mastoiditis1” — CC BY-SA 3.0 (see file page). <a href="https://commons.wikimedia.org/wiki/File:Mastoiditis1.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
       )}
-
       ${section("Definition", [
-        "Complication of otitis media with infection/inflammation of the mastoid air cells.",
+        "Complication of otitis media with infection/inflammation of mastoid air cells.",
         "Treat as time-critical: often needs same-day hospital assessment."
       ])}
-
       ${section("Key features", [
         "Post-auricular erythema/swelling/tenderness",
         "Protruding pinna",
         "Fever, systemic illness",
         "Otalgia +/- otorrhoea"
       ], "alt")}
-
       ${section("Action", [
         "Urgent same-day ED/ENT assessment",
         "Consider sepsis pathway if indicated",
         "Do not delay if red flags present"
       ], "danger")}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Otitis media (acute)", href: "https://cks.nice.org.uk/topics/otitis-media-acute/" }
       ])}
@@ -585,7 +566,6 @@ function openWindow(key) {
       ${section("Definition", [
         "Acute sore throat may be viral or bacterial tonsillitis/pharyngitis."
       ])}
-
       ${section("Key features", [
         "Odynophagia",
         "Fever, malaise",
@@ -593,20 +573,17 @@ function openWindow(key) {
         "Tender anterior cervical nodes",
         "Cough/coryza suggests viral"
       ], "alt")}
-
       ${section("Quick assessment", [
         "Hydration + ability to swallow",
         "Airway risk? drooling/stridor?",
         "Consider scoring (e.g. FeverPAIN/Centor) per local approach",
-        "Consider EBV if significant fatigue/generalised lymphadenopathy"
+        "Consider EBV if fatigue + generalised lymphadenopathy"
       ], "good")}
-
       ${section("Management (Primary Care)", [
         "Analgesia, fluids, safety-net",
         "Consider antibiotics if criteria met (local + NICE CKS)",
-        "Advise return if worsening, unilateral swelling, trismus, breathing difficulty"
+        "Return if unilateral swelling, trismus, breathing difficulty"
       ])}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Sore throat (acute)", href: "https://cks.nice.org.uk/topics/sore-throat-acute/" }
       ])}
@@ -616,14 +593,12 @@ function openWindow(key) {
       ${imageSection(
         "Example appearance (licensed)",
         "https://upload.wikimedia.org/wikipedia/commons/3/39/PeritonsilarAbsess.jpg",
-        "Right-sided peritonsillar abscess with uvula deviation",
+        "Peritonsillar abscess with uvula deviation",
         `Image: “PeritonsilarAbsess” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:PeritonsilarAbsess.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
       )}
-
       ${section("Definition", [
         "Peritonsillar abscess (quinsy) – complication of tonsillitis; urgent condition."
       ])}
-
       ${section("Key features (classic)", [
         "Severe unilateral sore throat",
         "Trismus",
@@ -631,12 +606,10 @@ function openWindow(key) {
         "Uvula deviation",
         "Drooling; unable to swallow"
       ], "alt")}
-
       ${section("Action", [
         "Same-day urgent ENT/ED assessment",
         "Airway risk: escalate immediately if breathing difficulty"
       ], "danger")}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Sore throat (acute)", href: "https://cks.nice.org.uk/topics/sore-throat-acute/" }
       ])}
@@ -644,9 +617,8 @@ function openWindow(key) {
 
     sinusitis: `
       ${section("Definition", [
-        "Inflammation/infection of the paranasal sinuses (often viral; sometimes bacterial)."
+        "Inflammation/infection of paranasal sinuses (often viral; sometimes bacterial)."
       ])}
-
       ${section("Key features", [
         "Facial pain/pressure (worse bending)",
         "Nasal obstruction",
@@ -654,20 +626,17 @@ function openWindow(key) {
         "Hyposmia",
         "Tooth pain (sometimes)"
       ], "alt")}
-
       ${section("Quick assessment", [
-        "Duration: <10 days often viral",
-        "High fever, severe pain, worsening after initial improvement → consider bacterial",
+        "Duration <10 days often viral",
+        "High fever/severe pain/worse after initial improvement → consider bacterial",
         "Eye symptoms/neuro symptoms are red flags"
       ], "good")}
-
       ${section("Management (Primary Care)", [
         "Analgesia, saline irrigation",
         "Intranasal steroid if appropriate",
         "Antibiotics only if indicated (local + NICE CKS)",
         "Safety-net for orbital/neuro features"
       ])}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" }
       ])}
@@ -677,7 +646,6 @@ function openWindow(key) {
       ${section("Definition", [
         "Inflammation of nasal mucosa due to allergy (seasonal/perennial)."
       ])}
-
       ${section("Key features", [
         "Sneezing",
         "Nasal itch",
@@ -685,14 +653,12 @@ function openWindow(key) {
         "Itchy/watery eyes",
         "Often seasonal triggers"
       ], "alt")}
-
       ${section("Management (Primary Care)", [
         "Trigger avoidance where possible",
         "Intranasal steroid (most effective) if appropriate",
         "Non-sedating antihistamine",
         "Saline sprays/irrigation"
       ], "good")}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Allergic rhinitis", href: "https://cks.nice.org.uk/topics/allergic-rhinitis/" }
       ])}
@@ -702,19 +668,16 @@ function openWindow(key) {
       ${section("Definition", [
         "Vertigo is a symptom. Differentiate peripheral causes from central causes (stroke)."
       ])}
-
       ${section("BPPV (classic)", [
         "Brief episodes (seconds–minutes)",
         "Triggered by head movement/position change",
         "No neuro deficits"
       ], "alt")}
-
       ${section("Vestibular neuritis/labyrinthitis", [
         "Acute prolonged vertigo (hours–days)",
         "Nausea/vomiting, gait unsteadiness",
         "Hearing loss suggests labyrinthitis"
       ], "good")}
-
       ${section("Red flags (central)", [
         "New focal neuro deficit",
         "Severe headache",
@@ -722,7 +685,6 @@ function openWindow(key) {
         "Diplopia, dysarthria, limb weakness",
         "Risk factors for stroke"
       ], "danger")}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Vertigo", href: "https://cks.nice.org.uk/topics/vertigo/" }
       ])}
@@ -732,7 +694,6 @@ function openWindow(key) {
       ${section("Definition", [
         "Bleeding from the nose (usually anterior; posterior bleeds can be significant)."
       ])}
-
       ${section("Quick assessment", [
         "ABC approach if heavy bleed",
         "Anticoagulants/antiplatelets?",
@@ -740,14 +701,12 @@ function openWindow(key) {
         "Haemodynamic compromise?",
         "Posterior bleed clues: bleeding into throat, hard to visualise"
       ], "good")}
-
       ${section("Management (Primary Care)", [
         "Sit forward, pinch soft part of nose 10–15 minutes",
         "Avoid swallowing blood",
         "Topical vasoconstrictor if available per local protocol",
         "Safety-net: recurrent bleeds, heavy bleed, syncope, anticoagulated"
       ], "alt")}
-
       ${linksSection("Guidelines", [
         { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" }
       ])}
