@@ -1,502 +1,250 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Paramedics in Primary Care – PIPC</title>
 
+<!-- Supabase CDN (NO modules) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   :root{
-    --bg: #f3f5f8;
-    --card: #ffffff;
-    --text: #1f2937;
-    --muted: #6b7280;
-    --blue: #1e88e5;
-    --border: #e5e7eb;
-
-    --shadow: 0 6px 18px rgba(0,0,0,0.12);
+    --bg:#f3f5f8;
+    --card:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --blue:#1e88e5;
+    --border:#e5e7eb;
   }
 
   body{
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
+    font-family:Arial,sans-serif;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
   }
 
-  /* HEADER (FULL LOGO) */
   .topbar{
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background:var(--card);
+    border-bottom:1px solid var(--border);
   }
 
   .topbar-inner{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    max-width:1100px;
+    margin:0 auto;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
   }
 
   .brand{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:inherit;
   }
 
-  .brand img{
-    height: 56px;          /* full logo size */
-    width: auto;
-    display: block;
+  .brand img{height:56px}
+
+  .account{
+    margin-left:auto;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-weight:900;
   }
 
-  .brand-sub{
-    color: var(--muted);
-    font-weight: 700;
-    font-size: 0.95rem;
+  .account a,.account button{
+    background:var(--blue);
+    color:white;
+    border:0;
+    border-radius:10px;
+    padding:8px 12px;
+    font-weight:900;
+    cursor:pointer;
+    text-decoration:none;
   }
 
-  /* CONTENT */
+  .account button{
+    background:#fff;
+    color:#0f172a;
+    border:1px solid var(--border);
+  }
+
   .wrap{
-    max-width: 1100px;
-    margin: 18px auto;
-    padding: 0 16px 110px 16px; /* extra for footer/banner */
+    max-width:1100px;
+    margin:20px auto;
+    padding:0 16px 40px;
   }
 
-  h1{
-    margin: 18px 0 8px 0;
-    font-size: 2.1rem;
-  }
+  h1{margin:18px 0 8px}
 
-  p.sub{
-    margin: 0 0 18px 0;
-    color: var(--muted);
-    line-height: 1.4;
-  }
+  p.sub{color:var(--muted)}
 
-  /* SYSTEM TILES */
   .grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-    margin-top: 16px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:14px;
+    margin-top:16px;
   }
 
   .tile{
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    position:relative;
   }
 
-  .tile h3{
-    margin: 0 0 6px 0;
-    font-size: 1.05rem;
-  }
+  .tile h3{margin:0 0 6px}
 
-  .tile p{
-    margin: 0 0 12px 0;
-    color: var(--muted);
-    font-size: 0.92rem;
-  }
+  .tile p{color:var(--muted);font-size:.92rem}
 
   .tile a{
-    display: inline-block;
-    text-decoration: none;
-    background: var(--blue);
-    color: white;
-    padding: 8px 10px;
-    border-radius: 9px;
-    font-weight: 800;
-    font-size: 0.86rem;
+    display:inline-block;
+    margin-top:10px;
+    background:var(--blue);
+    color:white;
+    padding:8px 10px;
+    border-radius:9px;
+    font-weight:900;
+    text-decoration:none;
   }
 
-  .coming{
-    background: #eef2ff;
-    color: #1e3a8a;
+  /* LOCKED */
+  .locked{
+    opacity:.45;
+    filter:grayscale(50%);
   }
 
-  /* ===== Footer + banner + modal ===== */
-
-  .site-footer{
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    z-index: 50;
-    background: var(--card);
-    border-top: 1px solid var(--border);
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-  }
-  .site-footer-inner{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-  .site-footer a{
-    color: var(--blue);
-    font-weight: 900;
-    text-decoration: none;
-  }
-  .site-footer a:hover{ text-decoration: underline; }
-
-  .disclaimer-banner{
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 54px; /* above footer */
-    width: min(1100px, calc(100% - 24px));
-    z-index: 60;
-    background: #e3f2fd;
-    border: 1px solid #bbdefb;
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    justify-content: space-between;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.10);
-  }
-  .disclaimer-banner strong{ color: #0f172a; }
-  .banner-actions{
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    white-space: nowrap;
-  }
-  .btn{
-    border: 1px solid var(--border);
-    background: white;
-    color: #0f172a;
-    font-weight: 900;
-    padding: 8px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    text-decoration: none;
-  }
-  .btn:hover{ filter: brightness(0.98); }
-
-  /* First-visit modal */
-  .modal-overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.40);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    padding: 16px;
-  }
-  .modal{
-    width: min(720px, 100%);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-  .modal-head{
-    padding: 12px 14px;
-    background: var(--blue);
-    color: white;
-    font-weight: 900;
-  }
-  .modal-body{
-    padding: 14px;
-    color: var(--text);
-  }
-  .modal-body p{
-    margin: 0 0 10px 0;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-  .modal-body ul{ margin: 0; padding-left: 18px; }
-  .modal-body li{ margin: 6px 0; }
-  .modal-foot{
-    padding: 12px 14px 14px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    border-top: 1px solid var(--border);
-    background: #fafafa;
+  .locked a{
+    pointer-events:none;
+    background:#cbd5e1;
+    color:#334155;
   }
 
-  @media (max-width: 520px){
-    .brand img{ height: 50px; }
-    .site-footer-inner{ flex-direction: column; align-items: flex-start; }
-    .banner-actions{ flex-wrap: wrap; justify-content: flex-end; }
+  .lock-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:#0f172a;
+    color:white;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:900;
+  }
+
+  .lock-overlay{
+    position:absolute;
+    inset:0;
+    cursor:pointer;
   }
 </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="module">
-  import { supabase } from "./supabase-client.js";
-
-  function lockAllProTiles(){
-    document.querySelectorAll("[data-requires-login='true']").forEach(tile => {
-      tile.classList.add("locked");
-      tile.onclick = () => window.location.href = "signup.html";
-    });
-  }
-
-  function unlockAllProTiles(){
-    document.querySelectorAll("[data-requires-login='true']").forEach(tile => {
-      tile.classList.remove("locked");
-      // restore destination from data-href
-      const href = tile.getAttribute("data-href");
-      tile.onclick = () => window.location.href = href;
-
-      // restore button text
-      const a = tile.querySelector("a");
-      if (a) {
-        a.textContent = "Open";
-        a.style.pointerEvents = "auto";
-        a.style.background = "";
-        a.style.color = "";
-      }
-    });
-  }
-
-  async function main(){
-    const { data } = await supabase.auth.getSession();
-    const isLoggedIn = !!data.session;
-
-    if (isLoggedIn) unlockAllProTiles();
-    else lockAllProTiles();
-
-    // account UI
-    const status = document.getElementById("accountStatus");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (status) status.textContent = isLoggedIn ? "Logged in" : "Guest";
-    if (loginBtn) loginBtn.style.display = isLoggedIn ? "none" : "inline-block";
-    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? "inline-block" : "none";
-
-    if (logoutBtn){
-      logoutBtn.addEventListener("click", async () => {
-        await supabase.auth.signOut();
-        window.location.reload();
-      });
-    }
-  }
-
-  main();
-</script>
 
 <body>
 
 <header class="topbar">
   <div class="topbar-inner">
-    <!-- ✅ FULL LOGO ON MAIN PAGE -->
-    <a class="brand" href="index.html" title="PIPC Home">
-      <img src="assets/pipc-full.png" alt="Paramedics in Primary Care (PIPC) logo" />
-      <div>
-        <div class="brand-sub">Clinical quick-reference for paramedics in Primary Care</div>
-      </div>
+    <a class="brand" href="index.html">
+      <img src="assets/pipc-full.png" alt="PIPC logo">
     </a>
+
+    <div class="account">
+      <span id="userStatus">Guest</span>
+      <a id="loginBtn" href="login.html">Log in</a>
+      <button id="logoutBtn" style="display:none">Log out</button>
+    </div>
   </div>
 </header>
 
 <div class="wrap">
   <h1>Systems</h1>
-  <p class="sub">
-    Click a system to open quick clinical summaries, red flags, and guideline links.
-    Built for paramedics new to Primary Care: simple, fast, and practical.
-  </p>
+  <p class="sub">Free access to Respiratory. Create an account to unlock the rest.</p>
 
   <div class="grid">
 
+    <!-- FREE -->
     <div class="tile">
       <h3>🫁 Respiratory</h3>
-      <p>Asthma, URTI, bronchitis, COPD, pneumonia, PE, pneumothorax, HF + comparisons + red flags.</p>
+      <p>Asthma, URTI, COPD, pneumonia, PE, red flags.</p>
       <a href="respiratory.html">Open</a>
     </div>
 
-    <div class="tile">
-      <h3>👂 ENT</h3>
-      <p>Otitis, sinusitis, sore throat, vertigo + red flags + comparisons.</p>
-      <a class="coming" href="ent.html">Coming next</a>
-    </div>
-
-    <div class="tile">
+    <!-- LOCKED -->
+    <div class="tile locked" data-lock>
+      <div class="lock-badge">🔒 Account</div>
+      <div class="lock-overlay"></div>
       <h3>🧠 Neurology</h3>
-      <p>Headache, seizures, TIA/stroke, red flags.</p>
-      <a class="coming" href="neuro.html">Coming soon</a>
+      <p>Headache, seizures, TIA/stroke.</p>
+      <a href="neuro.html">Locked</a>
     </div>
 
-    <div class="tile">
-      <h3>💓 Cardiovascular</h3>
-      <p>Chest pain, AF, HTN urgency, heart failure.</p>
-      <a class="coming" href="cv.html">Coming soon</a>
+    <div class="tile locked" data-lock>
+      <div class="lock-badge">🔒 Account</div>
+      <div class="lock-overlay"></div>
+      <h3>👂 ENT</h3>
+      <p>Otitis, sinusitis, sore throat.</p>
+      <a href="ent.html">Locked</a>
     </div>
 
-    <div class="tile">
-      <h3>🍽️ Abdominal</h3>
-      <p>Abdo pain pathways, appendicitis clues, biliary, gastroenteritis.</p>
-      <a class="coming" href="abdo.html">Coming soon</a>
-    </div>
-
-    <div class="tile">
-      <h3>🚻 Genitourinary</h3>
-      <p>UTI, pyelonephritis, renal colic, testicular pain red flags.</p>
-      <a class="coming" href="gu.html">Coming soon</a>
-    </div>
-
-    <div class="tile">
-      <h3>🧴 Skin</h3>
-      <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
-      <a class="coming" href="skin.html">Coming soon</a>
-    </div>
-/* Locked tiles */
-.tile.locked{
-  opacity: 0.55;
-  filter: grayscale(35%);
-  position: relative;
-}
-.tile.locked a{
-  pointer-events: none;
-  background: #cbd5e1;
-  color: #334155;
-}
-.lock-badge{
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #0f172a;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 0.78rem;
-}
-.lock-overlay{
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  cursor: pointer;
-}
-.account-pill{
-  margin-left:auto;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  font-weight:900;
-}
-.account-pill a{
-  text-decoration:none;
-  background:#1e88e5;
-  color:#fff;
-  padding:8px 10px;
-  border-radius:10px;
-  font-size:0.86rem;
-}
-.account-pill button{
-  border:1px solid #e5e7eb;
-  background:#fff;
-  color:#0f172a;
-  padding:8px 10px;
-  border-radius:10px;
-  font-weight:900;
-  cursor:pointer;
-  font-size:0.86rem;
-}
-
-    <!-- ✅ About / Disclaimer tile -->
-    <div class="tile">
-      <h3>ℹ️ About / Disclaimer</h3>
-      <p>Quick-reference tool notice, limitations, and clinical responsibility statement.</p>
-      <a href="about.html">Open</a>
-    </div>
-
-  </div>
-</div>
-
-<!-- Persistent disclaimer banner -->
-<div class="disclaimer-banner" id="disclaimerBanner" role="note" aria-label="Clinical disclaimer">
-  <div>
-    <strong>Clinical support only.</strong>
-    This site is a quick reference tool and does not replace clinical judgement or current guidelines.
-  </div>
-  <div class="banner-actions">
-    <button class="btn" id="bannerDismissBtn" type="button">Dismiss</button>
-    <a class="btn" href="about.html">Read more</a>
-  </div>
-</div>
-
-<!-- Site-wide footer -->
-<footer class="site-footer" aria-label="Footer">
-  <div class="site-footer-inner">
-    <div>© Paramedics in Primary Care · Quick reference only</div>
-    <div><a href="about.html">About / Disclaimer</a></div>
-  </div>
-</footer>
-
-<!-- First-visit modal -->
-<div class="modal-overlay" id="firstVisitOverlay" role="dialog" aria-modal="true" aria-label="First visit disclaimer">
-  <div class="modal">
-    <div class="modal-head">Before you use this tool</div>
-    <div class="modal-body">
-      <p>This resource is designed as a quick-reference aid for same-day, sudden and serious presentations.</p>
-      <ul>
-        <li>It does <strong>not</strong> replace clinical judgement.</li>
-        <li>It does <strong>not</strong> replace national/local guidance (e.g. NICE) or service protocols.</li>
-        <li>Escalate and follow emergency pathways if concerned.</li>
-      </ul>
-    </div>
-    <div class="modal-foot">
-      <a class="btn" href="about.html">Read full disclaimer</a>
-      <button class="btn" id="acknowledgeBtn" type="button">I understand</button>
-    </div>
   </div>
 </div>
 
 <script>
-  // ===== Persistent banner (dismiss per device) =====
-  (function initBanner(){
-    const bannerKey = "pipc_disclaimer_banner_dismissed";
-    const banner = document.getElementById("disclaimerBanner");
-    const dismissBtn = document.getElementById("bannerDismissBtn");
+/* ========= CONFIG ========= */
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
 
-    if (localStorage.getItem(bannerKey) === "1") {
-      banner.style.display = "none";
-    }
+/* ========= INIT ========= */
+const supabase = supabaseJs.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
-    dismissBtn.addEventListener("click", () => {
-      localStorage.setItem(bannerKey, "1");
-      banner.style.display = "none";
+const userStatus = document.getElementById("userStatus");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const lockedTiles = document.querySelectorAll("[data-lock]");
+
+/* ========= AUTH CHECK ========= */
+async function init(){
+  const { data } = await supabase.auth.getSession();
+  const loggedIn = !!data.session;
+
+  if(loggedIn){
+    userStatus.textContent = "Logged in";
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+
+    lockedTiles.forEach(tile=>{
+      tile.classList.remove("locked");
+      tile.querySelector(".lock-overlay").remove();
+      tile.querySelector("a").textContent = "Open";
+      tile.querySelector("a").style.pointerEvents = "auto";
     });
-  })();
-
-  // ===== First-visit acknowledgement (only once) =====
-  (function initFirstVisit(){
-    const firstVisitKey = "pipc_first_visit_ack";
-    const overlay = document.getElementById("firstVisitOverlay");
-    const acknowledgeBtn = document.getElementById("acknowledgeBtn");
-
-    if (localStorage.getItem(firstVisitKey) !== "1") {
-      overlay.style.display = "flex";
-      document.body.style.overflow = "hidden";
-    }
-
-    acknowledgeBtn.addEventListener("click", () => {
-      localStorage.setItem(firstVisitKey, "1");
-      overlay.style.display = "none";
-      document.body.style.overflow = "";
+  }else{
+    userStatus.textContent = "Guest";
+    lockedTiles.forEach(tile=>{
+      tile.onclick = () => window.location.href = "signup.html";
     });
-  })();
+  }
+}
+
+/* ========= LOGOUT ========= */
+logoutBtn.onclick = async ()=>{
+  await supabase.auth.signOut();
+  location.reload();
+};
+
+init();
 </script>
 
 </body>
 </html>
+
 
