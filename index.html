@@ -238,6 +238,61 @@
   }
 </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module">
+  import { supabase } from "./supabase-client.js";
+
+  function lockAllProTiles(){
+    document.querySelectorAll("[data-requires-login='true']").forEach(tile => {
+      tile.classList.add("locked");
+      tile.onclick = () => window.location.href = "signup.html";
+    });
+  }
+
+  function unlockAllProTiles(){
+    document.querySelectorAll("[data-requires-login='true']").forEach(tile => {
+      tile.classList.remove("locked");
+      // restore destination from data-href
+      const href = tile.getAttribute("data-href");
+      tile.onclick = () => window.location.href = href;
+
+      // restore button text
+      const a = tile.querySelector("a");
+      if (a) {
+        a.textContent = "Open";
+        a.style.pointerEvents = "auto";
+        a.style.background = "";
+        a.style.color = "";
+      }
+    });
+  }
+
+  async function main(){
+    const { data } = await supabase.auth.getSession();
+    const isLoggedIn = !!data.session;
+
+    if (isLoggedIn) unlockAllProTiles();
+    else lockAllProTiles();
+
+    // account UI
+    const status = document.getElementById("accountStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (status) status.textContent = isLoggedIn ? "Logged in" : "Guest";
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? "none" : "inline-block";
+    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? "inline-block" : "none";
+
+    if (logoutBtn){
+      logoutBtn.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.reload();
+      });
+    }
+  }
+
+  main();
+</script>
 
 <body>
 
