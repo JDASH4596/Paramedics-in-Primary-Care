@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Paramedics in Primary Care – PIPC</title>
 
-<!-- Supabase CDN (UMD global: window.supabase) -->
+<!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -18,31 +18,77 @@
     --border:#e5e7eb;
   }
 
-  body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);}
-
-  .topbar{background:var(--card);border-bottom:1px solid var(--border);}
-  .topbar-inner{
-    max-width:1100px;margin:0 auto;padding:14px 16px;
-    display:flex;align-items:center;gap:14px;
+  body{
+    font-family:Arial,sans-serif;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
   }
-  .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}
-  .brand img{height:56px;width:auto;display:block;}
+
+  .topbar{
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+  }
+
+  .topbar-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:inherit;
+  }
+
+  .brand img{height:56px}
 
   .account{
-    margin-left:auto;display:flex;gap:10px;align-items:center;font-weight:900;
+    margin-left:auto;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-weight:900;
   }
+
   .account a,.account button{
-    border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer;text-decoration:none;
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:900;
+    cursor:pointer;
     font-size:0.9rem;
+    border:1px solid var(--border);
+    background:white;
   }
-  .account a{background:var(--blue);color:#fff;border:0;}
-  .account button{background:#fff;color:#0f172a;border:1px solid var(--border);}
 
-  .wrap{max-width:1100px;margin:20px auto;padding:0 16px 40px;}
-  h1{margin:18px 0 8px;}
-  p.sub{color:var(--muted);margin:0 0 16px;line-height:1.4;}
+  .account a{
+    background:var(--blue);
+    color:white;
+    border:0;
+    text-decoration:none;
+  }
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px;}
+  .wrap{
+    max-width:1100px;
+    margin:20px auto;
+    padding:0 16px 40px;
+  }
+
+  h1{margin:18px 0 8px}
+  p.sub{color:var(--muted)}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:14px;
+    margin-top:16px;
+  }
 
   .tile{
     background:var(--card);
@@ -50,33 +96,58 @@
     border-radius:12px;
     padding:14px;
     position:relative;
-    cursor:pointer; /* whole tile clickable */
+    cursor:pointer;
     box-shadow:0 2px 10px rgba(0,0,0,0.05);
   }
-  .tile:hover{box-shadow:0 10px 22px rgba(0,0,0,0.08);transform:translateY(-1px);}
-  .tile h3{margin:0 0 6px;font-size:1.05rem;}
-  .tile p{margin:0 0 12px;color:var(--muted);font-size:.92rem;}
+
+  .tile:hover{
+    box-shadow:0 10px 22px rgba(0,0,0,0.08);
+    transform:translateY(-1px);
+  }
+
+  .tile h3{margin:0 0 6px}
+  .tile p{margin:0 0 12px;color:var(--muted);font-size:.92rem}
 
   .tile a{
-    display:inline-block;
     background:var(--blue);
-    color:#fff;
+    color:white;
     padding:8px 10px;
     border-radius:9px;
     font-weight:900;
+    font-size:.86rem;
     text-decoration:none;
-    font-size:0.86rem;
   }
 
-  /* LOCKED appearance */
-  .tile.locked{opacity:.45;filter:grayscale(50%);}
-  .tile.locked a{background:#cbd5e1;color:#334155;}
+  /* LOCKED STATE */
+  .locked{
+    opacity:.45;
+    filter:grayscale(50%);
+  }
+
+  .locked a{
+    background:#cbd5e1;
+    color:#334155;
+  }
 
   .lock-badge{
-    position:absolute;top:12px;right:12px;
-    background:#0f172a;color:#fff;
-    padding:6px 10px;border-radius:999px;
-    font-size:.78rem;font-weight:900;
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:#0f172a;
+    color:white;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:900;
+  }
+
+  .dev-pill{
+    background:#065f46;
+    color:white;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:.78rem;
+    font-weight:900;
   }
 </style>
 </head>
@@ -85,14 +156,15 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html" title="PIPC Home">
+    <a class="brand" href="index.html">
       <img src="assets/pipc-full.png" alt="PIPC logo">
     </a>
 
     <div class="account">
-      <span id="userStatus">Guest</span>
+      <span id="modeLabel">Guest</span>
+      <button id="devBtn">Dev mode</button>
       <a id="loginBtn" href="login.html">Log in</a>
-      <button id="logoutBtn" type="button" style="display:none;">Log out</button>
+      <button id="logoutBtn" style="display:none;">Log out</button>
     </div>
   </div>
 </header>
@@ -106,22 +178,22 @@
     <!-- FREE -->
     <div class="tile" data-href="respiratory.html">
       <h3>🫁 Respiratory</h3>
-      <p>Asthma, URTI, COPD, pneumonia, PE, pneumothorax, HF + red flags.</p>
+      <p>Asthma, URTI, COPD, pneumonia, PE, red flags.</p>
       <a href="respiratory.html" onclick="event.stopPropagation();">Open</a>
     </div>
 
-    <!-- LOCKED UNTIL LOGGED IN -->
-    <div class="tile locked" data-lock="true" data-href="neuro.html">
+    <!-- LOCKED -->
+    <div class="tile locked" data-lock data-href="neuro.html">
       <div class="lock-badge">🔒 Account</div>
       <h3>🧠 Neurology</h3>
-      <p>Headache, seizures, TIA/stroke, red flags.</p>
+      <p>Headache, seizures, TIA/stroke.</p>
       <a href="neuro.html" onclick="event.stopPropagation();">Locked</a>
     </div>
 
-    <div class="tile locked" data-lock="true" data-href="ent.html">
+    <div class="tile locked" data-lock data-href="ent.html">
       <div class="lock-badge">🔒 Account</div>
       <h3>👂 ENT</h3>
-      <p>Otitis, sinusitis, sore throat, vertigo.</p>
+      <p>Otitis, sinusitis, sore throat.</p>
       <a href="ent.html" onclick="event.stopPropagation();">Locked</a>
     </div>
 
@@ -129,71 +201,70 @@
 </div>
 
 <script>
-/* ========= CONFIG (PASTE YOURS) ========= */
+/* ===== CONFIG ===== */
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
 
-/* ========= INIT ========= */
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* ===== INIT ===== */
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const userStatus = document.getElementById("userStatus");
+const params = new URLSearchParams(window.location.search);
+const DEV_MODE = params.get("dev") === "true";
+
+const modeLabel = document.getElementById("modeLabel");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const devBtn = document.getElementById("devBtn");
 
 function go(href){ window.location.href = href; }
 
-function wireTilesForGuest(){
-  document.querySelectorAll(".tile").forEach(tile => {
-    const href = tile.getAttribute("data-href");
-    const requiresLogin = tile.getAttribute("data-lock") === "true";
-
-    tile.onclick = () => {
-      if (requiresLogin) go("signup.html");
-      else go(href);
-    };
-  });
-}
-
-function wireTilesForLoggedIn(){
-  document.querySelectorAll(".tile").forEach(tile => {
-    const href = tile.getAttribute("data-href");
-    tile.classList.remove("locked");
-
-    // Remove lock badge if present
-    const badge = tile.querySelector(".lock-badge");
-    if (badge) badge.remove();
-
-    // Update button label if it exists
-    const a = tile.querySelector("a");
-    if (a && a.textContent.trim().toLowerCase() === "locked") a.textContent = "Open";
-
-    tile.onclick = () => go(href);
-  });
-}
-
 async function init(){
-  let session = null;
-  try{
-    const res = await sb.auth.getSession();
-    session = res?.data?.session || null;
-  }catch(e){
-    // If this fails, keep guest mode (still lets Respiratory work)
-    session = null;
+  let loggedIn = false;
+
+  if(DEV_MODE){
+    loggedIn = true;
+    modeLabel.innerHTML = '<span class="dev-pill">DEV MODE</span>';
+    devBtn.style.display = "none";
+  }else{
+    try{
+      const { data } = await sb.auth.getSession();
+      loggedIn = !!data.session;
+      modeLabel.textContent = loggedIn ? "Logged in" : "Guest";
+    }catch{
+      loggedIn = false;
+      modeLabel.textContent = "Guest";
+    }
   }
 
-  const loggedIn = !!session;
-
-  userStatus.textContent = loggedIn ? "Logged in" : "Guest";
   loginBtn.style.display = loggedIn ? "none" : "inline-block";
-  logoutBtn.style.display = loggedIn ? "inline-block" : "none";
+  logoutBtn.style.display = loggedIn && !DEV_MODE ? "inline-block" : "none";
 
-  if (loggedIn) wireTilesForLoggedIn();
-  else wireTilesForGuest();
+  document.querySelectorAll(".tile").forEach(tile=>{
+    const href = tile.getAttribute("data-href");
+    const locked = tile.hasAttribute("data-lock");
+
+    if(loggedIn){
+      tile.classList.remove("locked");
+      tile.querySelector(".lock-badge")?.remove();
+      tile.onclick = () => go(href);
+      const a = tile.querySelector("a");
+      if(a && a.textContent === "Locked") a.textContent = "Open";
+    }else{
+      tile.onclick = () => {
+        if(locked) go("signup.html");
+        else go(href);
+      };
+    }
+  });
 }
 
-logoutBtn.onclick = async () => {
+devBtn.onclick = () => {
+  window.location.href = "index.html?dev=true";
+};
+
+logoutBtn.onclick = async ()=>{
   await sb.auth.signOut();
-  window.location.reload();
+  window.location.href = "index.html";
 };
 
 init();
@@ -201,3 +272,4 @@ init();
 
 </body>
 </html>
+
