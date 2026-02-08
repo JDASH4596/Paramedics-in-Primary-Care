@@ -303,6 +303,59 @@
       <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
       <a class="coming" href="skin.html">Coming soon</a>
     </div>
+/* Locked tiles */
+.tile.locked{
+  opacity: 0.55;
+  filter: grayscale(35%);
+  position: relative;
+}
+.tile.locked a{
+  pointer-events: none;
+  background: #cbd5e1;
+  color: #334155;
+}
+.lock-badge{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #0f172a;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.78rem;
+}
+.lock-overlay{
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.account-pill{
+  margin-left:auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-weight:900;
+}
+.account-pill a{
+  text-decoration:none;
+  background:#1e88e5;
+  color:#fff;
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:0.86rem;
+}
+.account-pill button{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  color:#0f172a;
+  padding:8px 10px;
+  border-radius:10px;
+  font-weight:900;
+  cursor:pointer;
+  font-size:0.86rem;
+}
 
     <!-- ✅ About / Disclaimer tile -->
     <div class="tile">
