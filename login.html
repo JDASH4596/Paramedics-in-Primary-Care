@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Log in – PIPC</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f3f5f8;color:#111827}
+    .wrap{max-width:520px;margin:40px auto;padding:0 16px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+    h1{margin:0 0 10px 0}
+    p{color:#6b7280;margin:0 0 14px 0;line-height:1.4}
+    label{display:block;font-weight:900;margin:10px 0 6px}
+    input{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:1rem}
+    button{margin-top:12px;width:100%;background:#1e88e5;color:#fff;border:0;border-radius:10px;padding:10px;font-weight:900;cursor:pointer}
+    .row{display:flex;gap:10px;margin-top:10px;align-items:center;justify-content:space-between}
+    .row a{color:#1e88e5;font-weight:900;text-decoration:none}
+    .msg{margin-top:12px;font-weight:900}
+    .ok{color:#166534}
+    .bad{color:#b91c1c}
+    .smallbtn{background:#fff;border:1px solid #e5e7eb;color:#0f172a;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer}
+  </style>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module">
+    import { supabase } from "./supabase-client.js";
+
+    const form = document.getElementById("form");
+    const msg = document.getElementById("msg");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    async function refreshUI(){
+      const { data } = await supabase.auth.getSession();
+      const isLoggedIn = !!data.session;
+
+      logoutBtn.style.display = isLoggedIn ? "inline-block" : "none";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+      msg.className = "msg";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        msg.textContent = error.message;
+        msg.classList.add("bad");
+        return;
+      }
+
+      msg.textContent = "Logged in. Redirecting…";
+      msg.classList.add("ok");
+
+      // Go back to home and unlock tiles
+      window.location.href = "index.html";
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      msg.textContent = "Logged out.";
+      msg.className = "msg ok";
+      await refreshUI();
+    });
+
+    refreshUI();
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Log in</h1>
+      <p>Log in to unlock the full site (coming next).</p>
+
+      <form id="form">
+        <label>Email</label>
+        <input id="email" type="email" required autocomplete="email" />
+
+        <label>Password</label>
+        <input id="password" type="password" required autocomplete="current-password" />
+
+        <button type="submit">Log in</button>
+      </form>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="row">
+        <a href="signup.html">Need an account? Sign up</a>
+        <button id="logoutBtn" class="smallbtn" type="button" style="display:none;">Log out</button>
+      </div>
+
+      <div class="row" style="justify-content:flex-start;">
+        <a href="index.html">Back home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
