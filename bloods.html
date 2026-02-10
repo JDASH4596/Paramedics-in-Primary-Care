@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Blood Test Interpretation – PIPC</title>
+
+<style>
+:root{
+  --bg:#f3f5f8;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --blue:#1e88e5;
+  --border:#e5e7eb;
+  --shadow:0 6px 18px rgba(0,0,0,0.12);
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* TILE GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  padding:24px;
+}
+
+.tile{
+  background:var(--card);
+  border-radius:14px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.tile:hover{
+  transform:translateY(-3px);
+}
+
+.tile h3{
+  margin:0;
+}
+
+/* WINDOW */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  z-index:10;
+}
+
+.window{
+  position:fixed;
+  top:60px;
+  left:50%;
+  transform:translateX(-50%);
+  width:900px;
+  max-width:95%;
+  height:80vh;
+  background:white;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:20;
+}
+
+/* HEADER */
+
+.window-header{
+  background:var(--blue);
+  color:white;
+  padding:16px 20px;
+  font-weight:600;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.close-btn{
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* CONTENT */
+
+.window-content{
+  overflow-y:auto;
+  padding:20px;
+  height:100%;
+}
+
+/* SECTION CARDS */
+
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.section h3{
+  margin-top:0;
+}
+
+ul{
+  padding-left:18px;
+}
+
+li{
+  margin-bottom:6px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+  .window{
+    top:0;
+    left:0;
+    transform:none;
+    width:100%;
+    height:100%;
+    border-radius:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="grid">
+
+  <div class="tile" onclick="openWindow()">
+    <h3>🩸 Blood Test Interpretation</h3>
+    <p>Foundations for new clinicians in primary care.</p>
+  </div>
+
+</div>
+
+<div class="overlay" onclick="closeWindow()"></div>
+
+<div class="window" id="bloodWindow">
+
+  <div class="window-header">
+    Blood Test Interpretation – Primary Care Foundations
+    <div class="close-btn" onclick="closeWindow()">✕</div>
+  </div>
+
+  <div class="window-content">
+
+    <div class="section">
+      <h3>Clinical Context First</h3>
+      <ul>
+        <li>Why was the test requested?</li>
+        <li>What was the clinical question?</li>
+        <li>Does the result match the presentation?</li>
+      </ul>
+      <p>Blood tests without context increase over-investigation.</p>
+    </div>
+
+    <div class="section">
+      <h3>System-Based Interpretation</h3>
+      <ul>
+        <li><strong>FBC:</strong> anaemia, infection, marrow response</li>
+        <li><strong>U&E:</strong> renal function and volume status</li>
+        <li><strong>LFTs:</strong> hepatocellular vs cholestatic pattern</li>
+        <li><strong>CRP:</strong> presence of active inflammation</li>
+        <li><strong>HbA1c:</strong> long-term glucose control</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Degree of Abnormality</h3>
+      <ul>
+        <li>Mild abnormalities often require monitoring.</li>
+        <li>Moderate abnormalities require investigation.</li>
+        <li>Severe abnormalities require urgent action.</li>
+      </ul>
+      <p>Magnitude guides urgency in primary care.</p>
+    </div>
+
+    <div class="section">
+      <h3>Trends Over Time</h3>
+      <ul>
+        <li>Compare with previous results.</li>
+        <li>New abnormalities matter more than chronic ones.</li>
+        <li>Rate of change is often more important than value.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Common Pitfalls</h3>
+      <ul>
+        <li>Treating numbers instead of patients.</li>
+        <li>Over-investigating mild abnormalities.</li>
+        <li>Ignoring medication effects.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Primary Care Decision Loop</h3>
+      <ul>
+        <li>Is this immediately unsafe?</li>
+        <li>Does it explain the presentation?</li>
+        <li>Does it need repeating?</li>
+        <li>Does it need investigation or referral?</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function openWindow(){
+  document.querySelector(".overlay").style.display="block";
+  document.getElementById("bloodWindow").style.display="flex";
+}
+
+function closeWindow(){
+  document.querySelector(".overlay").style.display="none";
+  document.getElementById("bloodWindow").style.display="none";
+}
+</script>
+
+</body>
+</html>
