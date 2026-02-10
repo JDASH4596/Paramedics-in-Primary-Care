@@ -1,300 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Blood Test Interpretation – PIPC</title>
+<title>Blood Test Interpretation | PIPC</title>
 
 <style>
-:root{
+:root {
   --bg:#f3f5f8;
   --card:#ffffff;
   --text:#111827;
   --muted:#6b7280;
-  --blue:#1e88e5;
   --border:#e5e7eb;
-  --shadow:0 6px 18px rgba(0,0,0,0.12);
+  --blue:#1e88e5;
 }
 
-body{
+body {
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
   background:var(--bg);
   color:var(--text);
 }
 
-/* TILE GRID */
+/* PAGE WRAPPER */
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  padding:24px;
+.container {
+  max-width:1100px;
+  margin:auto;
+  padding:28px 20px 60px;
 }
 
-.tile{
-  background:var(--card);
-  border-radius:14px;
-  padding:22px;
-  box-shadow:var(--shadow);
-  cursor:pointer;
-  transition:0.2s;
+h1 {
+  margin-top:0;
+  margin-bottom:6px;
 }
 
-.tile:hover{
-  transform:translateY(-3px);
-}
-
-.tile h3{
-  margin:0;
-}
-
-/* WINDOW */
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.4);
-  display:none;
-  z-index:10;
-}
-
-.window{
-  position:fixed;
-  top:60px;
-  left:50%;
-  transform:translateX(-50%);
-  width:900px;
-  max-width:95%;
-  height:80vh;
-  background:white;
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  display:none;
-  flex-direction:column;
-  overflow:hidden;
-  z-index:20;
-}
-
-/* HEADER */
-
-.window-header{
-  background:var(--blue);
-  color:white;
-  padding:16px 20px;
-  font-weight:600;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.close-btn{
-  cursor:pointer;
-  font-size:18px;
-}
-
-/* CONTENT */
-
-.window-content{
-  overflow-y:auto;
-  padding:20px;
-  height:100%;
+.subtitle {
+  color:var(--muted);
+  margin-bottom:24px;
 }
 
 /* SECTION CARDS */
 
-.section{
+.section {
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:16px;
-  margin-bottom:16px;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:18px;
 }
 
-.section h3{
+.section h2 {
   margin-top:0;
+  font-size:20px;
 }
 
-ul{
+/* RANGE CARDS */
+
+.range-group {
+  margin-bottom:22px;
+}
+
+.range-group h3 {
+  margin-bottom:10px;
+  font-size:17px;
+}
+
+.range-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+}
+
+.range-card {
+  background:#f9fafb;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 12px;
+}
+
+.range-card strong {
+  display:block;
+  font-size:14px;
+}
+
+.range-card span {
+  font-size:13px;
+  color:#4b5563;
+}
+
+/* LISTS */
+
+ul {
   padding-left:18px;
 }
 
-li{
+li {
   margin-bottom:6px;
 }
 
-/* MOBILE */
+/* FOOTER NOTE */
 
-@media(max-width:768px){
-  .window{
-    top:0;
-    left:0;
-    transform:none;
-    width:100%;
-    height:100%;
-    border-radius:0;
-  }
+.note {
+  font-size:13px;
+  color:var(--muted);
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="grid">
+<div class="container">
 
-  <div class="tile" onclick="openWindow()">
-    <h3>🩸 Blood Test Interpretation</h3>
-    <p>Foundations for new clinicians in primary care.</p>
+  <h1>Blood Test Interpretation</h1>
+  <p class="subtitle">Foundations for new clinicians in primary care</p>
+
+  <div class="section">
+    <h2>How to Think About Blood Tests</h2>
+    <ul>
+      <li>Blood tests support decisions — they rarely make diagnoses.</li>
+      <li>Always interpret results in clinical context.</li>
+      <li>Degree and trend matter more than isolated values.</li>
+    </ul>
   </div>
 
-</div>
-
-<div class="overlay" onclick="closeWindow()"></div>
-
-<div class="window" id="bloodWindow">
-
-  <div class="window-header">
-    Blood Test Interpretation – Primary Care Foundations
-    <div class="close-btn" onclick="closeWindow()">✕</div>
+  <div class="section">
+    <h2>Clinical Interpretation Framework</h2>
+    <ul>
+      <li>Why was the test requested?</li>
+      <li>Does the result explain the presentation?</li>
+      <li>Is this new, worsening, or long-standing?</li>
+      <li>Does this need repeating, investigating, or acting on?</li>
+    </ul>
   </div>
 
-  <div class="window-content">
+  <div class="section">
+    <h2>Typical Adult Reference Ranges</h2>
+    <p class="note">
+      Indicative adult ranges for primary care. Always use local laboratory reference ranges.
+    </p>
 
-    <div class="section">
-      <h3>Clinical Context First</h3>
-      <ul>
-        <li>Why was the test requested?</li>
-        <li>What was the clinical question?</li>
-        <li>Does the result match the presentation?</li>
-      </ul>
-      <p>Blood tests without context increase over-investigation.</p>
-    </div>
-<div class="section">
-  <h3>Typical Adult Reference Ranges (Primary Care)</h3>
-
-  <p style="color:#6b7280;">
-    These are indicative adult ranges. Always use local laboratory reference ranges
-    and interpret results in clinical context.
-  </p>
-
-  <h4>Full Blood Count (FBC)</h4>
-  <table style="width:100%; border-collapse:collapse;">
-    <tr>
-      <th>Test</th><th>Typical Range</th><th>Units</th>
-    </tr>
-    <tr><td>Haemoglobin (Hb)</td><td>130–180 (M) / 115–165 (F)</td><td>g/L</td></tr>
-    <tr><td>White Cell Count (WCC)</td><td>4.0–11.0</td><td>x10⁹/L</td></tr>
-    <tr><td>Platelets</td><td>150–400</td><td>x10⁹/L</td></tr>
-    <tr><td>MCV</td><td>80–100</td><td>fL</td></tr>
-  </table>
-
-  <h4 style="margin-top:16px;">Urea & Electrolytes (U&E)</h4>
-  <table style="width:100%; border-collapse:collapse;">
-    <tr>
-      <th>Test</th><th>Typical Range</th><th>Units</th>
-    </tr>
-    <tr><td>Sodium</td><td>135–145</td><td>mmol/L</td></tr>
-    <tr><td>Potassium</td><td>3.5–5.0</td><td>mmol/L</td></tr>
-    <tr><td>Urea</td><td>2.5–7.8</td><td>mmol/L</td></tr>
-    <tr><td>Creatinine</td><td>64–104</td><td>µmol/L</td></tr>
-    <tr><td>eGFR</td><td>&gt;60</td><td>mL/min</td></tr>
-  </table>
-
-  <h4 style="margin-top:16px;">Liver Function Tests (LFTs)</h4>
-  <table style="width:100%; border-collapse:collapse;">
-    <tr>
-      <th>Test</th><th>Typical Range</th><th>Units</th>
-    </tr>
-    <tr><td>ALT</td><td>&lt;40</td><td>IU/L</td></tr>
-    <tr><td>AST</td><td>&lt;40</td><td>IU/L</td></tr>
-    <tr><td>ALP</td><td>30–130</td><td>IU/L</td></tr>
-    <tr><td>Bilirubin</td><td>&lt;21</td><td>µmol/L</td></tr>
-    <tr><td>Albumin</td><td>35–50</td><td>g/L</td></tr>
-  </table>
-
-  <h4 style="margin-top:16px;">Inflammation</h4>
-  <table style="width:100%; border-collapse:collapse;">
-    <tr>
-      <th>Test</th><th>Typical Range</th><th>Units</th>
-    </tr>
-    <tr><td>CRP</td><td>&lt;5</td><td>mg/L</td></tr>
-    <tr><td>ESR</td><td>&lt;20 (age dependent)</td><td>mm/hr</td></tr>
-  </table>
-
-  <h4 style="margin-top:16px;">Glucose Control</h4>
-  <table style="width:100%; border-collapse:collapse;">
-    <tr>
-      <th>Test</th><th>Typical Range</th><th>Units</th>
-    </tr>
-    <tr><td>Fasting Glucose</td><td>3.9–5.5</td><td>mmol/L</td></tr>
-    <tr><td>HbA1c</td><td>&lt;42 (non-diabetic)</td><td>mmol/mol</td></tr>
-  </table>
-</div>
-
-    <div class="section">
-      <h3>System-Based Interpretation</h3>
-      <ul>
-        <li><strong>FBC:</strong> anaemia, infection, marrow response</li>
-        <li><strong>U&E:</strong> renal function and volume status</li>
-        <li><strong>LFTs:</strong> hepatocellular vs cholestatic pattern</li>
-        <li><strong>CRP:</strong> presence of active inflammation</li>
-        <li><strong>HbA1c:</strong> long-term glucose control</li>
-      </ul>
+    <div class="range-group">
+      <h3>Full Blood Count</h3>
+      <div class="range-grid">
+        <div class="range-card"><strong>Haemoglobin</strong><span>♂ 130–180 / ♀ 115–165 g/L</span></div>
+        <div class="range-card"><strong>White Cells</strong><span>4.0–11.0 ×10⁹/L</span></div>
+        <div class="range-card"><strong>Platelets</strong><span>150–400 ×10⁹/L</span></div>
+        <div class="range-card"><strong>MCV</strong><span>80–100 fL</span></div>
+      </div>
     </div>
 
-    <div class="section">
-      <h3>Degree of Abnormality</h3>
-      <ul>
-        <li>Mild abnormalities often require monitoring.</li>
-        <li>Moderate abnormalities require investigation.</li>
-        <li>Severe abnormalities require urgent action.</li>
-      </ul>
-      <p>Magnitude guides urgency in primary care.</p>
+    <div class="range-group">
+      <h3>Urea & Electrolytes</h3>
+      <div class="range-grid">
+        <div class="range-card"><strong>Sodium</strong><span>135–145 mmol/L</span></div>
+        <div class="range-card"><strong>Potassium</strong><span>3.5–5.0 mmol/L</span></div>
+        <div class="range-card"><strong>Urea</strong><span>2.5–7.8 mmol/L</span></div>
+        <div class="range-card"><strong>Creatinine</strong><span>64–104 µmol/L</span></div>
+        <div class="range-card"><strong>eGFR</strong><span>&gt;60 mL/min</span></div>
+      </div>
     </div>
 
-    <div class="section">
-      <h3>Trends Over Time</h3>
-      <ul>
-        <li>Compare with previous results.</li>
-        <li>New abnormalities matter more than chronic ones.</li>
-        <li>Rate of change is often more important than value.</li>
-      </ul>
+    <div class="range-group">
+      <h3>Liver Function</h3>
+      <div class="range-grid">
+        <div class="range-card"><strong>ALT / AST</strong><span>&lt;40 IU/L</span></div>
+        <div class="range-card"><strong>ALP</strong><span>30–130 IU/L</span></div>
+        <div class="range-card"><strong>Bilirubin</strong><span>&lt;21 µmol/L</span></div>
+        <div class="range-card"><strong>Albumin</strong><span>35–50 g/L</span></div>
+      </div>
     </div>
 
-    <div class="section">
-      <h3>Common Pitfalls</h3>
-      <ul>
-        <li>Treating numbers instead of patients.</li>
-        <li>Over-investigating mild abnormalities.</li>
-        <li>Ignoring medication effects.</li>
-      </ul>
+    <div class="range-group">
+      <h3>Inflammation</h3>
+      <div class="range-grid">
+        <div class="range-card"><strong>CRP</strong><span>&lt;5 mg/L</span></div>
+        <div class="range-card"><strong>ESR</strong><span>&lt;20 mm/hr (age dependent)</span></div>
+      </div>
     </div>
 
-    <div class="section">
-      <h3>Primary Care Decision Loop</h3>
-      <ul>
-        <li>Is this immediately unsafe?</li>
-        <li>Does it explain the presentation?</li>
-        <li>Does it need repeating?</li>
-        <li>Does it need investigation or referral?</li>
-      </ul>
+    <div class="range-group">
+      <h3>Glucose Control</h3>
+      <div class="range-grid">
+        <div class="range-card"><strong>Fasting Glucose</strong><span>3.9–5.5 mmol/L</span></div>
+        <div class="range-card"><strong>HbA1c</strong><span>&lt;42 mmol/mol</span></div>
+      </div>
     </div>
 
   </div>
+
+  <div class="section">
+    <h2>Common Primary Care Pitfalls</h2>
+    <ul>
+      <li>Reacting to isolated mild abnormalities.</li>
+      <li>Treating numbers instead of patients.</li>
+      <li>Ignoring medication and hydration effects.</li>
+    </ul>
+  </div>
+
 </div>
-
-<script>
-function openWindow(){
-  document.querySelector(".overlay").style.display="block";
-  document.getElementById("bloodWindow").style.display="flex";
-}
-
-function closeWindow(){
-  document.querySelector(".overlay").style.display="none";
-  document.getElementById("bloodWindow").style.display="none";
-}
-</script>
 
 </body>
 </html>
+
