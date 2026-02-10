@@ -7,33 +7,34 @@
 <title>Blood Test Interpretation | PIPC</title>
 
 <style>
-:root {
+:root{
   --bg:#f3f5f8;
   --card:#ffffff;
   --text:#111827;
   --muted:#6b7280;
   --border:#e5e7eb;
-  --blue:#1e88e5;
   --soft:#f9fafb;
+  --open:#eef6ff;
+  --focus:rgba(30,136,229,0.35);
 }
 
-body {
+body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
   background:var(--bg);
   color:var(--text);
 }
 
-.container {
+.container{
   max-width:1100px;
   margin:auto;
   padding:28px 20px 60px;
 }
 
-h1 { margin:0 0 6px; }
-.subtitle { color:var(--muted); margin:0 0 24px; }
+h1{ margin:0 0 6px; }
+.subtitle{ color:var(--muted); margin:0 0 24px; }
 
-.section {
+.section{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:12px;
@@ -41,119 +42,134 @@ h1 { margin:0 0 6px; }
   margin-bottom:18px;
 }
 
-.section h2 { margin:0 0 10px; font-size:20px; }
-.note { font-size:13px; color:var(--muted); margin:10px 0 0; }
+.section h2{
+  margin:0 0 10px;
+  font-size:20px;
+}
 
-ul { padding-left:18px; margin:10px 0 0; }
-li { margin-bottom:6px; }
+.note{
+  font-size:13px;
+  color:var(--muted);
+  margin:8px 0 0;
+}
 
-.range-group { margin-top:18px; }
-.range-group h3 { margin:0 0 10px; font-size:17px; }
+ul{ padding-left:18px; margin:10px 0 0; }
+li{ margin-bottom:6px; }
 
-.range-grid {
+.range-group{ margin-top:18px; }
+.range-group h3{ margin:0 0 10px; font-size:17px; }
+
+.range-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
   gap:10px;
 }
 
-/* Clickable cards (buttons) */
-.range-card {
-  text-align:left;
+/* Clickable cards */
+.range-card{
   width:100%;
+  text-align:left;
   background:var(--soft);
   border:1px solid var(--border);
   border-radius:10px;
-  padding:12px 12px;
+  padding:12px;
   cursor:pointer;
   transition:transform 0.08s ease, background 0.12s ease;
   position:relative;
 }
 
-.range-card:hover { transform:translateY(-1px); }
-.range-card:focus { outline:2px solid rgba(30,136,229,0.35); outline-offset:2px; }
+.range-card:hover{ transform:translateY(-1px); }
+.range-card:focus{ outline:2px solid var(--focus); outline-offset:2px; }
 
-.range-top {
+.range-card[data-open="true"]{
+  background:var(--open);
+  border-color:var(--focus);
+}
+
+.range-top{
   display:flex;
-  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
 }
 
-.range-title strong {
+.range-title strong{
   display:block;
   font-size:14px;
   line-height:1.25;
 }
 
-.range-title span {
+.range-title span{
   display:block;
   font-size:13px;
   color:#4b5563;
   margin-top:2px;
 }
 
-.chev {
+.chev{
   font-size:14px;
   color:#6b7280;
-  margin-top:1px;
   user-select:none;
 }
 
-/* Expand panel */
-.range-details {
+.range-card[data-open="true"] .chev{ transform:rotate(180deg); }
+
+.range-details{
   display:none;
   margin-top:10px;
-  background:#ffffff;
+  background:#fff;
   border:1px solid var(--border);
   border-radius:10px;
   padding:10px 12px;
-  color:#111827;
-}
-
-.range-details p {
-  margin:0 0 8px;
   font-size:13px;
   color:#374151;
 }
 
-.detail-grid {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
+.detail-list{
+  margin:0;
+  padding-left:16px;
 }
+.detail-list li{ margin-bottom:6px; }
 
-.badge {
+.badge{
   display:inline-block;
   font-size:12px;
   padding:2px 8px;
   border-radius:999px;
   border:1px solid var(--border);
   background:#fff;
-  color:#374151;
   margin-right:6px;
+  color:#374151;
 }
 
-.kicker { font-weight:600; color:#111827; }
+.kicker{ font-weight:600; color:#111827; }
 
-.small {
-  font-size:12.5px;
+.two-col{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+
+.static-card{
+  background:var(--soft);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+}
+
+.static-card strong{
+  display:block;
+  font-size:14px;
+}
+.static-card p{
+  margin:6px 0 0;
+  font-size:13px;
   color:#4b5563;
-  margin:0;
 }
 
-/* “Open” state */
-.range-card[data-open="true"] {
-  background:#eef6ff;
-  border-color:rgba(30,136,229,0.35);
-}
-
-.range-card[data-open="true"] .chev {
-  transform:rotate(180deg);
-}
-
-/* Mobile spacing */
-@media (max-width:520px){
-  .range-grid { grid-template-columns:1fr; }
+@media(max-width:520px){
+  .range-grid{ grid-template-columns:1fr; }
+  .two-col{ grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -165,34 +181,42 @@ li { margin-bottom:6px; }
   <p class="subtitle">Foundations for new clinicians in primary care</p>
 
   <div class="section">
-    <h2>How to Think About Blood Tests</h2>
-    <ul>
-      <li>Use bloods to answer: <strong>unsafe now?</strong> <strong>fits presentation?</strong> <strong>repeat vs investigate?</strong></li>
-      <li>Always check <strong>degree</strong> of abnormality and <strong>trend</strong>.</li>
-      <li>One abnormal result alone rarely gives a diagnosis.</li>
-    </ul>
-  </div>
-
-  <div class="section">
     <h2>Clinical Interpretation Loop (KISS)</h2>
     <ul>
       <li><strong>Context:</strong> why was it taken? symptoms? meds? hydration? alcohol?</li>
-      <li><strong>Pattern:</strong> interpret as systems (FBC / U&E / LFT pattern).</li>
+      <li><strong>Pattern:</strong> interpret as systems (FBC / U&amp;E / LFT pattern).</li>
       <li><strong>Trend:</strong> new vs chronic; rising vs stable.</li>
       <li><strong>Action:</strong> repeat, investigate, treat, refer, or urgent escalation.</li>
     </ul>
+    <p class="note">Blood tests refine probability — they rarely create diagnoses.</p>
   </div>
 
   <div class="section">
-    <h2>Typical Adult Reference Ranges (Clickable)</h2>
-    <p class="note">Indicative adult ranges. Always use local lab reference ranges and interpret clinically.</p>
+    <h2>When a GP says “Routine Bloods”, this often includes</h2>
+    <p class="note">Routine varies by practice and indication. Start with a question, then add targeted tests.</p>
+
+    <div class="two-col">
+      <div class="static-card">
+        <strong>Common baseline panel</strong>
+        <p>FBC • U&amp;E/Creatinine/eGFR • LFTs</p>
+      </div>
+      <div class="static-card">
+        <strong>Often added depending on the question</strong>
+        <p>CRP • TFTs • HbA1c • Lipids • Bone profile (Ca/PO4/ALP)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Typical Adult Reference Ranges (Click a test)</h2>
+    <p class="note">Indicative adult ranges. Always use local laboratory reference ranges and interpret clinically.</p>
 
     <!-- FBC -->
     <div class="range-group">
       <h3>Full Blood Count</h3>
       <div class="range-grid">
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-hb" onclick="toggleCard(this, 'd-hb')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Haemoglobin (Hb)</strong>
@@ -200,18 +224,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-hb" role="region" aria-label="Haemoglobin details">
-            <div class="detail-grid">
-              <p><span class="badge">What it is</span> Oxygen-carrying capacity (proxy for anaemia/polycythaemia).</p>
-              <p><span class="badge">Low</span> Bleeding, iron deficiency, chronic disease, CKD, B12/folate deficiency, haemolysis.</p>
-              <p><span class="badge">High</span> Dehydration, smoking/COPD, OSA, polycythaemia (consider if persistent + raised Hct).</p>
-              <p><span class="badge">Primary care move</span> Use <span class="kicker">MCV</span> to guide work-up; check ferritin/iron studies, B12/folate, renal, CRP as appropriate.</p>
-              <p class="small"><span class="kicker">Red flags:</span> symptomatic anaemia, Hb very low or rapid drop, overt bleeding → same-day assessment.</p>
-            </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> blood loss, iron deficiency, chronic disease, CKD, B12/folate deficiency.</li>
+              <li><span class="badge">High</span> dehydration, smoking/COPD/OSA, polycythaemia (if persistent).</li>
+              <li><span class="badge">PC move</span> use <span class="kicker">MCV</span> to guide next tests; check baseline trend.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-wcc" onclick="toggleCard(this, 'd-wcc')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>White Cell Count (WCC)</strong>
@@ -219,16 +241,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-wcc" role="region" aria-label="WCC details">
-            <p><span class="badge">What it is</span> Total leukocytes; interpret with differential (neutrophils/lymphocytes/eosinophils).</p>
-            <p><span class="badge">High</span> Infection/inflammation, steroids, stress response, smoking; persistent marked elevation → consider haematology.</p>
-            <p><span class="badge">Low</span> Viral illness, marrow suppression, drugs (e.g., antithyroid/anticonvulsants), severe sepsis.</p>
-            <p><span class="badge">Primary care move</span> Check <span class="kicker">neutrophils vs lymphocytes</span>; repeat if mild + well; urgent if unwell/neutropenic.</p>
-            <p class="small"><span class="kicker">Red flags:</span> neutrophils very low, fever/immunosuppressed → urgent.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Key step</span> interpret with differential (neutrophils/lymphocytes/eosinophils).</li>
+              <li><span class="badge">High</span> infection/inflammation, steroids, stress response.</li>
+              <li><span class="badge">Low</span> viral illness, meds/marrow suppression; repeat if mild + well.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-plt" onclick="toggleCard(this, 'd-plt')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Platelets</strong>
@@ -236,16 +258,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-plt" role="region" aria-label="Platelets details">
-            <p><span class="badge">What it is</span> Clotting cell line; often rises with inflammation, falls with marrow/consumption issues.</p>
-            <p><span class="badge">High</span> Reactive (infection, iron deficiency, inflammation), post-op; persistent high → consider myeloproliferative work-up.</p>
-            <p><span class="badge">Low</span> Viral illness, alcohol/liver disease, drugs, ITP; also lab artefact (platelet clumping).</p>
-            <p><span class="badge">Primary care move</span> Repeat + blood film if unexpected; check iron studies if thrombocytosis.</p>
-            <p class="small"><span class="kicker">Red flags:</span> bleeding + low platelets, very low platelets → urgent.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> reactive (infection/inflammation), iron deficiency.</li>
+              <li><span class="badge">Low</span> viral illness, alcohol/liver disease, ITP, drugs; consider clumping artefact.</li>
+              <li><span class="badge">PC move</span> repeat/film if unexpected; assess bleeding risk if low.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-mcv" onclick="toggleCard(this, 'd-mcv')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>MCV</strong>
@@ -253,11 +275,12 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-mcv" role="region" aria-label="MCV details">
-            <p><span class="badge">What it is</span> RBC size; guides anaemia approach.</p>
-            <p><span class="badge">Low (microcytic)</span> Iron deficiency, thalassaemia trait, chronic disease (sometimes).</p>
-            <p><span class="badge">High (macrocytic)</span> B12/folate deficiency, alcohol, liver disease, hypothyroid, certain meds.</p>
-            <p><span class="badge">Primary care move</span> Use MCV + Hb + ferritin/B12/folate/TSH/LFTs to target the cause.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> iron deficiency, thalassaemia trait (consider if Hb mild + RBC high).</li>
+              <li><span class="badge">High</span> B12/folate deficiency, alcohol, liver disease, hypothyroid, meds.</li>
+              <li><span class="badge">PC move</span> pair with Hb + ferritin/B12/folate/TSH/LFTs as indicated.</li>
+            </ul>
           </div>
         </button>
 
@@ -266,10 +289,10 @@ li { margin-bottom:6px; }
 
     <!-- U&E -->
     <div class="range-group">
-      <h3>Urea & Electrolytes</h3>
+      <h3>Urea &amp; Electrolytes</h3>
       <div class="range-grid">
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-na" onclick="toggleCard(this, 'd-na')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Sodium</strong>
@@ -277,15 +300,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-na" role="region" aria-label="Sodium details">
-            <p><span class="badge">Low</span> Excess water (SIADH, diuretics), heart/liver failure, polydipsia; assess volume status.</p>
-            <p><span class="badge">High</span> Water loss/dehydration, diabetes insipidus; assess hydration + access to fluids.</p>
-            <p><span class="badge">Primary care move</span> Recheck, review meds (diuretics/SSRIs), check glucose; manage based on symptoms + severity.</p>
-            <p class="small"><span class="kicker">Red flags:</span> severe or symptomatic hyponatraemia/hypernatraemia → urgent.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> excess water (SIADH, meds incl SSRIs/diuretics), heart/liver failure; assess volume status.</li>
+              <li><span class="badge">High</span> water loss/dehydration; assess access to fluids and clinical state.</li>
+              <li><span class="badge">PC move</span> repeat + med review; manage severity/symptoms per pathway.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-k" onclick="toggleCard(this, 'd-k')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Potassium</strong>
@@ -293,15 +317,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-k" role="region" aria-label="Potassium details">
-            <p><span class="badge">High</span> ACEi/ARB, spironolactone, CKD, dehydration/AKI; also haemolysed sample (pseudo-hyperkalaemia).</p>
-            <p><span class="badge">Low</span> Diuretics, GI losses, poor intake; check Mg²⁺ if recurrent.</p>
-            <p><span class="badge">Primary care move</span> Confirm not haemolysed; repeat urgently if moderate/high; review meds and renal function.</p>
-            <p class="small"><span class="kicker">Red flags:</span> significantly high K⁺ or ECG symptoms → same-day action.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> ACEi/ARB, spironolactone, CKD/AKI; consider haemolysed sample.</li>
+              <li><span class="badge">Low</span> diuretics, GI loss, poor intake; check Mg if recurrent.</li>
+              <li><span class="badge">PC move</span> confirm, repeat urgently if moderate/high; med + renal review.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-urea" onclick="toggleCard(this, 'd-urea')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Urea</strong>
@@ -309,14 +334,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-urea" role="region" aria-label="Urea details">
-            <p><span class="badge">High</span> Dehydration/AKI, GI bleed, high protein catabolism, steroids.</p>
-            <p><span class="badge">Pattern</span> Urea rising more than creatinine often suggests <span class="kicker">pre-renal dehydration</span>.</p>
-            <p><span class="badge">Primary care move</span> Correlate with creatinine/eGFR + clinical volume status.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> dehydration/AKI, GI bleed, catabolic states, steroids.</li>
+              <li><span class="badge">Pattern</span> urea &gt;&gt; creatinine often suggests pre-renal dehydration.</li>
+              <li><span class="badge">PC move</span> interpret with creatinine/eGFR + clinical hydration.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-cr" onclick="toggleCard(this, 'd-cr')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Creatinine</strong>
@@ -324,14 +351,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-cr" role="region" aria-label="Creatinine details">
-            <p><span class="badge">High</span> Reduced kidney filtration; interpret against baseline (AKI vs CKD).</p>
-            <p><span class="badge">Primary care move</span> Check previouss, hydration, meds (NSAIDs/ACEi/diuretics), urine, BP; repeat based on severity.</p>
-            <p class="small"><span class="kicker">Red flags:</span> rapid rise, oliguria, systemic illness → urgent AKI pathway.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> reduced filtration: decide AKI vs CKD by baseline and time course.</li>
+              <li><span class="badge">PC move</span> check previouss, meds (NSAIDs/ACEi/diuretics), urine, BP; repeat based on severity.</li>
+              <li><span class="badge">Tip</span> consider muscle mass and hydration when interpreting.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-egfr" onclick="toggleCard(this, 'd-egfr')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>eGFR</strong>
@@ -339,9 +368,12 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-egfr" role="region" aria-label="eGFR details">
-            <p><span class="badge">What it is</span> Estimated filtration rate; staging CKD is based on persistent reduction (≥3 months).</p>
-            <p><span class="badge">Primary care move</span> Confirm chronicity, check ACR, BP, diabetes control; medication dose adjustments where needed.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> estimate of filtration; CKD requires persistence ≥3 months.</li>
+              <li><span class="badge">PC move</span> check ACR, BP, diabetes control; adjust meds where indicated.</li>
+              <li><span class="badge">Tip</span> interpret alongside creatinine trend and clinical state.</li>
+            </ul>
           </div>
         </button>
 
@@ -353,7 +385,7 @@ li { margin-bottom:6px; }
       <h3>Liver Function</h3>
       <div class="range-grid">
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-altast" onclick="toggleCard(this, 'd-altast')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>ALT / AST</strong>
@@ -361,15 +393,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-altast" role="region" aria-label="ALT/AST details">
-            <p><span class="badge">Pattern</span> Hepatocellular injury marker (ALT often more liver-specific than AST).</p>
-            <p><span class="badge">Common causes</span> Fatty liver/metabolic risk, alcohol, viral hepatitis, meds, strenuous exercise (AST).</p>
-            <p><span class="badge">Primary care move</span> Repeat if mild; review alcohol/weight/meds; if persistent or moderate/high → structured liver work-up per local pathway.</p>
-            <p class="small"><span class="kicker">Red flags:</span> marked rise, jaundice, systemic unwell → urgent.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Pattern</span> hepatocellular injury marker (ALT often more liver-specific).</li>
+              <li><span class="badge">Common</span> MASLD/NAFLD, alcohol, meds, viral hepatitis; strenuous exercise can raise AST.</li>
+              <li><span class="badge">PC move</span> repeat if mild; if persistent or higher → follow structured liver pathway.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-alp" onclick="toggleCard(this, 'd-alp')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>ALP</strong>
@@ -377,13 +410,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-alp" role="region" aria-label="ALP details">
-            <p><span class="badge">Pattern</span> Cholestasis marker (also from bone).</p>
-            <p><span class="badge">Primary care move</span> Consider GGT (if available) to support liver source; cholestatic pattern + symptoms → imaging pathway.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Pattern</span> cholestasis marker (also bone source).</li>
+              <li><span class="badge">PC move</span> consider GGT (if available) for liver source; cholestatic pattern + symptoms → imaging pathway.</li>
+              <li><span class="badge">Tip</span> check bone symptoms/history if isolated ALP.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-bili" onclick="toggleCard(this, 'd-bili')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Bilirubin</strong>
@@ -391,13 +427,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-bili" role="region" aria-label="Bilirubin details">
-            <p><span class="badge">Common benign</span> Isolated mild rise can be Gilbert’s (esp. fasting/illness).</p>
-            <p><span class="badge">Concerning</span> If with ALP/ALT changes, pale stools/dark urine/itch → cholestasis/obstruction work-up.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Benign</span> isolated mild rise can be Gilbert’s (fasting/illness).</li>
+              <li><span class="badge">Concerning</span> if with ALP/ALT changes + jaundice/itch/pale stools → cholestasis/obstruction work-up.</li>
+              <li><span class="badge">PC move</span> interpret pattern; repeat if mild and well.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-alb" onclick="toggleCard(this, 'd-alb')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Albumin</strong>
@@ -405,9 +444,12 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-alb" role="region" aria-label="Albumin details">
-            <p><span class="badge">Low</span> Chronic inflammation, liver synthetic dysfunction, nephrotic loss, malnutrition.</p>
-            <p><span class="badge">Primary care move</span> Interpret with clinical state + other LFTs, ACR/urine, weight/nutrition markers.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> inflammation, liver synthetic dysfunction, renal loss (nephrotic), malnutrition.</li>
+              <li><span class="badge">PC move</span> interpret with other LFTs + urine/ACR where relevant.</li>
+              <li><span class="badge">Tip</span> low albumin is often a “chronic illness” marker rather than primary liver disease.</li>
+            </ul>
           </div>
         </button>
 
@@ -419,7 +461,7 @@ li { margin-bottom:6px; }
       <h3>Inflammation</h3>
       <div class="range-grid">
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-crp" onclick="toggleCard(this, 'd-crp')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>CRP</strong>
@@ -427,13 +469,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-crp" role="region" aria-label="CRP details">
-            <p><span class="badge">What it is</span> Acute phase reactant; answers “is inflammation active now?” (non-specific).</p>
-            <p><span class="badge">Primary care move</span> Use with symptoms/exam; repeat if clinically needed; avoid chasing CRP in well patients.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> acute inflammation marker (non-specific).</li>
+              <li><span class="badge">PC move</span> interpret with symptoms/exam; avoid chasing CRP in well patients.</li>
+              <li><span class="badge">Tip</span> useful for “is there inflammation now?” not for cause.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-esr" onclick="toggleCard(this, 'd-esr')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>ESR</strong>
@@ -441,9 +486,12 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-esr" role="region" aria-label="ESR details">
-            <p><span class="badge">What it is</span> Slower inflammatory marker; influenced by age/anaemia.</p>
-            <p><span class="badge">Primary care move</span> Useful in selected chronic inflammatory contexts; interpret alongside CRP and clinical picture.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> slower inflammation marker; influenced by age/anaemia.</li>
+              <li><span class="badge">PC move</span> useful in selected chronic inflammatory contexts; interpret alongside CRP.</li>
+              <li><span class="badge">Tip</span> not a good “screening” test in isolation.</li>
+            </ul>
           </div>
         </button>
 
@@ -455,7 +503,7 @@ li { margin-bottom:6px; }
       <h3>Glucose Control</h3>
       <div class="range-grid">
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-glu" onclick="toggleCard(this, 'd-glu')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>Fasting Glucose</strong>
@@ -463,13 +511,16 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-glu" role="region" aria-label="Glucose details">
-            <p><span class="badge">What it is</span> Snapshot level (stress/illness can raise).</p>
-            <p><span class="badge">Primary care move</span> If abnormal, confirm with repeat fasting sample and/or HbA1c depending on context.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> snapshot; stress/illness can raise.</li>
+              <li><span class="badge">PC move</span> if abnormal, confirm with repeat fasting and/or HbA1c per context.</li>
+              <li><span class="badge">Tip</span> use glucose for “now” assessment if symptomatic/unwell.</li>
+            </ul>
           </div>
         </button>
 
-        <button class="range-card" type="button" aria-expanded="false" aria-controls="d-hba1c" onclick="toggleCard(this, 'd-hba1c')">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
               <strong>HbA1c</strong>
@@ -477,10 +528,12 @@ li { margin-bottom:6px; }
             </div>
             <div class="chev">▼</div>
           </div>
-          <div class="range-details" id="d-hba1c" role="region" aria-label="HbA1c details">
-            <p><span class="badge">What it is</span> 2–3 month average glycaemia; not a “today” value.</p>
-            <p><span class="badge">Caveat</span> Some haemoglobinopathies/anaemia can affect accuracy.</p>
-            <p><span class="badge">Primary care move</span> Use for diagnosis/monitoring per local thresholds; interpret alongside symptoms and risk factors.</p>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> ~2–3 month average glycaemia; not a “today” number.</li>
+              <li><span class="badge">PC move</span> use for diagnosis/monitoring per local thresholds.</li>
+              <li><span class="badge">Caveat</span> some anaemias/haemoglobinopathies can affect accuracy.</li>
+            </ul>
           </div>
         </button>
 
@@ -490,30 +543,97 @@ li { margin-bottom:6px; }
   </div>
 
   <div class="section">
+    <h2>When you would need to request for (Add-on tests)</h2>
+    <p class="note">Indication guide for new clinicians. Align with local pathways and patient context.</p>
+
+    <div class="range-group">
+      <h3>Ferritin / Iron Studies</h3>
+      <div class="two-col">
+        <div class="static-card">
+          <strong>Request when</strong>
+          <p>Low Hb and/or low MCV • fatigue with risk factors • suspected blood loss • thrombocytosis with unclear cause</p>
+        </div>
+        <div class="static-card">
+          <strong>Interpretation tip</strong>
+          <p>Ferritin can be falsely normal/high in inflammation — consider CRP and full iron profile if unclear.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="range-group">
+      <h3>B12 / Folate</h3>
+      <div class="two-col">
+        <div class="static-card">
+          <strong>Request when</strong>
+          <p>Raised MCV • neuro symptoms (paraesthesia/gait) • glossitis/mouth ulcers • dietary/malabsorption risk • metformin/PPIs long-term</p>
+        </div>
+        <div class="static-card">
+          <strong>Safety note</strong>
+          <p>If neuro symptoms + suspected B12 deficiency, act promptly per local guidance while confirming.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="range-group">
+      <h3>HbA1c</h3>
+      <div class="two-col">
+        <div class="static-card">
+          <strong>Request when</strong>
+          <p>Symptoms suggestive of hyperglycaemia • incidental raised glucose • diabetes risk factors • monitoring known diabetes/prediabetes</p>
+        </div>
+        <div class="static-card">
+          <strong>Use alongside</strong>
+          <p>Consider fasting glucose if you need a “right now” answer (acute symptoms/unwell).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="range-group">
+      <h3>Other common add-ons (quick triggers)</h3>
+      <div class="range-grid">
+        <div class="static-card">
+          <strong>TFTs</strong>
+          <p>Fatigue • weight change • palpitations • temperature intolerance • menstrual change • AF assessment</p>
+        </div>
+        <div class="static-card">
+          <strong>Lipids</strong>
+          <p>CV risk assessment • baseline before statin • metabolic syndrome</p>
+        </div>
+        <div class="static-card">
+          <strong>Urine ACR</strong>
+          <p>Diabetes • hypertension • CKD monitoring • unexplained oedema</p>
+        </div>
+        <div class="static-card">
+          <strong>Coeliac screen</strong>
+          <p>Iron deficiency • chronic GI symptoms • weight loss • family history (ensure gluten intake)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
     <h2>Common Primary Care Pitfalls</h2>
     <ul>
-      <li>Overreacting to mild isolated abnormalities without a plan to repeat/confirm.</li>
-      <li>Ignoring hydration, intercurrent illness, and medication effects.</li>
-      <li>Not checking historical baselines (AKI vs CKD; chronic LFT rise, etc.).</li>
+      <li>Ordering broad panels without a clinical question (noise → over-investigation).</li>
+      <li>Reacting to mild isolated abnormalities without repeat/confirmation.</li>
+      <li>Ignoring hydration, illness, and medication effects.</li>
+      <li>Not checking historical baseline (AKI vs CKD; chronic LFT rise, etc.).</li>
     </ul>
   </div>
 
 </div>
 
 <script>
-function toggleCard(cardEl, detailsId) {
-  const details = document.getElementById(detailsId);
+function toggleCard(cardEl){
+  const details = cardEl.querySelector(".range-details");
   const isOpen = cardEl.getAttribute("data-open") === "true";
 
-  // Toggle current
-  if (isOpen) {
-    cardEl.setAttribute("data-open", "false");
-    cardEl.setAttribute("aria-expanded", "false");
-    details.style.display = "none";
+  if(isOpen){
+    cardEl.setAttribute("data-open","false");
+    details.style.display="none";
   } else {
-    cardEl.setAttribute("data-open", "true");
-    cardEl.setAttribute("aria-expanded", "true");
-    details.style.display = "block";
+    cardEl.setAttribute("data-open","true");
+    details.style.display="block";
   }
 }
 </script>
