@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Blood Test Interpretation | PIPC</title>
 
@@ -124,10 +124,7 @@ li{ margin-bottom:6px; }
   color:#374151;
 }
 
-.detail-list{
-  margin:0;
-  padding-left:16px;
-}
+.detail-list{ margin:0; padding-left:16px; }
 .detail-list li{ margin-bottom:6px; }
 
 .badge{
@@ -161,10 +158,24 @@ li{ margin-bottom:6px; }
   display:block;
   font-size:14px;
 }
+
 .static-card p{
   margin:6px 0 0;
   font-size:13px;
   color:#4b5563;
+}
+
+.small-muted{
+  font-size:12.5px;
+  color:#4b5563;
+  margin:8px 0 0;
+}
+
+.hr{
+  height:1px;
+  background:var(--border);
+  margin:14px 0;
+  border:0;
 }
 
 @media(max-width:520px){
@@ -205,6 +216,8 @@ li{ margin-bottom:6px; }
         <p>CRP • TFTs • HbA1c • Lipids • Bone profile (Ca/PO4/ALP)</p>
       </div>
     </div>
+
+    <p class="small-muted"><span class="kicker">Governance:</span> Use local pathways/NICE for thresholds, targets, and follow-up intervals.</p>
   </div>
 
   <div class="section">
@@ -215,7 +228,6 @@ li{ margin-bottom:6px; }
     <div class="range-group">
       <h3>Full Blood Count</h3>
       <div class="range-grid">
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -243,7 +255,7 @@ li{ margin-bottom:6px; }
           </div>
           <div class="range-details">
             <ul class="detail-list">
-              <li><span class="badge">Key step</span> interpret with differential (neutrophils/lymphocytes/eosinophils).</li>
+              <li><span class="badge">Key step</span> interpret with differential.</li>
               <li><span class="badge">High</span> infection/inflammation, steroids, stress response.</li>
               <li><span class="badge">Low</span> viral illness, meds/marrow suppression; repeat if mild + well.</li>
             </ul>
@@ -261,7 +273,7 @@ li{ margin-bottom:6px; }
           <div class="range-details">
             <ul class="detail-list">
               <li><span class="badge">High</span> reactive (infection/inflammation), iron deficiency.</li>
-              <li><span class="badge">Low</span> viral illness, alcohol/liver disease, ITP, drugs; consider clumping artefact.</li>
+              <li><span class="badge">Low</span> viral illness, alcohol/liver disease, ITP, drugs; consider clumping.</li>
               <li><span class="badge">PC move</span> repeat/film if unexpected; assess bleeding risk if low.</li>
             </ul>
           </div>
@@ -283,7 +295,6 @@ li{ margin-bottom:6px; }
             </ul>
           </div>
         </button>
-
       </div>
     </div>
 
@@ -291,7 +302,6 @@ li{ margin-bottom:6px; }
     <div class="range-group">
       <h3>Urea &amp; Electrolytes</h3>
       <div class="range-grid">
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -329,23 +339,6 @@ li{ margin-bottom:6px; }
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
-              <strong>Urea</strong>
-              <span>2.5–7.8 mmol/L</span>
-            </div>
-            <div class="chev">▼</div>
-          </div>
-          <div class="range-details">
-            <ul class="detail-list">
-              <li><span class="badge">High</span> dehydration/AKI, GI bleed, catabolic states, steroids.</li>
-              <li><span class="badge">Pattern</span> urea &gt;&gt; creatinine can suggest pre-renal dehydration.</li>
-              <li><span class="badge">PC move</span> interpret with creatinine/eGFR + clinical hydration.</li>
-            </ul>
-          </div>
-        </button>
-
-        <button class="range-card" type="button" onclick="toggleCard(this)">
-          <div class="range-top">
-            <div class="range-title">
               <strong>Creatinine</strong>
               <span>64–104 µmol/L</span>
             </div>
@@ -354,8 +347,8 @@ li{ margin-bottom:6px; }
           <div class="range-details">
             <ul class="detail-list">
               <li><span class="badge">High</span> decide AKI vs CKD via baseline and time course.</li>
-              <li><span class="badge">PC move</span> check previouss, meds (NSAIDs/ACEi/diuretics), urine, BP; repeat as needed.</li>
-              <li><span class="badge">Tip</span> consider muscle mass and hydration when interpreting.</li>
+              <li><span class="badge">PC move</span> review meds (NSAIDs/ACEi/diuretics), urine, BP; repeat as needed.</li>
+              <li><span class="badge">Tip</span> consider muscle mass + hydration.</li>
             </ul>
           </div>
         </button>
@@ -372,11 +365,9 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Meaning</span> estimate of filtration; CKD requires persistence ≥3 months.</li>
               <li><span class="badge">PC move</span> check ACR, BP, diabetes control; adjust meds where indicated.</li>
-              <li><span class="badge">Tip</span> interpret alongside creatinine trend and clinical state.</li>
             </ul>
           </div>
         </button>
-
       </div>
     </div>
 
@@ -384,7 +375,6 @@ li{ margin-bottom:6px; }
     <div class="range-group">
       <h3>Liver Function</h3>
       <div class="range-grid">
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -397,7 +387,7 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Pattern</span> hepatocellular injury marker (ALT more liver-specific).</li>
               <li><span class="badge">Common</span> MASLD/NAFLD, alcohol, meds, viral hepatitis.</li>
-              <li><span class="badge">PC move</span> repeat if mild; if persistent/higher → follow liver pathway.</li>
+              <li><span class="badge">PC move</span> repeat if mild; persistent/higher → structured liver pathway.</li>
             </ul>
           </div>
         </button>
@@ -413,8 +403,7 @@ li{ margin-bottom:6px; }
           <div class="range-details">
             <ul class="detail-list">
               <li><span class="badge">Pattern</span> cholestasis marker (also bone).</li>
-              <li><span class="badge">PC move</span> consider GGT (if available); cholestasis + symptoms → imaging pathway.</li>
-              <li><span class="badge">Tip</span> isolated ALP may be bone-related.</li>
+              <li><span class="badge">PC move</span> consider GGT; cholestasis + symptoms → imaging pathway.</li>
             </ul>
           </div>
         </button>
@@ -431,7 +420,7 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Benign</span> isolated mild rise can be Gilbert’s (fasting/illness).</li>
               <li><span class="badge">Concerning</span> with LFT pattern changes + jaundice/itch/pale stools.</li>
-              <li><span class="badge">PC move</span> interpret pattern; repeat if mild and well.</li>
+              <li><span class="badge">PC move</span> interpret pattern; repeat if mild + well.</li>
             </ul>
           </div>
         </button>
@@ -448,11 +437,9 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Low</span> inflammation, liver synthetic dysfunction, renal loss, malnutrition.</li>
               <li><span class="badge">PC move</span> interpret with other LFTs + urine/ACR where relevant.</li>
-              <li><span class="badge">Tip</span> often a chronic illness marker.</li>
             </ul>
           </div>
         </button>
-
       </div>
     </div>
 
@@ -460,7 +447,6 @@ li{ margin-bottom:6px; }
     <div class="range-group">
       <h3>Inflammation</h3>
       <div class="range-grid">
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -473,28 +459,9 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Meaning</span> acute inflammation marker (non-specific).</li>
               <li><span class="badge">PC move</span> interpret with symptoms/exam; don’t chase in well patients.</li>
-              <li><span class="badge">Tip</span> answers “is there inflammation now?” not cause.</li>
             </ul>
           </div>
         </button>
-
-        <button class="range-card" type="button" onclick="toggleCard(this)">
-          <div class="range-top">
-            <div class="range-title">
-              <strong>ESR</strong>
-              <span>&lt;20 mm/hr (age dependent)</span>
-            </div>
-            <div class="chev">▼</div>
-          </div>
-          <div class="range-details">
-            <ul class="detail-list">
-              <li><span class="badge">Meaning</span> slower marker; influenced by age/anaemia.</li>
-              <li><span class="badge">PC move</span> use in selected chronic inflammatory contexts; interpret with CRP.</li>
-              <li><span class="badge">Tip</span> not a good screening test alone.</li>
-            </ul>
-          </div>
-        </button>
-
       </div>
     </div>
 
@@ -502,24 +469,6 @@ li{ margin-bottom:6px; }
     <div class="range-group">
       <h3>Glucose Control</h3>
       <div class="range-grid">
-
-        <button class="range-card" type="button" onclick="toggleCard(this)">
-          <div class="range-top">
-            <div class="range-title">
-              <strong>Fasting Glucose</strong>
-              <span>3.9–5.5 mmol/L</span>
-            </div>
-            <div class="chev">▼</div>
-          </div>
-          <div class="range-details">
-            <ul class="detail-list">
-              <li><span class="badge">Meaning</span> snapshot; stress/illness can raise.</li>
-              <li><span class="badge">PC move</span> confirm with repeat fasting and/or HbA1c per context.</li>
-              <li><span class="badge">Tip</span> use glucose for “now” assessment if symptomatic/unwell.</li>
-            </ul>
-          </div>
-        </button>
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -530,23 +479,20 @@ li{ margin-bottom:6px; }
           </div>
           <div class="range-details">
             <ul class="detail-list">
-              <li><span class="badge">Meaning</span> ~2–3 month average glycaemia; not a “today” number.</li>
-              <li><span class="badge">PC move</span> use for diagnosis/monitoring per local thresholds.</li>
-              <li><span class="badge">Caveat</span> anaemias/haemoglobinopathies can affect accuracy.</li>
+              <li><span class="badge">Meaning</span> ~2–3 month average glycaemia (not a “today” number).</li>
+              <li><span class="badge">PC move</span> diagnosis/monitoring per local thresholds; consider caveats (anaemia/haemoglobinopathies).</li>
             </ul>
           </div>
         </button>
-
       </div>
     </div>
 
     <!-- Lipids -->
     <div class="range-group">
       <h3>Lipids (Cholesterol)</h3>
-      <p class="note">Targets vary by cardiovascular risk and local guidance. Treat as a risk tool, not a standalone diagnosis.</p>
+      <p class="note">Targets vary by cardiovascular risk and local guidance. Use as a risk tool, not a standalone diagnosis.</p>
 
       <div class="range-grid">
-
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
@@ -558,8 +504,7 @@ li{ margin-bottom:6px; }
           <div class="range-details">
             <ul class="detail-list">
               <li><span class="badge">Meaning</span> broad marker; interpret with HDL + non-HDL/LDL.</li>
-              <li><span class="badge">PC move</span> assess overall CV risk (e.g., QRISK), BP, smoking, diabetes, FHx.</li>
-              <li><span class="badge">Tip</span> high HDL can drive “high total” without proportionate risk.</li>
+              <li><span class="badge">PC move</span> assess overall CV risk (risk tool + BP/smoking/diabetes/FHx).</li>
             </ul>
           </div>
         </button>
@@ -567,16 +512,15 @@ li{ margin-bottom:6px; }
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
-              <strong>HDL (“protective”)</strong>
+              <strong>HDL</strong>
               <span>&gt; 1.0 (M) / &gt; 1.2 (F) mmol/L</span>
             </div>
             <div class="chev">▼</div>
           </div>
           <div class="range-details">
             <ul class="detail-list">
-              <li><span class="badge">Meaning</span> higher HDL is generally favourable.</li>
-              <li><span class="badge">PC move</span> interpret alongside non-HDL/LDL and total:HDL ratio.</li>
-              <li><span class="badge">Tip</span> lifestyle factors (activity, weight, alcohol) can affect HDL.</li>
+              <li><span class="badge">Meaning</span> generally protective; can raise total cholesterol.</li>
+              <li><span class="badge">PC move</span> interpret with non-HDL/LDL and ratio.</li>
             </ul>
           </div>
         </button>
@@ -584,33 +528,15 @@ li{ margin-bottom:6px; }
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
-              <strong>Non-HDL Cholesterol</strong>
+              <strong>Non-HDL</strong>
               <span>&lt; 4.0 mmol/L (common target)</span>
             </div>
             <div class="chev">▼</div>
           </div>
           <div class="range-details">
             <ul class="detail-list">
-              <li><span class="badge">Meaning</span> atherogenic cholesterol (Total − HDL). Strong primary care marker.</li>
-              <li><span class="badge">PC move</span> often used as treatment target; align with risk category/local guidance.</li>
-              <li><span class="badge">Tip</span> useful when triglycerides are raised (LDL calculation less reliable).</li>
-            </ul>
-          </div>
-        </button>
-
-        <button class="range-card" type="button" onclick="toggleCard(this)">
-          <div class="range-top">
-            <div class="range-title">
-              <strong>LDL Cholesterol</strong>
-              <span>&lt; 3.0 mmol/L (typical reference)</span>
-            </div>
-            <div class="chev">▼</div>
-          </div>
-          <div class="range-details">
-            <ul class="detail-list">
-              <li><span class="badge">Meaning</span> “bad” cholesterol; key atherosclerosis marker.</li>
-              <li><span class="badge">PC move</span> targets vary (higher-risk patients usually lower target).</li>
-              <li><span class="badge">Tip</span> calculated LDL can be unreliable if triglycerides are high.</li>
+              <li><span class="badge">Meaning</span> atherogenic cholesterol (Total − HDL); very useful in primary care.</li>
+              <li><span class="badge">PC move</span> often used as a treatment target; align with risk group/local guidance.</li>
             </ul>
           </div>
         </button>
@@ -626,143 +552,188 @@ li{ margin-bottom:6px; }
           <div class="range-details">
             <ul class="detail-list">
               <li><span class="badge">Meaning</span> rises with insulin resistance, alcohol, obesity; can be post-meal.</li>
-              <li><span class="badge">PC move</span> check fasting status, review alcohol/diet/weight; consider diabetes/metabolic syndrome.</li>
-              <li><span class="badge">Safety</span> very high TG → pancreatitis risk (follow urgent local pathway).</li>
+              <li><span class="badge">PC move</span> check fasting status; address lifestyle; consider diabetes/metabolic syndrome.</li>
+              <li><span class="badge">Safety</span> very high TG → pancreatitis risk (use local urgent pathway).</li>
             </ul>
           </div>
         </button>
-
-        <button class="range-card" type="button" onclick="toggleCard(this)">
-          <div class="range-top">
-            <div class="range-title">
-              <strong>Total:HDL Ratio</strong>
-              <span>Ideal &lt; 4 (rough guide)</span>
-            </div>
-            <div class="chev">▼</div>
-          </div>
-          <div class="range-details">
-            <ul class="detail-list">
-              <li><span class="badge">Meaning</span> quick “balance” marker; higher ratio generally higher risk.</li>
-              <li><span class="badge">PC move</span> use within overall CV risk assessment (not in isolation).</li>
-              <li><span class="badge">Tip</span> non-HDL is often a more actionable target.</li>
-            </ul>
-          </div>
-        </button>
-
       </div>
     </div>
 
   </div>
 
+  <!-- MANAGEMENT SECTIONS -->
   <div class="section">
-    <h2>Lipids: When to order / repeat / escalate</h2>
-    <p class="note">Keep aligned to local guidance. This is a practical primary care approach for new clinicians.</p>
+    <h2>Focused Tests: When to order + Treatment + Monitoring</h2>
+    <p class="note">Clinician-facing summary. Medication choices and follow-up intervals vary by local policy/NICE and patient factors.</p>
 
-    <div class="two-col">
-      <div class="static-card">
-        <strong>When to order lipids</strong>
-        <p>
-          CV risk assessment (e.g., QRISK) • diabetes • hypertension • CKD • NAFLD/metabolic syndrome • before starting statin • strong family history / premature CVD
-        </p>
-      </div>
-
-      <div class="static-card">
-        <strong>Fasting vs non-fasting</strong>
-        <p>
-          Non-fasting is often acceptable for risk scoring. Consider fasting if triglycerides are raised, suspected familial dyslipidaemia, or for follow-up clarity.
-        </p>
-      </div>
-
-      <div class="static-card">
-        <strong>When to repeat</strong>
-        <p>
-          After lifestyle advice (typically weeks–months) • after starting/changing statin (per local pathway) • if results likely affected by acute illness
-        </p>
-      </div>
-
-      <div class="static-card">
-        <strong>When to suspect Familial Hypercholesterolaemia (FH)</strong>
-        <p>
-          Markedly raised cholesterol/LDL • premature CVD in patient or 1st-degree relatives • tendon xanthomas / corneal arcus (young). Use local FH pathway.
-        </p>
-      </div>
-
-      <div class="static-card">
-        <strong>Escalate / act urgently</strong>
-        <p>
-          Very high triglycerides (pancreatitis risk) • symptomatic CVD concerns • results suggesting FH in line with local criteria
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>When you would need to request for (Add-on tests)</h2>
-    <p class="note">Indication guide for new clinicians. Align with local pathways and patient context.</p>
-
+    <!-- Ferritin / Iron -->
     <div class="range-group">
-      <h3>Ferritin / Iron Studies</h3>
+      <h3>Ferritin / Iron Deficiency</h3>
       <div class="two-col">
         <div class="static-card">
-          <strong>Request when</strong>
-          <p>Low Hb and/or low MCV • fatigue with risk factors • suspected blood loss • thrombocytosis with unclear cause</p>
+          <strong>When to request</strong>
+          <p>Low Hb and/or low MCV • fatigue + risk factors • suspected blood loss • unexplained thrombocytosis</p>
         </div>
         <div class="static-card">
-          <strong>Interpretation tip</strong>
-          <p>Ferritin can be falsely normal/high in inflammation — consider CRP and full iron profile if unclear.</p>
+          <strong>Common causes</strong>
+          <p>Menstrual loss • GI loss • diet • malabsorption • pregnancy/postpartum</p>
+        </div>
+        <div class="static-card">
+          <strong>Treatment (typical)</strong>
+          <p>Oral iron replacement (ferrous salt) if tolerated • treat underlying cause • consider IV iron via pathway if severe, intolerance, or poor response</p>
+        </div>
+        <div class="static-card">
+          <strong>Monitoring</strong>
+          <p>Repeat Hb to confirm response • continue replacement beyond normalisation to replenish stores (per pathway) • if non-response: check adherence, ongoing loss, alternative diagnosis</p>
+        </div>
+        <div class="static-card">
+          <strong>Safety / escalation</strong>
+          <p>Symptomatic anaemia, very low Hb, or red flag GI symptoms → urgent assessment / referral per pathway</p>
         </div>
       </div>
     </div>
 
+    <hr class="hr" />
+
+    <!-- B12 -->
     <div class="range-group">
-      <h3>B12 / Folate</h3>
+      <h3>Vitamin B12</h3>
       <div class="two-col">
         <div class="static-card">
-          <strong>Request when</strong>
-          <p>Raised MCV • neuro symptoms • glossitis/mouth ulcers • dietary/malabsorption risk • metformin/PPIs long-term</p>
+          <strong>When to request</strong>
+          <p>Macrocytosis • neuropathy/paraesthesia/gait change • cognitive change • glossitis • dietary/malabsorption risk • metformin/PPIs long-term</p>
         </div>
         <div class="static-card">
-          <strong>Safety note</strong>
-          <p>If neuro symptoms + suspected B12 deficiency, act promptly per local guidance while confirming.</p>
+          <strong>Common causes</strong>
+          <p>Dietary deficiency • pernicious anaemia • malabsorption (GI disease/surgery)</p>
+        </div>
+        <div class="static-card">
+          <strong>Treatment (typical)</strong>
+          <p>Replace B12 (IM hydroxocobalamin or oral therapy depending on cause/severity/local guidance) • treat urgently if neurological features suspected</p>
+        </div>
+        <div class="static-card">
+          <strong>Monitoring</strong>
+          <p>Symptom response is key • repeat FBC ± B12 per local schedule • consider long-term plan if pernicious anaemia</p>
+        </div>
+        <div class="static-card">
+          <strong>Safety</strong>
+          <p>Neurological symptoms with suspected deficiency = don’t delay treatment while waiting for repeat tests</p>
         </div>
       </div>
     </div>
 
+    <hr class="hr" />
+
+    <!-- Folate -->
+    <div class="range-group">
+      <h3>Folate</h3>
+      <div class="two-col">
+        <div class="static-card">
+          <strong>When to request</strong>
+          <p>Macrocytosis/anaemia • malnutrition • alcohol excess • malabsorption risk • pregnancy context (per pathway)</p>
+        </div>
+        <div class="static-card">
+          <strong>Critical point</strong>
+          <p>Check/consider B12 when folate is low — folate alone can mask B12 deficiency while neuro damage progresses</p>
+        </div>
+        <div class="static-card">
+          <strong>Treatment (typical)</strong>
+          <p>Folic acid replacement if confirmed deficiency • address underlying cause (diet/alcohol/malabsorption/meds)</p>
+        </div>
+        <div class="static-card">
+          <strong>Monitoring</strong>
+          <p>Repeat FBC to confirm response • review ongoing risk factors • ensure B12 deficiency excluded/treated</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="hr" />
+
+    <!-- HbA1c -->
     <div class="range-group">
       <h3>HbA1c</h3>
       <div class="two-col">
         <div class="static-card">
-          <strong>Request when</strong>
-          <p>Symptoms suggestive of hyperglycaemia • incidental raised glucose • diabetes risk factors • monitoring diabetes/prediabetes</p>
+          <strong>When to request</strong>
+          <p>Hyperglycaemia symptoms • incidental raised glucose • risk factors • monitoring diabetes/prediabetes</p>
         </div>
         <div class="static-card">
-          <strong>Use alongside</strong>
-          <p>Consider fasting glucose if you need a “right now” answer (acute symptoms/unwell).</p>
+          <strong>What it means</strong>
+          <p>Average glycaemia over ~2–3 months. Use plasma glucose if you need an acute “right now” answer</p>
+        </div>
+        <div class="static-card">
+          <strong>Treatment (typical)</strong>
+          <p>Lifestyle intervention for prediabetes/early disease • medication choice depends on diagnosis, CV/renal status and local guidance (metformin is commonly first-line if appropriate)</p>
+        </div>
+        <div class="static-card">
+          <strong>Monitoring</strong>
+          <p>Repeat HbA1c per pathway • monitor renal function, BP, lipids and complications screening • review adherence/side effects if on therapy</p>
+        </div>
+        <div class="static-card">
+          <strong>Safety</strong>
+          <p>Marked symptoms/very high glucose features → same-day assessment for hyperglycaemic emergency per pathway</p>
         </div>
       </div>
     </div>
 
+    <hr class="hr" />
+
+    <!-- Lipids -->
     <div class="range-group">
-      <h3>Other common add-ons (quick triggers)</h3>
-      <div class="range-grid">
+      <h3>Lipids</h3>
+      <div class="two-col">
         <div class="static-card">
-          <strong>TFTs</strong>
-          <p>Fatigue • weight change • palpitations • temperature intolerance • menstrual change • AF assessment</p>
+          <strong>When to request</strong>
+          <p>CV risk assessment • diabetes • hypertension • CKD • metabolic syndrome/NAFLD • before statin • strong FHx/premature CVD</p>
         </div>
         <div class="static-card">
-          <strong>Urine ACR</strong>
-          <p>Diabetes • hypertension • CKD monitoring • unexplained oedema</p>
+          <strong>Fasting vs non-fasting</strong>
+          <p>Non-fasting often OK for risk scoring. Consider fasting if TG raised, suspected familial dyslipidaemia, or follow-up clarity</p>
         </div>
         <div class="static-card">
-          <strong>Coeliac screen</strong>
-          <p>Iron deficiency • chronic GI symptoms • weight loss • family history (ensure gluten intake)</p>
+          <strong>Treatment (typical)</strong>
+          <p>Lifestyle first for most • statin for primary prevention based on risk • statin is standard for secondary prevention per pathway (e.g., atorvastatin class)</p>
         </div>
         <div class="static-card">
-          <strong>Vitamin D</strong>
-          <p>Bone pain/fractures • falls risk • limited sun exposure • malabsorption (local testing guidance varies)</p>
+          <strong>Monitoring</strong>
+          <p>Baseline LFTs before statin • repeat lipids after starting/changing therapy per pathway • check adherence + muscle symptoms; CK only if symptomatic/high risk</p>
+        </div>
+        <div class="static-card">
+          <strong>When to suspect FH</strong>
+          <p>Markedly raised LDL/total • premature CVD in patient/1st-degree relatives • tendon xanthomas/early corneal arcus → follow FH pathway</p>
         </div>
       </div>
+
+      <div class="range-group" style="margin-top:14px;">
+        <h3 style="font-size:16px; margin-bottom:8px;">Targets by Risk (Quick Panel)</h3>
+        <p class="note">These are common “teaching” targets. Always use your local/NICE pathway for exact thresholds and targets.</p>
+
+        <div class="two-col">
+          <div class="static-card">
+            <strong>Lower risk / general reference</strong>
+            <p><span class="kicker">Non-HDL:</span> often &lt; 4.0 mmol/L • <span class="kicker">Total:</span> &lt; 5.0 mmol/L • <span class="kicker">TG:</span> &lt; 1.7 mmol/L</p>
+          </div>
+
+          <div class="static-card">
+            <strong>Primary prevention (higher risk)</strong>
+            <p>Use a risk tool + shared decision-making. Targets are typically <span class="kicker">more stringent</span> than general reference, often focusing on <span class="kicker">non-HDL/LDL reduction</span> rather than one “magic number”.</p>
+          </div>
+
+          <div class="static-card">
+            <strong>Secondary prevention (established CVD)</strong>
+            <p>Aim for <span class="kicker">aggressive lipid lowering</span> (statin standard). Targets are usually lower than primary prevention; follow the local secondary prevention pathway.</p>
+          </div>
+
+          <div class="static-card">
+            <strong>Diabetes / CKD / very high risk</strong>
+            <p>Often treated similarly to high/secondary-risk groups depending on age, albuminuria, and comorbidities. Focus on <span class="kicker">non-HDL/LDL lowering + global CV risk</span>.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
 
   <div class="section">
@@ -780,6 +751,7 @@ li{ margin-bottom:6px; }
 <script>
 function toggleCard(cardEl){
   const details = cardEl.querySelector(".range-details");
+  if(!details) return;
   const isOpen = cardEl.getAttribute("data-open") === "true";
 
   if(isOpen){
