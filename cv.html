@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cardiovascular – PIPC</title>
+<style>
+  :root{
+    --bg:#f3f5f8; --card:#ffffff; --text:#111827; --muted:#6b7280; --blue:#1e88e5; --border:#e5e7eb;
+    --shadow:0 6px 18px rgba(0,0,0,0.12);
+    --danger-bg:#fff1f2; --danger-border:#fecdd3; --danger-text:#b91c1c;
+    --sec-bg:#f1f8ff; --sec-border:#dbeafe; --sec2-bg:#f7f7ff; --sec2-border:#e0e7ff; --sec3-bg:#f6fffb; --sec3-border:#bbf7d0;
+  }
+  body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);} 
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.05);} 
+  .topbar-inner{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;} 
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;} .brand img{height:40px;width:auto;display:block;} .brand-title{font-weight:900;}
+  .page-title{margin-left:auto;font-size:1.05rem;font-weight:900;color:#0f172a;}
+  .wrap{max-width:1100px;margin:18px auto;padding:0 16px 95px;} .crumb{margin:8px 0 14px;} .crumb a{text-decoration:none;color:var(--blue);font-weight:900;}
+  h1{margin:6px 0 6px;font-size:2rem;} p.sub{margin:0 0 18px;color:var(--muted);line-height:1.4;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+  .tile{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;transition:transform .06s ease, box-shadow .12s ease;}
+  .tile:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,0.08);} .tile h3{margin:0 0 6px;font-size:1.06rem;} .tile p{margin:0;color:var(--muted);font-size:.92rem;}
+  .flag-pill{position:absolute;top:10px;right:10px;border:1px solid var(--danger-border);background:var(--danger-bg);color:var(--danger-text);font-weight:900;font-size:.78rem;padding:5px 8px;border-radius:999px;}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;display:none;}
+  .window{position:fixed;top:110px;left:120px;width:min(820px,92vw);background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);z-index:1000;box-sizing:border-box;}
+  .window-header{padding:10px 12px;background:var(--blue);color:white;cursor:move;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center;user-select:none;font-weight:900;}
+  .window-body{padding:14px;max-height:70vh;overflow-y:auto;} .close{cursor:pointer;font-weight:900;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,0.15);}
+  .section{border:1px solid var(--sec-border);background:var(--sec-bg);border-radius:12px;padding:12px;margin:10px 0;} .section.alt{border-color:var(--sec2-border);background:var(--sec2-bg);} .section.good{border-color:var(--sec3-border);background:var(--sec3-bg);} .section.danger{border-color:var(--danger-border);background:var(--danger-bg);} .section h4{margin:0 0 8px;font-size:.95rem;text-transform:uppercase;} .section ul{margin:0;padding-left:18px;} .section li{margin:6px 0;}
+  @media (max-width:820px){.window{left:12px;right:12px;top:88px;bottom:14px;width:auto;max-width:none;} .window-header{cursor:default;} .window-body{max-height:calc(100vh - 88px - 14px - 44px);}}
+  @media (max-width:520px){.page-title{display:none;} .brand img{height:36px;}}
+</style>
+</head>
+<body>
+<div id="overlay" class="overlay" aria-hidden="true"></div>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><img src="assets/pipc-short.png" alt="PIPC"/><div class="brand-title">PIPC</div></a><div class="page-title">Cardiovascular</div></div></header>
+<div class="wrap">
+  <div class="crumb"><a href="index.html">← Home</a></div>
+  <h1>Cardiovascular</h1>
+  <p class="sub">Tap a tile to open structured guidance: <strong>Definition</strong>, <strong>Treatment</strong>, <strong>Plan</strong>. Use 🚩 for red flags.</p>
+  <div class="grid">
+    <div class="tile" onclick="openWindow('htn')"><h3>🩺 Hypertension</h3><p>Confirm diagnosis and optimise risk reduction.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('htn')">🚩</div></div>
+    <div class="tile" onclick="openWindow('af')"><h3>💓 Atrial Fibrillation</h3><p>Rhythm recognition, stroke prevention, rate control.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('af')">🚩</div></div>
+    <div class="tile" onclick="openWindow('hf')"><h3>💔 Heart Failure</h3><p>Breathlessness and oedema pathway approach.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('hf')">🚩</div></div>
+    <div class="tile" onclick="openWindow('acs')"><h3>⚡ Acute Coronary Syndrome</h3><p>Time-critical chest pain emergency pathway.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('acs')">🚩</div></div>
+    <div class="tile" onclick="openWindow('vte')"><h3>🦵 DVT / VTE suspicion</h3><p>Risk scoring, referral, and anticoagulation safety.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('vte')">🚩</div></div>
+    <div class="tile" onclick="openWindow('lipids')"><h3>📉 Lipids & prevention</h3><p>Primary/secondary prevention optimisation.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('lipids')">🚩</div></div>
+  </div>
+</div>
+<script>
+let zIndexCounter=1000; const overlay=document.getElementById('overlay');
+function showOverlay(){overlay.style.display='block';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function hideOverlay(){overlay.style.display='none';overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+function closeAll(){document.querySelectorAll('.window').forEach(w=>w.remove());hideOverlay();}
+overlay.addEventListener('click',closeAll);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll();});
+function createWindow(title,html){closeAll();showOverlay();const win=document.createElement('div');win.className='window';win.style.zIndex=++zIndexCounter;win.innerHTML=`<div class="window-header">${title}<span class="close" onclick="closeAll()">✖</span></div><div class="window-body">${html}</div>`;document.body.appendChild(win);makeDraggable(win);} 
+function makeDraggable(win){const header=win.querySelector('.window-header');let dragging=false,offX=0,offY=0;function canDrag(){return window.matchMedia('(min-width: 821px)').matches;}header.addEventListener('mousedown',e=>{if(!canDrag()) return;dragging=true;offX=e.clientX-win.offsetLeft;offY=e.clientY-win.offsetTop;document.body.style.userSelect='none';});document.addEventListener('mousemove',e=>{if(!dragging) return;win.style.left=(e.clientX-offX)+'px';win.style.top=(e.clientY-offY)+'px';});document.addEventListener('mouseup',()=>{dragging=false;document.body.style.userSelect='';});}
+const CONTENT={
+  htn:{title:'Hypertension',definition:['Persistently elevated BP requiring confirmation by clinic + home/ABPM context.','Assess global CV risk and end-organ impact.'],treatment:['Lifestyle: salt reduction, weight, activity, alcohol moderation.','Medication initiation/escalation per age/comorbidity pathway.'],plan:['Baseline bloods/urine ECG as indicated.','Review response and adherence; titrate safely.']},
+  af:{title:'Atrial Fibrillation',definition:['Irregularly irregular rhythm confirmed on ECG.','Symptoms vary from asymptomatic to palpitations/dyspnoea.'],treatment:['Stroke prevention decision (anticoagulation) by risk score.','Rate/rhythm strategy based on symptom burden and stability.'],plan:['Review renal function and bleeding risk.','Follow-up pulse/rate, symptoms, and medicine tolerance.']},
+  hf:{title:'Heart Failure',definition:['Syndrome of dyspnoea, oedema, fatigue ± orthopnoea/PND.','Diagnose with clinical pattern + natriuretic peptide pathway.'],treatment:['Diuretic strategy for congestion; optimise guideline therapies.','Manage precipitating factors and comorbidity burden.'],plan:['Track weight, renal function, potassium, symptoms.','Escalate for decompensation or poor diuretic response.']},
+  acs:{title:'Acute Coronary Syndrome',definition:['Acute myocardial ischaemia spectrum (unstable angina/NSTEMI/STEMI).','Primary care role is rapid recognition and emergency transfer.'],treatment:['Follow emergency pathway immediately.','Do not delay definitive care with non-essential local testing.'],plan:['Document timeline and red flags clearly for handover.','Safety-net recurrent pain if initially non-diagnostic.']},
+  vte:{title:'DVT / VTE suspicion',definition:['Thromboembolic disease suspicion based on symptoms and risk profile.','Use validated pre-test probability framework.'],treatment:['Arrange D-dimer/imaging route per score and local pathway.','Start anticoagulation when indicated and safe.'],plan:['Assess provoking factors and duration strategy.','Escalate urgently if PE features develop.']},
+  lipids:{title:'Lipids & prevention',definition:['Risk-factor modification to reduce atherosclerotic events.','Interpret lipids alongside total CV risk.'],treatment:['Lifestyle + statin strategy by prevention group.','Address adherence and side effects proactively.'],plan:['Repeat lipids and LFT monitoring per pathway.','Shared decisions around target intensity and follow-up.']}
+};
+const RED={htn:['BP >180/120 with symptoms','Neuro deficit or severe headache','Chest pain or acute dyspnoea'],af:['Syncope/haemodynamic instability','Chest pain/ischaemia symptoms','Acute heart failure signs'],hf:['Rest breathlessness','Rapidly worsening oedema','Hypoxia or confusion'],acs:['Central chest pain >15 mins','Diaphoresis, nausea, collapse','New ECG concern'],vte:['PE symptoms (pleuritic pain/SOB)','Haemodynamic compromise','Massive painful swollen limb'],lipids:['Suspected familial hypercholesterolaemia','Very high TG + pancreatitis risk','Statin-associated severe symptoms']};
+function openWindow(key){const i=CONTENT[key];if(!i) return;createWindow(i.title,`<div class="section"><h4>Definition</h4><ul>${i.definition.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="section alt"><h4>Treatment</h4><ul>${i.treatment.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="section good"><h4>Plan</h4><ul>${i.plan.map(x=>`<li>${x}</li>`).join('')}</ul></div>`)}
+function openRedFlags(key){const list=RED[key]||[];createWindow('Cardiovascular red flags',`<div class="section danger"><h4>Red flags</h4><ul>${list.map(x=>`<li>${x}</li>`).join('')}</ul></div>`)}
+</script>
+</body>
+</html>
