@@ -171,6 +171,36 @@ li{ margin-bottom:6px; }
   margin:8px 0 0;
 }
 
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+  align-items:center;
+}
+
+.filter-input{
+  flex:1 1 280px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 10px;
+  font-size:14px;
+}
+
+.btn-lite{
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  color:#1f2937;
+  padding:8px 10px;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.btn-lite:hover{ background:#f8fafc; }
+
+.range-card.hidden{ display:none; }
+
 .hr{
   height:1px;
   background:var(--border);
@@ -221,9 +251,6 @@ li{ margin-bottom:6px; }
   </div>
 
   <div class="section">
-    <h2>Typical Adult Reference Ranges (Click a test)</h2>
-    <p class="note">Indicative adult ranges. Always use local laboratory reference ranges and interpret clinically.</p>
-<div class="section">
   <h2>Interpret Bloods as Groups (Pattern Recognition)</h2>
   <p class="note">In primary care you rarely interpret a single number. Use “panel logic”: pattern + context + trend → action.</p>
 
@@ -305,6 +332,15 @@ li{ margin-bottom:6px; }
 
   <p class="small-muted"><span class="kicker">Tip:</span> Always look for a pattern that answers your question: <em>diagnosis support</em>, <em>severity</em>, <em>treatment safety</em>, or <em>monitoring response</em>.</p>
 </div>
+
+  <div class="section">
+    <h2>Typical Adult Reference Ranges (Click a test)</h2>
+    <p class="note">Indicative adult ranges. Always use local laboratory reference ranges and interpret clinically.</p>
+    <div class="controls">
+      <input id="testFilter" class="filter-input" type="search" placeholder="Filter tests (e.g. ferritin, sodium, ALT)" aria-label="Filter blood test cards" />
+      <button class="btn-lite" type="button" onclick="setAllCards(true)">Expand all</button>
+      <button class="btn-lite" type="button" onclick="setAllCards(false)">Collapse all</button>
+    </div>
     <!-- FBC -->
     <div class="range-group">
       <h3>Full Blood Count</h3>
@@ -837,12 +873,53 @@ function toggleCard(cardEl){
 
   if(isOpen){
     cardEl.setAttribute("data-open","false");
+    cardEl.setAttribute("aria-expanded","false");
     details.style.display="none";
   } else {
     cardEl.setAttribute("data-open","true");
+    cardEl.setAttribute("aria-expanded","true");
     details.style.display="block";
   }
 }
+
+function setAllCards(open){
+  document.querySelectorAll(".range-card").forEach((card) => {
+    const details = card.querySelector(".range-details");
+    if(!details) return;
+    card.setAttribute("data-open", open ? "true" : "false");
+    card.setAttribute("aria-expanded", open ? "true" : "false");
+    details.style.display = open ? "block" : "none";
+  });
+}
+
+function filterCards(){
+  const filterEl = document.getElementById("testFilter");
+  if(!filterEl) return;
+  const query = filterEl.value.trim().toLowerCase();
+
+  document.querySelectorAll(".range-group").forEach((group) => {
+    let visibleCount = 0;
+    group.querySelectorAll(".range-card").forEach((card) => {
+      const text = card.textContent.toLowerCase();
+      const visible = !query || text.includes(query);
+      card.classList.toggle("hidden", !visible);
+      if(visible) visibleCount += 1;
+    });
+
+    group.style.display = visibleCount ? "block" : "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".range-card").forEach((card) => {
+    card.setAttribute("aria-expanded", "false");
+  });
+
+  const filterEl = document.getElementById("testFilter");
+  if(filterEl){
+    filterEl.addEventListener("input", filterCards);
+  }
+});
 </script>
 
 </body>
