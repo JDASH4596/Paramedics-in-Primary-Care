@@ -40,4 +40,32 @@ ibs:['Use positive diagnosis framework.','Exclude red flags and key differential
 function openWindow(k){const items=D[k]||[];createWindow('Abdominal guidance',`<div class="section"><h4>Approach</h4><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div><div class="section alt"><h4>Note</h4><ul><li>Use local/NICE pathways for definitive thresholds and referral timing.</li></ul></div>`)}
 </script>
 </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abdominal | PIPC</title>
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#1e88e5;--border:#e5e7eb;}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 40px}.back{color:var(--blue);text-decoration:none;font-weight:700}
+.hero{margin:12px 0 16px;background:#fef9f2;border:1px solid #fde68a;border-radius:12px;padding:14px}.hero h1{margin:0 0 6px}.hero p{margin:0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.tile{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
+.tile h3{margin:0 0 8px;font-size:1rem}details{margin-top:8px} summary{cursor:pointer;font-weight:700}
+ul{margin:8px 0 0;padding-left:18px} li{margin-bottom:6px;font-size:.92rem}.note{margin-top:14px;font-size:.86rem;color:var(--muted)}
+</style>
+</head>
+<body><div class="wrap">
+<a class="back" href="index.html">← Home</a>
+<div class="hero"><h1>Abdominal</h1><p>Common abdominal presentations with quick primary-care actions.</p></div>
+<div class="grid">
+<div class="tile"><h3>🍽️ Dyspepsia / GORD</h3><details><summary>Open guidance</summary><ul><li>Assess alarm symptoms: dysphagia, weight loss, bleeding.</li><li>Trial lifestyle + acid suppression where appropriate.</li><li>Review NSAID use, alcohol, smoking, diet triggers.</li><li>Refer urgently if red flags or persistent alarm features.</li></ul></details></div>
+<div class="tile"><h3>🦠 Gastroenteritis</h3><details><summary>Open guidance</summary><ul><li>Hydration status and severity first.</li><li>Usually self-limiting; oral rehydration advice.</li><li>Safety net for blood in stool, persistent fever, reduced urine.</li><li>Consider stool tests when prolonged/severe/outbreak risk.</li></ul></details></div>
+<div class="tile"><h3>⚠️ Appendicitis suspicion</h3><details><summary>Open guidance</summary><ul><li>Migratory pain to RIF, fever, anorexia, guarding concern.</li><li>Primary care role is early recognition and urgent surgical route.</li><li>Avoid delaying referral for serial primary care reviews if worsening.</li></ul></details></div>
+<div class="tile"><h3>🧱 Biliary colic / cholecystitis</h3><details><summary>Open guidance</summary><ul><li>RUQ pain after fatty meals ± nausea/vomiting.</li><li>Check fever/jaundice/systemic upset (possible complication).</li><li>Arrange LFT/CRP/FBC and pathway-based imaging/referral.</li></ul></details></div>
+<div class="tile"><h3>🩸 GI bleed concern</h3><details><summary>Open guidance</summary><ul><li>Melaena, haematemesis, or maroon stool = urgent pathway.</li><li>Assess haemodynamic stability and symptoms of shock.</li><li>Immediate escalation rather than delayed outpatient workup.</li></ul></details></div>
+<div class="tile"><h3>🚽 IBS / functional symptoms</h3><details><summary>Open guidance</summary><ul><li>Positive diagnosis approach + symptom pattern.</li><li>Exclude red flags and key differentials where indicated.</li><li>Dietary strategy, stress/sleep review, and follow-up plan.</li></ul></details></div>
+</div>
+<p class="note">Use local and NICE pathways for referral timing, safety thresholds, and treatment choices.</p>
+</div></body>
 </html>
