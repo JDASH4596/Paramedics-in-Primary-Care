@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=skin.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting…</title>
+  <script>window.location.replace('skin.html');</script>
 <title>Skin – PIPC</title>
 <style>
   :root{--bg:#f3f5f8;--card:#ffffff;--text:#111827;--muted:#6b7280;--blue:#1e88e5;--border:#e5e7eb;--shadow:0 6px 18px rgba(0,0,0,0.12);--sec-bg:#f1f8ff;--sec-border:#dbeafe;--sec2-bg:#f7f7ff;--sec2-border:#e0e7ff;}
