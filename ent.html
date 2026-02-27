@@ -372,11 +372,20 @@ function createWindow(title, html) {
   win.className = "window";
   win.style.zIndex = ++zIndexCounter;
 
-  // NEW: cascade windows so you can open two and actually see both
-  windowCount++;
-  const offset = (windowCount % 6) * 26; // gentle cascade
-  win.style.top = (110 + offset) + "px";
-  win.style.left = (120 + offset) + "px";
+  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+  if (isMobile) {
+    // Mobile: let CSS media query control full-screen layout.
+    // Avoid inline top/left positioning which can force content off-screen.
+    win.style.top = "0";
+    win.style.left = "0";
+  } else {
+    // Desktop: cascade windows so multiple open windows are visible.
+    windowCount++;
+    const offset = (windowCount % 6) * 26; // gentle cascade
+    win.style.top = (110 + offset) + "px";
+    win.style.left = (120 + offset) + "px";
+  }
 
   win.innerHTML = `
     <div class="window-header">
@@ -625,7 +634,7 @@ function openWindow(key) {
         "Example appearance (licensed)",
         "https://upload.wikimedia.org/wikipedia/commons/3/39/PeritonsilarAbsess.jpg",
         "Peritonsillar abscess with uvula deviation",
-        `Image: “PeritonsilarAbsess” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:PeritonsilarAbsess.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
+        `Image: “Peritonsillar abscess image” — CC BY-SA 3.0. <a href="https://commons.wikimedia.org/wiki/File:PeritonsilarAbsess.jpg" target="_blank">Source</a> • <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Licence</a>`
       )}
       ${section("Definition", [
         "Peritonsillar abscess (quinsy) – complication of tonsillitis; urgent condition."
