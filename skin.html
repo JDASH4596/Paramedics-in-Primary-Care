@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skin – PIPC</title>
+<style>
+  :root{--bg:#f3f5f8;--card:#ffffff;--text:#111827;--muted:#6b7280;--blue:#1e88e5;--border:#e5e7eb;--shadow:0 6px 18px rgba(0,0,0,0.12);--danger-bg:#fff1f2;--danger-border:#fecdd3;--danger-text:#b91c1c;--sec-bg:#f1f8ff;--sec-border:#dbeafe;--sec2-bg:#f7f7ff;--sec2-border:#e0e7ff;--sec3-bg:#f6fffb;--sec3-border:#bbf7d0;}
+  body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);} .topbar{background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.05);} .topbar-inner{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;} .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;} .brand img{height:40px;width:auto;display:block;} .brand-title{font-weight:900;} .page-title{margin-left:auto;font-size:1.05rem;font-weight:900;color:#0f172a;}
+  .wrap{max-width:1100px;margin:18px auto;padding:0 16px 95px;} .crumb{margin:8px 0 14px;} .crumb a{text-decoration:none;color:var(--blue);font-weight:900;} h1{margin:6px 0 6px;font-size:2rem;} p.sub{margin:0 0 18px;color:var(--muted);line-height:1.4;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;} .tile{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;transition:transform .06s ease, box-shadow .12s ease;} .tile:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,0.08);} .tile h3{margin:0 0 6px;font-size:1.06rem;} .tile p{margin:0;color:var(--muted);font-size:.92rem;}
+  .flag-pill{position:absolute;top:10px;right:10px;border:1px solid var(--danger-border);background:var(--danger-bg);color:var(--danger-text);font-weight:900;font-size:.78rem;padding:5px 8px;border-radius:999px;}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;display:none;} .window{position:fixed;top:110px;left:120px;width:min(820px,92vw);background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);z-index:1000;box-sizing:border-box;} .window-header{padding:10px 12px;background:var(--blue);color:white;cursor:move;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center;user-select:none;font-weight:900;} .window-body{padding:14px;max-height:70vh;overflow-y:auto;} .close{cursor:pointer;font-weight:900;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,0.15);}
+  .section{border:1px solid var(--sec-border);background:var(--sec-bg);border-radius:12px;padding:12px;margin:10px 0;} .section.alt{border-color:var(--sec2-border);background:var(--sec2-bg);} .section.good{border-color:var(--sec3-border);background:var(--sec3-bg);} .section.danger{border-color:var(--danger-border);background:var(--danger-bg);} .section h4{margin:0 0 8px;font-size:.95rem;text-transform:uppercase;} .section ul{margin:0;padding-left:18px;} .section li{margin:6px 0;}
+  @media (max-width:820px){.window{left:12px;right:12px;top:88px;bottom:14px;width:auto;max-width:none;} .window-header{cursor:default;} .window-body{max-height:calc(100vh - 88px - 14px - 44px);}}
+  @media (max-width:520px){.page-title{display:none;} .brand img{height:36px;}}
+</style>
+</head>
+<body>
+<div id="overlay" class="overlay" aria-hidden="true"></div>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><img src="assets/pipc-short.png" alt="PIPC"/><div class="brand-title">PIPC</div></a><div class="page-title">Skin</div></div></header>
+<div class="wrap"><div class="crumb"><a href="index.html">← Home</a></div><h1>Skin</h1><p class="sub">Tile + movable window layout (respiratory style): <strong>Definition</strong>, <strong>Treatment</strong>, <strong>Plan</strong>, and 🚩 red flags.</p>
+<div class="grid">
+  <div class="tile" onclick="openWindow('eczema')"><h3>🧴 Eczema flare</h3><p>Inflammatory flare management and trigger review.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('eczema')">🚩</div></div>
+  <div class="tile" onclick="openWindow('cellulitis')"><h3>🔥 Cellulitis</h3><p>Infection severity and antibiotic pathway.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('cellulitis')">🚩</div></div>
+  <div class="tile" onclick="openWindow('contact')"><h3>🌿 Contact dermatitis</h3><p>Irritant/allergen identification and control.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('contact')">🚩</div></div>
+  <div class="tile" onclick="openWindow('urticaria')"><h3>🫧 Urticaria</h3><p>Itchy weals and angioedema safety checks.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('urticaria')">🚩</div></div>
+  <div class="tile" onclick="openWindow('shingles')"><h3>🦠 Shingles</h3><p>Dermatomal rash, antiviral timing, eye risk.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('shingles')">🚩</div></div>
+  <div class="tile" onclick="openWindow('lesion')"><h3>⚠️ Suspicious lesion</h3><p>ABCDE assessment and urgent referral.</p><div class="flag-pill" onclick="event.stopPropagation();openRedFlags('lesion')">🚩</div></div>
+</div></div>
+<script>
+let zIndexCounter=1000; const overlay=document.getElementById('overlay');
+function showOverlay(){overlay.style.display='block';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function hideOverlay(){overlay.style.display='none';overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+function closeAll(){document.querySelectorAll('.window').forEach(w=>w.remove());hideOverlay();}
+overlay.addEventListener('click',closeAll);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll();});
+function createWindow(title,html){closeAll();showOverlay();const win=document.createElement('div');win.className='window';win.style.zIndex=++zIndexCounter;win.innerHTML=`<div class="window-header">${title}<span class="close" onclick="closeAll()">✖</span></div><div class="window-body">${html}</div>`;document.body.appendChild(win);makeDraggable(win);} 
+function makeDraggable(win){const header=win.querySelector('.window-header');let dragging=false,offX=0,offY=0;function canDrag(){return window.matchMedia('(min-width: 821px)').matches;}header.addEventListener('mousedown',e=>{if(!canDrag()) return;dragging=true;offX=e.clientX-win.offsetLeft;offY=e.clientY-win.offsetTop;document.body.style.userSelect='none';});document.addEventListener('mousemove',e=>{if(!dragging) return;win.style.left=(e.clientX-offX)+'px';win.style.top=(e.clientY-offY)+'px';});document.addEventListener('mouseup',()=>{dragging=false;document.body.style.userSelect='';});}
+const CONTENT={
+  eczema:{title:'Eczema flare',definition:['Chronic inflammatory dermatosis with itchy, dry, erythematous patches.','Assess severity, infection, and trigger pattern.'],treatment:['Emollient optimisation and appropriate topical steroid potency.','Address trigger avoidance and skin barrier support.'],plan:['Review response, adherence, and steroid technique.','Escalate if severe, infected, or poor control.']},
+  cellulitis:{title:'Cellulitis',definition:['Acute bacterial skin/soft tissue infection with warmth, erythema, tenderness.','Severity varies from local infection to systemic illness.'],treatment:['Antibiotic strategy per local severity pathway.','Analgesia, limb elevation, and boundary marking.'],plan:['Early review for response/progression.','Escalate if systemic deterioration or non-response.']},
+  contact:{title:'Contact dermatitis',definition:['Inflammatory dermatitis from irritant or allergic exposure.','Distribution and exposure history are diagnostic clues.'],treatment:['Avoid offending trigger and optimise barrier care.','Topical anti-inflammatory treatment for active inflammation.'],plan:['Reassess trigger control and recurrence.','Consider patch testing if persistent/refractory.']},
+  urticaria:{title:'Urticaria',definition:['Transient pruritic wheals ± angioedema episodes.','Most cases are benign but airway risk must be checked.'],treatment:['Non-sedating antihistamines first line.','Remove/avoid suspected triggers where identifiable.'],plan:['Monitor symptom control and recurrence pattern.','Escalate urgently if airway/breathing symptoms develop.']},
+  shingles:{title:'Shingles',definition:['Reactivation VZV with painful unilateral dermatomal vesicular rash.','Complication risk higher with age/immunosuppression.'],treatment:['Consider antivirals within timing window per guideline.','Pain management and skin care advice.'],plan:['Review for post-herpetic neuralgia symptoms.','Urgent eye pathway if ophthalmic involvement signs.']},
+  lesion:{title:'Suspicious lesion',definition:['Possible malignant skin lesion suggested by ABCDE/change profile.','Use structured documentation of evolution and morphology.'],treatment:['No definitive primary care treatment before diagnosis route.','Fast-track referral when cancer criteria met.'],plan:['Clear safety-net for rapid change/bleeding/non-healing.','Follow urgent dermatology pathway timelines.']}
+};
+const RED={eczema:['Widespread infection signs','Eczema herpeticum concern','Systemic unwellness'],cellulitis:['Rapid spread','Sepsis features','Necrotising infection concern'],contact:['Facial/airway swelling','Severe blistering','Systemic symptoms'],urticaria:['Tongue/lip swelling','Breathlessness/wheeze','Hypotension/collapse'],shingles:['Eye pain/visual symptoms','Disseminated rash','Immunosuppressed + severe pain'],lesion:['Rapid change','Spontaneous bleeding','Non-healing ulcer']};
+function openWindow(key){const i=CONTENT[key];if(!i)return;createWindow(i.title,`<div class="section"><h4>Definition</h4><ul>${i.definition.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="section alt"><h4>Treatment</h4><ul>${i.treatment.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="section good"><h4>Plan</h4><ul>${i.plan.map(x=>`<li>${x}</li>`).join('')}</ul></div>`)}
+function openRedFlags(key){const list=RED[key]||[];createWindow('Skin red flags',`<div class="section danger"><h4>Red flags</h4><ul>${list.map(x=>`<li>${x}</li>`).join('')}</ul></div>`)}
+</script>
+</body>
+</html>

@@ -1,21 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>System - Paramedics in Primary Care</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=cv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting…</title>
+  <script>window.location.replace('cv.html');</script>
 </head>
 <body>
-
-<a class="back" href="index.html">⬅ Home</a>
-
-<h1>SYSTEM NAME</h1>
-<p class="subtitle">Coming soon</p>
-
-<div class="card">
-  <p>This section is in development.</p>
-  <p>Conditions, tables and NICE links will be added.</p>
-</div>
-
+  <p>Redirecting to <a href="cv.html">Cardiovascular</a>…</p>
 </body>
 </html>
-
