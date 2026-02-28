@@ -1,225 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Paramedics in Primary Care – PIPC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paramedics in Primary Care – PIPC</title>
 
-<!-- Supabase CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase CDN (load once) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-  :root{
-    --bg: #f3f5f8;
-    --card: #ffffff;
-    --text: #1f2937;
-    --muted: #6b7280;
-    --blue: #1e88e5;
-    --border: #e5e7eb;
-    --shadow: 0 6px 18px rgba(0,0,0,0.10);
-  }
+  <style>
+    :root{
+      --bg: #f3f5f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --blue: #1e88e5;
+      --border: #e5e7eb;
+      --shadow: 0 6px 18px rgba(0,0,0,0.10);
+    }
 
-  body{
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-  }
+    body{
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-  /* HEADER (FULL LOGO) */
-  .topbar{
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  }
+    /* HEADER (FULL LOGO) */
+    .topbar{
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
 
-  .topbar-inner{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-  .brand{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-  }
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
 
-  .brand img{
-    height: 56px;          /* full logo size */
-    width: auto;
-    display: block;
-  }
+    .brand img{
+      height: 56px;          /* full logo size */
+      width: auto;
+      display: block;
+    }
 
-  .brand-sub{
-    color: var(--muted);
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-top: 2px;
-  }
+    .brand-sub{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
 
-  /* Account controls */
-  .account{
-    margin-left: auto;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    font-weight: 900;
-  }
+    /* Account controls */
+    .account{
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 900;
+    }
 
-  .pill{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: #fff;
-    font-size: 0.88rem;
-    color: #0f172a;
-    white-space: nowrap;
-  }
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.88rem;
+      color: #0f172a;
+      white-space: nowrap;
+    }
 
-  .dev-pill{
-    background:#065f46;
-    color:#fff;
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 900;
-  }
+    .dev-pill{
+      background:#065f46;
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
 
-  .btn{
-    display: inline-block;
-    border: 0;
-    background: var(--blue);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-weight: 900;
-    font-size: 0.88rem;
-    cursor: pointer;
-    text-decoration: none;
-  }
+    .btn{
+      display: inline-block;
+      border: 0;
+      background: var(--blue);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 900;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
-  .btn.ghost{
-    background: #fff;
-    color: #0f172a;
-    border: 1px solid var(--border);
-  }
+    .btn.ghost{
+      background: #fff;
+      color: #0f172a;
+      border: 1px solid var(--border);
+    }
 
-  /* CONTENT */
-  .wrap{
-    max-width: 1100px;
-    margin: 18px auto;
-    padding: 0 16px 40px 16px;
-  }
+    /* CONTENT */
+    .wrap{
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 0 16px 40px 16px;
+    }
 
-  h1{
-    margin: 18px 0 8px 0;
-    font-size: 2.1rem;
-    letter-spacing: 0.2px;
-  }
+    h1{
+      margin: 18px 0 8px 0;
+      font-size: 2.1rem;
+      letter-spacing: 0.2px;
+    }
 
-  p.sub{
-    margin: 0 0 18px 0;
-    color: var(--muted);
-    line-height: 1.45;
-  }
+    p.sub{
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
 
-  /* SYSTEM TILES */
-  .grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-    margin-top: 16px;
-  }
+    /* SYSTEM TILES */
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
 
-  .tile{
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
-  }
+    .tile{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+    }
 
-  .tile:hover{
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-  }
+    .tile:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
 
-  .tile h3{
-    margin: 0 0 6px 0;
-    font-size: 1.06rem;
-  }
+    .tile h3{
+      margin: 0 0 6px 0;
+      font-size: 1.06rem;
+    }
 
-  .tile p{
-    margin: 0 0 12px 0;
-    color: var(--muted);
-    font-size: 0.92rem;
-    line-height: 1.35;
-  }
+    .tile p{
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
 
-  .tile a{
-    display: inline-block;
-    text-decoration: none;
-    background: var(--blue);
-    color: white;
-    padding: 8px 10px;
-    border-radius: 9px;
-    font-weight: 900;
-    font-size: 0.86rem;
-  }
+    .tile a{
+      display: inline-block;
+      text-decoration: none;
+      background: var(--blue);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 9px;
+      font-weight: 900;
+      font-size: 0.86rem;
+    }
 
-  /* Locked look (only for normal guests) */
-  .tile.locked{
-    opacity: 0.55;
-    filter: grayscale(35%);
-  }
+    /* Locked look (only for normal guests) */
+    .tile.locked{
+      opacity: 0.55;
+      filter: grayscale(35%);
+    }
 
-  .tile.locked a{
-    background: #cbd5e1;
-    color: #334155;
-  }
+    .tile.locked a{
+      background: #cbd5e1;
+      color: #334155;
+    }
 
-  .lock-badge{
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #0f172a;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 900;
-    font-size: 0.78rem;
-    user-select: none;
-  }
+    .lock-badge{
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #0f172a;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 0.78rem;
+      user-select: none;
+    }
 
-  /* Mobile tidy */
-  @media (max-width: 520px){
-    .brand img{ height: 50px; }
-    .brand-sub{ display:none; }
-    .account{ gap: 8px; }
-    .pill{ display:none; } /* hide status pill on tiny screens */
-  }
-</style>
+    /* Mobile tidy */
+    @media (max-width: 520px){
+      .brand img{ height: 50px; }
+      .brand-sub{ display:none; }
+      .account{ gap: 8px; }
+      .pill{ display:none; } /* hide status pill on tiny screens */
+    }
+  </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const supabaseUrl = 'invprmlglmgukgcxivff'
-const supabaseKey = 'sb_publishable_YpBpshZxMFW6yV-yOC8Nug_Kzs9wYIa'
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
-</script>
 <body>
 
 <header class="topbar">
@@ -255,13 +249,13 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
       <p>Asthma, URTI, bronchitis, COPD, pneumonia, PE, pneumothorax, HF + comparisons + red flags.</p>
       <a href="respiratory.html" onclick="event.stopPropagation();">Open</a>
     </div>
-    
-<div class="tile" data-href="bloods.html">
-  <h3> 🩸Blood Result Interpretation</h3>
-  <p>Simply explained.</p>
-  <a href="bloods.html" oneclick="event.stopPropagation();">Open</a>
-  </div>
-    
+
+    <div class="tile" data-href="bloods.html">
+      <h3>🩸 Blood Result Interpretation</h3>
+      <p>Simply explained.</p>
+      <a href="bloods.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+
     <!-- LOCKED UNTIL LOGIN (but fully opens in DEV MODE) -->
     <div class="tile locked" data-lock data-href="ent.html">
       <div class="lock-badge">🔒 Account</div>
@@ -299,7 +293,7 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
     <div class="tile locked" data-lock data-href="dermatology.html">
       <div class="lock-badge">🔒 Account</div>
-      <h3>🧴 Skin</h3>
+      <h3>🧴 Dermatology</h3>
       <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
       <a href="dermatology.html" onclick="event.stopPropagation();">Locked</a>
     </div>
@@ -308,12 +302,12 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 </div>
 
 <script>
-/* ===== CONFIG: paste yours ===== */
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
+/* ===== SUPABASE CONFIG (YOUR VALUES) ===== */
+const SUPABASE_URL = "https://invprmlglmgukgcxivff.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YpBpshZxMFW6yV-yOC8Nug_Kzs9wYIa";
 
 /* ===== INIT ===== */
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const params = new URLSearchParams(window.location.search);
 const DEV_MODE = params.get("dev") === "true";
 
@@ -383,4 +377,3 @@ init();
 
 </body>
 </html>
-
