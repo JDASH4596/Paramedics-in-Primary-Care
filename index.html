@@ -369,6 +369,7 @@ async function init(){
 
   loginBtn.style.display  = isLoggedIn ? "none" : "inline-block";
   logoutBtn.style.display = (isLoggedIn && !DEV_MODE) ? "inline-block" : "none";
+  devBtn.style.display = (!DEV_MODE && !isLoggedIn) ? "inline-block" : "none";
 
   if (unlocked) setUnlockedUI();
   wireTiles(unlocked);
