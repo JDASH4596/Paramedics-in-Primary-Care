@@ -19,22 +19,27 @@
     .ok{color:#166534}
     .bad{color:#b91c1c}
     .smallbtn{background:#fff;border:1px solid #e5e7eb;color:#0f172a;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer}
+    .hint{font-size:0.86rem;color:#6b7280;margin-top:6px}
   </style>
 
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module">
-    import { supabase } from "./supabase-client.js";
+    import { supabase, getAccessState } from "./supabase-client.js";
 
     const form = document.getElementById("form");
     const msg = document.getElementById("msg");
     const logoutBtn = document.getElementById("logoutBtn");
 
     async function refreshUI(){
-      const { data } = await supabase.auth.getSession();
-      const isLoggedIn = !!data.session;
-
+      const { isLoggedIn, isSubscriber } = await getAccessState();
       logoutBtn.style.display = isLoggedIn ? "inline-block" : "none";
+
+      if (isLoggedIn) {
+        msg.textContent = isSubscriber
+          ? "You are already logged in with an active subscription."
+          : "You are logged in, but this account does not have an active subscription yet.";
+        msg.className = `msg ${isSubscriber ? "ok" : "bad"}`;
+      }
     }
 
     form.addEventListener("submit", async (e) => {
@@ -53,10 +58,12 @@
         return;
       }
 
-      msg.textContent = "Logged in. Redirecting…";
-      msg.classList.add("ok");
+      const { isSubscriber } = await getAccessState();
+      msg.textContent = isSubscriber
+        ? "Logged in successfully. Redirecting to subscriber content…"
+        : "Logged in, but subscription not active yet. Please upgrade to unlock all systems.";
+      msg.classList.add(isSubscriber ? "ok" : "bad");
 
-      // Go back to home and unlock tiles
       window.location.href = "index.html";
     });
 
@@ -74,7 +81,7 @@
   <div class="wrap">
     <div class="card">
       <h1>Log in</h1>
-      <p>Log in to unlock the full site (coming next).</p>
+      <p>Log in with your account email and password to access subscriber-only clinical systems.</p>
 
       <form id="form">
         <label>Email</label>
@@ -84,6 +91,7 @@
         <input id="password" type="password" required autocomplete="current-password" />
 
         <button type="submit">Log in</button>
+        <div class="hint">If your account uses a username, use the email address registered to that account.</div>
       </form>
 
       <div id="msg" class="msg"></div>
