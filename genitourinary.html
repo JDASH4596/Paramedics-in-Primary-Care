@@ -71,6 +71,10 @@
   .section ul{ margin:0; padding-left:18px; }
   .section li{ margin:6px 0; }
   .mini-note{ margin-top:8px; color:var(--muted); font-size:0.9rem; line-height:1.35; }
+  .quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0 10px;}
+  .quick-chip{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 10px;font-size:0.85rem;font-weight:700;}
+  .quick-chip b{display:block;font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.02em;margin-bottom:3px;}
+  .kicker{font-size:.82rem;color:#0f172a;font-weight:900;margin-bottom:6px;}
 
   @media (max-width:820px){
     .window{ left:12px; right:12px; top:88px; bottom:14px; width:auto; max-width:none; }
@@ -96,40 +100,40 @@
   <p class="sub">Tap a tile for detailed guidance. Use the 🚩 pill for key red flags and escalation cues.</p>
 
   <div class="grid">
-    <div class="tile" onclick="openWindow('uti')">
+    <div class="tile" data-tile="uti">
       <h3>🧪 Lower UTI</h3>
       <p>Dysuria • frequency • urgency • suprapubic discomfort</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('uti')">🚩</div>
+      <div class="flag-pill" data-flag="uti">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('pyelo')">
+    <div class="tile" data-tile="pyelo">
       <h3>🌡️ Pyelonephritis (Upper UTI)</h3>
       <p>Fever • loin pain • systemic upset</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pyelo')">🚩</div>
+      <div class="flag-pill" data-flag="pyelo">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('sti')">
+    <div class="tile" data-tile="sti">
       <h3>🧬 STI Assessment</h3>
       <p>Discharge • ulcers • dysuria • exposure history</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sti')">🚩</div>
+      <div class="flag-pill" data-flag="sti">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('luts')">
+    <div class="tile" data-tile="luts">
       <h3>🚹 LUTS / BPH</h3>
       <p>Nocturia • weak stream • hesitancy • incomplete emptying</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('luts')">🚩</div>
+      <div class="flag-pill" data-flag="luts">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('haematuria')">
+    <div class="tile" data-tile="haematuria">
       <h3>🩸 Haematuria</h3>
       <p>Visible/non-visible blood in urine</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('haematuria')">🚩</div>
+      <div class="flag-pill" data-flag="haematuria">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('retention')">
+    <div class="tile" data-tile="retention">
       <h3>🚨 Urinary Retention</h3>
       <p>Painful inability to pass urine / overflow symptoms</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('retention')">🚩</div>
+      <div class="flag-pill" data-flag="retention">🚩</div>
     </div>
   </div>
 </div>
@@ -174,12 +178,13 @@ function createWindow(title, html){
   win.innerHTML = `
     <div class="window-header">
       ${title}
-      <span class="close" onclick="closeWindow(this)">✖</span>
+      <span class="close" role="button" aria-label="Close">✖</span>
     </div>
     <div class="window-body">${html}</div>
   `;
 
   document.body.appendChild(win);
+  win.querySelector('.close').addEventListener('click', () => closeWindow(win.querySelector('.close')));
   makeDraggable(win);
 }
 
@@ -214,26 +219,70 @@ const GU_CONTENT = {
   uti: {
     title: 'Lower UTI',
     html: `
+      <div class="section good">
+        <h4>⚡ Quick take (30 sec)</h4>
+        <div class="quick-grid">
+          <div class="quick-chip"><b>Likely UTI</b>Dysuria + frequency/urgency ± suprapubic pain</div>
+          <div class="quick-chip"><b>Complicated</b>Pregnant, male, catheter, systemic illness, renal risk</div>
+          <div class="quick-chip"><b>Escalate</b>Fever/rigors, flank pain, sepsis signs, renal colic</div>
+        </div>
+      </div>
+
       <div class="section">
         <h4>Assessment</h4>
         <ul>
-          <li>Typical symptoms: dysuria, urgency, frequency, suprapubic discomfort.</li>
-          <li>Check pregnancy status, sex, age, catheter use, and recurrence history.</li>
-          <li>Use dip/culture selectively in line with local pathway.</li>
+          <li>Core symptoms: dysuria, urgency, frequency, suprapubic discomfort.</li>
+          <li>Always screen for pyelo/sepsis features and pregnancy.</li>
+          <li>Think alternate causes if vaginal symptoms/STI risk/stone-type pain.</li>
         </ul>
       </div>
+
       <div class="section alt">
-        <h4>Treatment</h4>
+        <h4>Urine dip: what is useful?</h4>
         <ul>
-          <li>Empiric antibiotics if criteria met and no red flags.</li>
-          <li>Hydration, analgesia, and clear review timing.</li>
-          <li>Send MSU if recurrent, male, pregnant, or failed initial treatment.</li>
+          <li><strong>More supportive:</strong> nitrite positive, or leukocytes + blood in symptomatic patient.</li>
+          <li><strong>Important:</strong> blood may be infection, but persistent visible/non-visible haematuria is a red flag.</li>
+          <li><strong>Protein:</strong> persistent proteinuria → consider renal disease work-up.</li>
+          <li><strong>Glucose:</strong> consider hyperglycaemia/diabetes.</li>
+          <li><strong>Ketones:</strong> dehydration/fasting, but in diabetes consider DKA risk if unwell.</li>
         </ul>
       </div>
+
+      <div class="section alt">
+        <h4>MSU / Culture (Kass)</h4>
+        <ul>
+          <li>Classic Kass threshold: <strong>≥10<sup>5</sup> CFU/mL</strong> (10<sup>8</sup>/L).</li>
+          <li>Symptomatic patients can still have true infection at lower counts (10<sup>2</sup>–10<sup>4</sup> CFU/mL).</li>
+          <li>Mixed growth often means contamination → repeat sample if needed.</li>
+          <li>Persistent microscopic haematuria post-treatment may require haematuria pathway / possible 2WW by risk.</li>
+        </ul>
+      </div>
+
       <div class="section good">
+        <h4>Treatment (quick guide)</h4>
+        <ul>
+          <li>Use local first-line antibiotics and culture results where available.</li>
+          <li><strong>Nitrofurantoin:</strong> usually avoid if eGFR &lt;45 (local short-course exceptions may apply 30–44).</li>
+          <li><strong>Trimethoprim:</strong> check resistance risk and cautions (hyperkalaemia/renal impairment/drug interactions).</li>
+          <li>Male, pregnant, recurrent, catheter or treatment-failure cases: send MSU and use targeted approach.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h4>Recurrent or culture-negative symptoms</h4>
+        <ul>
+          <li>Recurrent UTI = ≥2 in 6 months or ≥3 in 12 months.</li>
+          <li>If UTI symptoms but repeated negative MC&amp;S: reassess for STI, vaginal causes, bladder pain syndrome, stones, malignancy.</li>
+          <li>Post-menopausal women with recurrent/culture-negative symptoms: consider vaginal atrophy and topical vaginal oestrogen discussion.</li>
+        </ul>
+      </div>
+
+      <div class="section danger">
         <h4>Safety net</h4>
         <ul>
-          <li>Escalate if fever, loin pain, vomiting, worsening pain, or not improving.</li>
+          <li>Same day review: fever, rigors, flank pain, vomiting, confusion, hypotension, or worsening after 48h.</li>
+          <li>Escalate urgently for suspected sepsis, pyelonephritis, obstruction, or renal colic.</li>
+          <li>Re-check haematuria after treatment; persistent blood needs pathway follow-up.</li>
         </ul>
       </div>`
   },
@@ -241,18 +290,19 @@ const GU_CONTENT = {
     title: 'Pyelonephritis (Upper UTI)',
     html: `
       <div class="section danger">
-        <h4>Red flags</h4>
+        <h4>⚡ Quick take</h4>
         <ul>
-          <li>Sepsis features, hypotension, tachycardia, confusion, severe pain.</li>
-          <li>Pregnancy, immunosuppression, single kidney, obstruction concern.</li>
+          <li>Think pyelo with fever + flank pain + systemic upset.</li>
+          <li>High-risk: pregnancy, immunosuppression, obstruction, single kidney.</li>
+          <li>If septic/unable oral intake → urgent same-day admission pathway.</li>
         </ul>
       </div>
       <div class="section">
-        <h4>Work-up</h4>
+        <h4>Do now</h4>
         <ul>
-          <li>Vitals, hydration, exam for CVA tenderness.</li>
-          <li>Urine culture before/with antibiotics where possible.</li>
-          <li>Consider bloods and same-day escalation when systemically unwell.</li>
+          <li>Obs + sepsis screen + hydration status.</li>
+          <li>MSU before antibiotics if feasible (do not delay urgent treatment).</li>
+          <li>Culture-led step-down once sensitivities available.</li>
         </ul>
       </div>`
   },
@@ -260,18 +310,12 @@ const GU_CONTENT = {
     title: 'STI Assessment',
     html: `
       <div class="section">
-        <h4>History</h4>
+        <h4>Quick checklist</h4>
         <ul>
-          <li>Symptoms, partner history, contraception, pregnancy risk, safeguarding.</li>
-          <li>Record confidentiality preferences and consent.</li>
-        </ul>
-      </div>
-      <div class="section alt">
-        <h4>Testing & management</h4>
-        <ul>
-          <li>Offer NAAT and blood-borne virus testing where indicated.</li>
-          <li>Treat per local sexual health guidance and resistance patterns.</li>
-          <li>Advise abstinence until treatment complete and partner management underway.</li>
+          <li>Symptoms + exposure window + pregnancy risk.</li>
+          <li>Safeguarding/confidentiality/partner history.</li>
+          <li>NAAT ± blood-borne virus testing as indicated.</li>
+          <li>Treat by local sexual health guidance; advise partner notification.</li>
         </ul>
       </div>`
   },
@@ -279,19 +323,12 @@ const GU_CONTENT = {
     title: 'LUTS / BPH',
     html: `
       <div class="section">
-        <h4>Assess</h4>
+        <h4>Quick approach</h4>
         <ul>
-          <li>Separate storage (urgency/nocturia) vs voiding (hesitancy/weak stream).</li>
-          <li>Review medication, constipation, fluid/caffeine, diabetes risk.</li>
-          <li>Dip urine ± renal function where indicated.</li>
-        </ul>
-      </div>
-      <div class="section alt">
-        <h4>Primary care management</h4>
-        <ul>
-          <li>Lifestyle steps first for mild symptoms.</li>
-          <li>Medication choices per local pathway and patient profile.</li>
-          <li>Escalate if recurrent UTI, retention, renal impairment, or haematuria.</li>
+          <li>Storage vs voiding symptoms; impact on quality of life.</li>
+          <li>Review meds, constipation, fluids/caffeine/alcohol, diabetes risk.</li>
+          <li>Lifestyle first; meds per pathway if moderate/severe symptoms.</li>
+          <li>Refer if retention, recurrent UTI, haematuria, renal impairment or failure to improve.</li>
         </ul>
       </div>`
   },
@@ -299,18 +336,18 @@ const GU_CONTENT = {
     title: 'Haematuria',
     html: `
       <div class="section danger">
-        <h4>Urgent considerations</h4>
+        <h4>Why it matters</h4>
         <ul>
-          <li>Visible haematuria with clots, pain, or systemic symptoms.</li>
-          <li>Non-visible haematuria with risk factors may need expedited pathway.</li>
+          <li>Blood in urine can indicate cancer, stones, infection, or renal disease.</li>
+          <li>Do not assume all haematuria is “just UTI”.</li>
         </ul>
       </div>
       <div class="section">
-        <h4>Primary care approach</h4>
+        <h4>Quick pathway</h4>
         <ul>
-          <li>Confirm persistence when appropriate and exclude transient causes.</li>
-          <li>Assess UTI, exercise, menstruation, anticoagulation context.</li>
-          <li>Refer as per local haematuria pathway thresholds.</li>
+          <li>Visible haematuria usually needs urgent pathway assessment.</li>
+          <li>Persistent non-visible haematuria (especially with risk factors) needs structured review/referral.</li>
+          <li>Exclude transient causes: menstruation, heavy exercise, recent infection.</li>
         </ul>
       </div>`
   },
@@ -318,29 +355,29 @@ const GU_CONTENT = {
     title: 'Urinary Retention',
     html: `
       <div class="section danger">
-        <h4>Immediate action</h4>
+        <h4>Emergency cues</h4>
         <ul>
-          <li>Painful retention is an urgent same-day emergency assessment.</li>
-          <li>Watch for AKI risk, sepsis, neurological deficit, and severe distress.</li>
+          <li>Painful inability to void = same-day emergency.</li>
+          <li>Check AKI/sepsis risk and neuro red flags (cauda equina features).</li>
         </ul>
       </div>
       <div class="section">
         <h4>Common causes</h4>
         <ul>
-          <li>BPH/obstruction, constipation, medication side effects, neurogenic causes.</li>
-          <li>Ensure follow-up cause work-up after decompression pathway.</li>
+          <li>BPH/obstruction, constipation, medications, neurogenic causes.</li>
+          <li>Ensure post-acute cause work-up and prevention plan.</li>
         </ul>
       </div>`
   }
 };
 
 const RED_FLAGS = {
-  uti: ['Fever/rigors','Flank pain','Vomiting/dehydration','Pregnancy','Male with severe symptoms'],
-  pyelo: ['Sepsis signs','Hypotension or confusion','Unable to take oral treatment','Pregnancy/immunosuppression'],
-  sti: ['Severe pelvic/testicular pain','Systemic symptoms','Sexual assault/safeguarding concern','Pregnancy with symptoms'],
-  luts: ['Acute retention','Recurrent UTI','Visible haematuria','Renal impairment'],
-  haematuria: ['Visible haematuria + clots','Pain + systemic upset','Persistent recurrent bleeding','Cancer risk features'],
-  retention: ['Painful inability to void','AKI features','Neurological deficits','Sepsis concern']
+  uti: ['Fever/rigors or sepsis signs','Flank pain / suspected pyelo','Vomiting or unable oral meds','Pregnancy, male UTI, catheter, immunosuppression','Persistent/visible haematuria or no improvement at 48h'],
+  pyelo: ['Sepsis signs / hypotension / confusion','Unable to tolerate oral treatment','Pregnancy or major comorbidity','Obstruction, stones, single kidney, AKI risk'],
+  sti: ['Severe pelvic/testicular pain','Systemic symptoms','Sexual assault/safeguarding concerns','Pregnancy with symptoms'],
+  luts: ['Acute retention','Recurrent UTI','Visible haematuria','Renal impairment / neuro red flags'],
+  haematuria: ['Visible haematuria','Persistent non-visible haematuria + risk factors','Clots, severe pain, systemic upset','Proteinuria/renal impairment with haematuria'],
+  retention: ['Painful inability to void','AKI or sepsis concern','Neurological deficit / cauda equina signs','Severe suprapubic pain']
 };
 
 function openWindow(key){
@@ -359,6 +396,18 @@ function openRedFlags(key){
     </div>`;
   createWindow('Red Flags', html);
 }
+
+
+document.querySelectorAll('[data-tile]').forEach((tile) => {
+  tile.addEventListener('click', () => openWindow(tile.dataset.tile));
+});
+
+document.querySelectorAll('[data-flag]').forEach((pill) => {
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openRedFlags(pill.dataset.flag);
+  });
+});
 </script>
 </body>
 </html>
