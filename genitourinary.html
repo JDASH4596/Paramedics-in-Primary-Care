@@ -100,40 +100,40 @@
   <p class="sub">Tap a tile for detailed guidance. Use the 🚩 pill for key red flags and escalation cues.</p>
 
   <div class="grid">
-    <div class="tile" onclick="openWindow('uti')">
+    <div class="tile" data-tile="uti">
       <h3>🧪 Lower UTI</h3>
       <p>Dysuria • frequency • urgency • suprapubic discomfort</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('uti')">🚩</div>
+      <div class="flag-pill" data-flag="uti">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('pyelo')">
+    <div class="tile" data-tile="pyelo">
       <h3>🌡️ Pyelonephritis (Upper UTI)</h3>
       <p>Fever • loin pain • systemic upset</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('pyelo')">🚩</div>
+      <div class="flag-pill" data-flag="pyelo">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('sti')">
+    <div class="tile" data-tile="sti">
       <h3>🧬 STI Assessment</h3>
       <p>Discharge • ulcers • dysuria • exposure history</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('sti')">🚩</div>
+      <div class="flag-pill" data-flag="sti">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('luts')">
+    <div class="tile" data-tile="luts">
       <h3>🚹 LUTS / BPH</h3>
       <p>Nocturia • weak stream • hesitancy • incomplete emptying</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('luts')">🚩</div>
+      <div class="flag-pill" data-flag="luts">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('haematuria')">
+    <div class="tile" data-tile="haematuria">
       <h3>🩸 Haematuria</h3>
       <p>Visible/non-visible blood in urine</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('haematuria')">🚩</div>
+      <div class="flag-pill" data-flag="haematuria">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('retention')">
+    <div class="tile" data-tile="retention">
       <h3>🚨 Urinary Retention</h3>
       <p>Painful inability to pass urine / overflow symptoms</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('retention')">🚩</div>
+      <div class="flag-pill" data-flag="retention">🚩</div>
     </div>
   </div>
 </div>
@@ -178,12 +178,13 @@ function createWindow(title, html){
   win.innerHTML = `
     <div class="window-header">
       ${title}
-      <span class="close" onclick="closeWindow(this)">✖</span>
+      <span class="close" role="button" aria-label="Close">✖</span>
     </div>
     <div class="window-body">${html}</div>
   `;
 
   document.body.appendChild(win);
+  win.querySelector('.close').addEventListener('click', () => closeWindow(win.querySelector('.close')));
   makeDraggable(win);
 }
 
@@ -233,6 +234,17 @@ const GU_CONTENT = {
           <li>Core symptoms: dysuria, urgency, frequency, suprapubic discomfort.</li>
           <li>Always screen for pyelo/sepsis features and pregnancy.</li>
           <li>Think alternate causes if vaginal symptoms/STI risk/stone-type pain.</li>
+        </ul>
+      </div>
+
+      <div class="section alt">
+        <h4>Urine dip: what is useful?</h4>
+        <ul>
+          <li><strong>More supportive:</strong> nitrite positive, or leukocytes + blood in symptomatic patient.</li>
+          <li><strong>Important:</strong> blood may be infection, but persistent visible/non-visible haematuria is a red flag.</li>
+          <li><strong>Protein:</strong> persistent proteinuria → consider renal disease work-up.</li>
+          <li><strong>Glucose:</strong> consider hyperglycaemia/diabetes.</li>
+          <li><strong>Ketones:</strong> dehydration/fasting, but in diabetes consider DKA risk if unwell.</li>
         </ul>
       </div>
 
@@ -383,6 +395,11 @@ const GU_CONTENT = {
           <li>Safeguarding/confidentiality/partner history.</li>
           <li>NAAT ± blood-borne virus testing as indicated.</li>
           <li>Treat by local sexual health guidance; advise partner notification.</li>
+        <ul>
+          <li>Symptoms + exposure window + pregnancy risk.</li>
+          <li>Safeguarding/confidentiality/partner history.</li>
+          <li>NAAT ± blood-borne virus testing as indicated.</li>
+          <li>Treat by local sexual health guidance; advise partner notification.</li>
         <h4>History essentials</h4>
         <ul>
           <li>Symptoms (discharge, ulcers, dysuria, pelvic/testicular pain), exposure window, contraception/pregnancy risk.</li>
@@ -428,6 +445,17 @@ const GU_CONTENT = {
     html: `
       <div class="section danger">
         <h4>Why it matters</h4>
+        <ul>
+          <li>Blood in urine can indicate cancer, stones, infection, or renal disease.</li>
+          <li>Do not assume all haematuria is “just UTI”.</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h4>Quick pathway</h4>
+        <ul>
+          <li>Visible haematuria usually needs urgent pathway assessment.</li>
+          <li>Persistent non-visible haematuria (especially with risk factors) needs structured review/referral.</li>
+          <li>Exclude transient causes: menstruation, heavy exercise, recent infection.</li>
         <ul>
           <li>Blood in urine can indicate cancer, stones, infection, or renal disease.</li>
           <li>Do not assume all haematuria is “just UTI”.</li>
@@ -509,6 +537,18 @@ function openRedFlags(key){
     </div>`;
   createWindow('Red Flags', html);
 }
+
+
+document.querySelectorAll('[data-tile]').forEach((tile) => {
+  tile.addEventListener('click', () => openWindow(tile.dataset.tile));
+});
+
+document.querySelectorAll('[data-flag]').forEach((pill) => {
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openRedFlags(pill.dataset.flag);
+  });
+});
 </script>
 </body>
 </html>
