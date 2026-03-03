@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paediatric Assessment – PIPC</title>
+
+  <style>
+    :root{
+      --bg:#f3f5f8;--card:#ffffff;--text:#111827;--muted:#6b7280;
+      --blue:#1e88e5;--border:#e5e7eb;--shadow:0 6px 18px rgba(0,0,0,0.12);
+      --sec-bg:#f1f8ff;--sec-border:#dbeafe;
+      --red:#ef4444;--amber:#f59e0b;--green:#22c55e;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+      background:var(--bg); color:var(--text);
+    }
+
+    header{
+      position:sticky; top:0; z-index:5;
+      background:#fff; border-bottom:1px solid var(--border);
+      padding:14px 16px; display:flex; gap:12px; align-items:center;
+    }
+    header a{
+      text-decoration:none; color:var(--blue); font-weight:700;
+      padding:8px 10px; border-radius:10px; border:1px solid var(--border);
+      background:#fff;
+    }
+    header h1{margin:0; font-size:18px; letter-spacing:.2px}
+    header .sub{margin-left:auto; color:var(--muted); font-size:12px}
+
+    main{max-width:980px; margin:0 auto; padding:16px}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:14px;
+      box-shadow:var(--shadow); padding:14px 14px; margin:12px 0;
+    }
+    .card h2{margin:0 0 10px; font-size:16px}
+    .card p{margin:8px 0; color:var(--text)}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 0 18px}
+    li{margin:6px 0}
+
+    .pillrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px; border:1px solid var(--border);
+      background:#fff; font-size:13px;
+    }
+
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+
+    /* table */
+    .tablewrap{overflow:auto; border:1px solid var(--border); border-radius:12px}
+    table{border-collapse:collapse; width:100%; min-width:640px; background:#fff}
+    th, td{padding:10px 10px; border-bottom:1px solid var(--border); text-align:left; font-size:13px}
+    th{position:sticky; top:0; background:#fafafa; z-index:1}
+    tr:last-child td{border-bottom:none}
+    .note{font-size:12px; color:var(--muted); margin-top:10px}
+
+    /* traffic light mini badges */
+    .badge{display:inline-block; padding:4px 8px; border-radius:999px; color:#fff; font-size:12px; font-weight:700}
+    .b-green{background:var(--green)}
+    .b-amber{background:var(--amber)}
+    .b-red{background:var(--red)}
+
+    .btnlink{
+      display:inline-block; text-decoration:none; color:#fff; background:var(--blue);
+      padding:10px 12px; border-radius:12px; font-weight:800; border:1px solid rgba(0,0,0,.05);
+    }
+
+    .safety{
+      background:var(--sec-bg); border:1px solid var(--sec-border);
+      border-radius:14px; padding:12px; margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" aria-label="Back to home">← Home</a>
+    <h1>Paediatric Assessment</h1>
+    <div class="sub">PIPC quick reference</div>
+  </header>
+
+  <main>
+
+    <div class="card">
+      <h2>Initial Impression (Paediatric Assessment Triangle)</h2>
+      <div class="grid2">
+        <div class="safety">
+          <b>Appearance</b>
+          <ul>
+            <li>Tone / interaction</li>
+            <li>Consolability</li>
+            <li>Awake vs drowsy</li>
+          </ul>
+        </div>
+        <div class="safety">
+          <b>Work of breathing</b>
+          <ul>
+            <li>Recession / nasal flaring</li>
+            <li>Grunting / head bobbing</li>
+            <li>Audible wheeze/stridor</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="safety">
+        <b>Circulation to skin</b>
+        <ul>
+          <li>Pallor / mottling / cyanosis</li>
+          <li>Cap refill trend</li>
+          <li>Temperature of peripheries</li>
+        </ul>
+      </div>
+
+      <p class="note">
+        If PAT suggests “unwell child”, move straight to ABCDE and escalate early.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Primary Survey (ABCDE)</h2>
+
+      <p><b>A – Airway</b></p>
+      <ul>
+        <li>Stridor, drooling, muffled voice</li>
+        <li>Unable to swallow / tripod position</li>
+        <li>Foreign body risk</li>
+      </ul>
+
+      <p><b>B – Breathing</b></p>
+      <ul>
+        <li>RR, recession, nasal flaring, grunting</li>
+        <li>SpO₂, auscultation, symmetry</li>
+      </ul>
+
+      <p><b>C – Circulation</b></p>
+      <ul>
+        <li>HR, cap refill, skin colour/temperature</li>
+        <li>Hydration (wet nappies/urine, tears, mucosa)</li>
+      </ul>
+
+      <p><b>D – Disability</b></p>
+      <ul>
+        <li>AVPU / GCS, irritability vs lethargy</li>
+        <li>Seizure activity, glucose if indicated</li>
+      </ul>
+
+      <p><b>E – Exposure</b></p>
+      <ul>
+        <li>Temperature, rash (incl non-blanching), trauma</li>
+        <li>Safeguarding concerns</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>ABCD ENTT Examination</h2>
+
+      <p><b>A – Airway</b></p>
+      <ul>
+        <li>Voice change, drooling, stridor</li>
+        <li>Trismus, swallowing difficulty</li>
+      </ul>
+
+      <p><b>B – Breathing</b></p>
+      <ul>
+        <li>Observe WOB (recession/flaring/grunting)</li>
+        <li>Consider upper-airway causes (e.g., croup)</li>
+      </ul>
+
+      <p><b>C – Circulation</b></p>
+      <ul>
+        <li>Perfusion, hydration, fever, tachycardia</li>
+        <li>Consider sepsis if “toxic” appearance</li>
+      </ul>
+
+      <p><b>D – Detailed ENTT</b></p>
+
+      <div class="grid2">
+        <div class="safety">
+          <b>Ears</b>
+          <ul>
+            <li>TM: redness / bulging / effusion</li>
+            <li>Discharge, mastoid tenderness</li>
+          </ul>
+        </div>
+        <div class="safety">
+          <b>Nose</b>
+          <ul>
+            <li>Discharge, foreign body, septal swelling</li>
+            <li>Sinus tenderness (older children)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="safety">
+        <b>Throat</b>
+        <ul>
+          <li>Tonsils: exudate, asymmetry</li>
+          <li>Uvula deviation, soft palate swelling (PTA concern)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Paediatric Vital Signs Reference (APLS-style age bands)</h2>
+
+      <div class="tablewrap" role="region" aria-label="Paediatric vital signs table" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>Resp rate (breaths/min)</th>
+              <th>Heart rate (beats/min)</th>
+              <th>Systolic BP (mmHg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&lt; 1 year</td>
+              <td>30–40</td>
+              <td>110–160</td>
+              <td>80–90</td>
+            </tr>
+            <tr>
+              <td>1–2 years</td>
+              <td>25–35</td>
+              <td>100–150</td>
+              <td>85–95</td>
+            </tr>
+            <tr>
+              <td>2–5 years</td>
+              <td>25–30</td>
+              <td>95–140</td>
+              <td>85–100</td>
+            </tr>
+            <tr>
+              <td>5–12 years</td>
+              <td>20–25</td>
+              <td>80–120</td>
+              <td>90–110</td>
+            </tr>
+            <tr>
+              <td>&gt; 12 years</td>
+              <td>15–20</td>
+              <td>60–100</td>
+              <td>100–120</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Values vary between references; use age bands as a guide and prioritise <b>trend + clinical context</b>.  [oai_citation:1‡wileyhandsonguides.com](https://www.wileyhandsonguides.com/paediatrics/ID/Useful_information_for_ID_badge.pdf?utm_source=chatgpt.com)
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Fever in under-5s (Traffic Light)</h2>
+      <div class="pillrow">
+        <span class="pill"><span class="badge b-green">GREEN</span> low risk</span>
+        <span class="pill"><span class="badge b-amber">AMBER</span> intermediate</span>
+        <span class="pill"><span class="badge b-red">RED</span> high risk</span>
+      </div>
+
+      <p class="muted">
+        Use the NICE traffic-light table to stratify risk and guide urgency.  [oai_citation:2‡NICE](https://www.nice.org.uk/guidance/ng143/resources/fever-in-under-5s-assessment-and-initial-management-pdf-66141778137541?utm_source=chatgpt.com)
+      </p>
+
+      <a class="btnlink" href="https://www.nice.org.uk/guidance/ng143/resources/support-for-education-and-learning-educational-resource-traffic-light-table-pdf-6960664333" target="_blank" rel="noopener">
+        Open NICE Traffic Light Table (PDF)
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>Red Flags</h2>
+      <ul>
+        <li>Non-blanching rash</li>
+        <li>Reduced consciousness, inconsolable or “too sleepy”</li>
+        <li>Apnoea / severe respiratory distress</li>
+        <li>Seizure (esp new/prolonged)</li>
+        <li>Bilious vomiting</li>
+        <li>Bulging fontanelle (infants)</li>
+        <li>Severe dehydration (no urine / very dry / shock signs)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Key History (fast)</h2>
+      <ul>
+        <li>Duration + trajectory (“better, worse, same?”)</li>
+        <li>Feeding + fluids</li>
+        <li>Wet nappies / urine output</li>
+        <li>Breathing: work, pauses, noisy breathing</li>
+        <li>Vomiting/diarrhoea, rash</li>
+        <li>Vaccinations, sick contacts</li>
+        <li>PMH (prematurity, cardiac/resp disease), meds/allergies</li>
+      </ul>
+    </div>
+
+  </main>
+</body>
+</html>
