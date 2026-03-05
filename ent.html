@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/pipc-icon.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/pipc-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="PIPC" />
 <title>ENT – PIPC</title>
 
 <style>
@@ -152,31 +156,15 @@
   }
 
   .window-header{
-    padding: 10px 12px;
-    background: var(--blue);
-    color: white;
-    cursor: move;
-    border-radius: 14px 14px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    font-weight: 900;
-  }
+      padding:12px 14px;background:linear-gradient(135deg,var(--blue),#1565c0);color:#fff;cursor:move;border-radius:18px 18px 0 0;
+      display:flex;justify-content:space-between;align-items:center;user-select:none;font-weight:900;letter-spacing:.2px;
+    }
 
-  .window-body{
-    padding: 14px;
-    max-height: 70vh;
-    overflow-y: auto;
-  }
+  .window-body{padding:16px;max-height:72vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
-  .close{
-    cursor: pointer;
-    font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.15);
-  }
+  .close{cursor:pointer;font-weight:900;padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);transition:background .15s ease, transform .08s ease;}
+    .close:hover{background:rgba(255,255,255,.28);}
+    .close:active{transform:scale(.96);}
 
   /* ✅ MOBILE FIX: window becomes full screen; body becomes true scroll area */
   @media (max-width: 640px){
