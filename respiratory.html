@@ -431,10 +431,10 @@
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('urti')">🚩</div>
     </div>
 
-    <div class="tile" onclick="openWindow('bronchitis')">
-      <h3>🫁 Acute Bronchitis</h3>
-      <p>Post-viral cough • usually self-limiting</p>
-      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('bronchitis')">🚩</div>
+    <div class="tile" onclick="openWindow('chestInfection')">
+      <h3>Chest Infections (Acute Bronchitis and Pneumonia)</h3>
+      <p>Compare features, assess severity, and manage safely</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('chestInfection')">🚩</div>
     </div>
 
     <div class="tile" onclick="openWindow('copd')">
@@ -692,30 +692,68 @@ function openWindow(key) {
       ])}
     `,
 
-    bronchitis: `
-      ${section("Definition", [
-        "Acute inflammation of the bronchi (usually viral), commonly after URTI."
-      ])}
+    chestInfection: `
+      <div class="section">
+        <h4>Tab 1: Symptoms and signs (side-by-side)</h4>
+        <table class="compare">
+          <tr><th>Feature</th><th>Acute Bronchitis</th><th>Pneumonia</th></tr>
+          <tr><td>Typical onset</td><td>Often follows URTI; gradual over days</td><td>Can be acute, often with systemic upset</td></tr>
+          <tr><td>Cough</td><td>Predominant symptom; usually dry then productive</td><td>Common, often productive</td></tr>
+          <tr><td>Sputum</td><td>May be clear/yellow/green (colour alone not diagnostic of bacterial infection)</td><td>Purulent/rust-coloured possible</td></tr>
+          <tr><td>Breathlessness</td><td>Mild or absent</td><td>More common; may be moderate/severe</td></tr>
+          <tr><td>Fever</td><td>Low-grade or absent</td><td>More likely significant fever/rigors</td></tr>
+          <tr><td>Chest pain</td><td>Chest tightness/soreness from coughing</td><td>Pleuritic chest pain more typical</td></tr>
+          <tr><td>Auscultation</td><td>Wheeze/rhonchi, scattered coarse sounds</td><td>Focal crackles, bronchial breathing, reduced air entry</td></tr>
+          <tr><td>Vitals</td><td>Usually stable</td><td>May show tachypnoea, tachycardia, hypoxia, hypotension</td></tr>
+          <tr><td>Systemic features</td><td>Usually mild</td><td>More marked fatigue, confusion (especially older adults)</td></tr>
+        </table>
+      </div>
 
-      ${section("Signs & symptoms", [
-        "Cough often 2–3 weeks",
-        "Sputum may be present (does not automatically mean bacterial)",
-        "Chest discomfort",
-        "Wheeze can occur"
-      ], "alt")}
+      <div class="section alt">
+        <h4>Tab 2: Assessment</h4>
+        <table class="compare">
+          <tr><th>Assessment area</th><th>What to check</th></tr>
+          <tr><td>History</td><td>Duration, cough/sputum pattern, fever, pleuritic pain, dyspnoea, haemoptysis, confusion, comorbidity, aspiration risk</td></tr>
+          <tr><td>Red flags</td><td>SpO₂ &lt; 92%, RR ≥ 30, SBP &lt; 90 or DBP ≤ 60, new confusion, inability to maintain oral intake, sepsis concern</td></tr>
+          <tr><td>Examination</td><td>Full obs (NEWS2), chest exam, hydration/perfusion, mental state</td></tr>
+          <tr><td>Severity (suspected CAP)</td><td>CURB-65 (confusion, urea, respiratory rate, blood pressure, age ≥65) to support site-of-care decision</td></tr>
+          <tr><td>Investigations in primary care</td><td>Usually clinical diagnosis; consider CXR if diagnostic uncertainty, persistent symptoms, or concern for complications/malignancy</td></tr>
+          <tr><td>Consider admission</td><td>Severe physiology, high CURB-65, significant frailty/comorbidity, social concerns, inability to cope at home</td></tr>
+        </table>
+      </div>
 
-      ${section("Quick assessment", [
-        "RR, HR, temperature, SpO₂",
-        "Chest: often wheeze/rhonchi; usually no focal crackles"
-      ], "good")}
+      <div class="section good">
+        <h4>Tab 3: Differentials</h4>
+        <table class="compare">
+          <tr><th>Differential</th><th>Clues</th></tr>
+          <tr><td>Viral URTI/post-viral cough</td><td>Predominantly upper airway symptoms, normal chest findings</td></tr>
+          <tr><td>Asthma/COPD exacerbation</td><td>Wheeze history, known obstructive lung disease, trigger pattern</td></tr>
+          <tr><td>Heart failure</td><td>Orthopnoea, oedema, bibasal crackles, raised JVP</td></tr>
+          <tr><td>Pulmonary embolism</td><td>Pleuritic pain, sudden dyspnoea, risk factors, tachycardia/hypoxia</td></tr>
+          <tr><td>Lung cancer</td><td>Persistent cough, weight loss, haemoptysis, smoking history</td></tr>
+          <tr><td>TB</td><td>Chronic cough, weight loss, night sweats, exposure risk</td></tr>
+          <tr><td>Bronchiectasis flare</td><td>Chronic productive cough, recurrent infections</td></tr>
+        </table>
+      </div>
 
-      ${section("Antibiotics", [
-        "Usually NO antibiotics",
-        "If high-risk/atypical course → follow local antimicrobial guidance + NICE CKS criteria"
-      ])}
+      <div class="section danger">
+        <h4>Tab 4: Management</h4>
+        <table class="compare">
+          <tr><th>Scenario</th><th>Management</th></tr>
+          <tr><td>Likely acute bronchitis (no pneumonia features)</td><td>Safety-net, self-care (fluids, antipyretics), avoid routine antibiotics</td></tr>
+          <tr><td>Wheeze present with acute bronchitis</td><td>Consider a short trial of inhaled bronchodilator (for example salbutamol) if troublesome wheeze; review response. Do not use oral steroids routinely unless there is clear asthma/COPD exacerbation</td></tr>
+          <tr><td>Suspected bacterial pneumonia (low severity, community)</td><td>Start first-line oral antibiotic per local/NICE antimicrobial guidance; review response in 48–72h</td></tr>
+          <tr><td>Penicillin allergy/other constraints</td><td>Use local guideline alternatives</td></tr>
+          <tr><td>If hypoxic or systemically unwell</td><td>Urgent same-day hospital assessment/admission pathway</td></tr>
+          <tr><td>Supportive care</td><td>Hydration, analgesia/antipyretics, smoking cessation advice</td></tr>
+          <tr><td>Safety-netting</td><td>Clear advice: seek urgent help for worsening breathlessness, chest pain, confusion, persistent fever, haemoptysis, reduced intake/urine output</td></tr>
+          <tr><td>Follow-up</td><td>Reassess if not improving as expected; consider CXR/further work-up if persistent symptoms</td></tr>
+        </table>
+      </div>
 
       ${linksSection("Guidelines", [
-        { label: "NICE CKS – Acute bronchitis", href: "https://cks.nice.org.uk/topics/acute-bronchitis/" }
+        { label: "NICE CKS – Acute bronchitis", href: "https://cks.nice.org.uk/topics/acute-bronchitis/" },
+        { label: "NICE CKS – Pneumonia (adults)", href: "https://cks.nice.org.uk/topics/pneumonia-adults/" }
       ])}
     `,
 
@@ -894,12 +932,13 @@ function openRedFlags(topic) {
       "Severe dehydration / unable to swallow fluids",
       "Chest pain suggestive of ACS/PE"
     ],
-    bronchitis: [
-      "SpO₂ low, increasing breathlessness",
-      "Focal chest signs + fever (consider pneumonia)",
-      "Significant haemoptysis",
-      "Sepsis features",
-      "High-risk patient deteriorating"
+    chestInfection: [
+      "SpO₂ < 92% or falling oxygen saturation",
+      "RR ≥ 30, marked respiratory distress, or exhaustion",
+      "SBP < 90 or DBP ≤ 60 / signs of shock",
+      "New confusion or reduced consciousness",
+      "Inability to maintain oral intake / dehydration",
+      "Haemoptysis, persistent fever, or sepsis concern"
     ],
     copd: [
       "Drowsiness/confusion/exhaustion (possible hypercapnia)",
@@ -958,7 +997,7 @@ function titleFor(key){
     comparisons: "Comparisons",
     asthma: "Asthma",
     urti: "Viral URTI",
-    bronchitis: "Acute Bronchitis",
+    chestInfection: "Chest Infections (Acute Bronchitis and Pneumonia)",
     copd: "COPD Exacerbation",
     pneumonia: "Pneumonia",
     pe: "Pulmonary Embolism",
