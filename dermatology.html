@@ -67,6 +67,7 @@
       display:flex;justify-content:space-between;align-items:center;user-select:none;font-weight:900;letter-spacing:.2px;
     }
     .window-body{padding:16px;max-height:72vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+    .window-body{padding:16px;max-height:72vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
     .close{cursor:pointer;font-weight:900;padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);transition:background .15s ease, transform .08s ease;}
     .close:hover{background:rgba(255,255,255,.28);}
     .close:active{transform:scale(.96);}
@@ -84,6 +85,7 @@
   .compare th,.compare td{white-space:normal;overflow-wrap:anywhere;word-break:break-word;}
 
   @media (max-width:820px){
+    @media (max-width:820px){
       .window{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:24px;bottom:24px;width:auto;max-width:none;border-radius:16px;}
       .window-header{cursor:default;}
       .window-body{max-height:calc(100vh - 24px - 24px - 56px);overflow-y:auto;}
