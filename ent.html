@@ -160,6 +160,7 @@
       display:flex;justify-content:space-between;align-items:center;user-select:none;font-weight:900;letter-spacing:.2px;
     }
 
+  .window-body{padding:16px;max-height:72vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
   .window-body{padding:16px;max-height:72vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
   .close{cursor:pointer;font-weight:900;padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);transition:background .15s ease, transform .08s ease;}
@@ -168,6 +169,9 @@
 
   /* ✅ MOBILE FIX: window becomes full screen; body becomes true scroll area */
   @media (max-width: 640px){
+    .window-body{font-size:.95rem;line-height:1.45;padding:14px 12px;}
+    table.compare{font-size:.84rem;}
+    .compare th,.compare td{padding:8px;}
     .window{
       top: 0;
       left: 0;
@@ -192,6 +196,10 @@
       overscroll-behavior: contain;
     }
   }
+
+  .window-body,.window-body *{max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;word-break:break-word;}
+  table.compare{table-layout:fixed;width:100%;}
+  .compare th,.compare td{white-space:normal;overflow-wrap:anywhere;word-break:break-word;}
 
   /* SECTION CARDS */
   .section{
