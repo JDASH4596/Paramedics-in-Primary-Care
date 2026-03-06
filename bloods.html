@@ -1234,6 +1234,7 @@ function runDiagnosticEngine(){
     actions.push("Assess alcohol/viral/medication causes and arrange repeat + liver pathway work-up.");
   }
 
+  
   if(alp !== null && alp > 130 && bilirubin !== null && bilirubin > 21){
     findings.push("Cholestatic pattern (ALP + bilirubin rise).");
     actions.push("Review for jaundice/pruritus and consider hepatobiliary imaging pathway.");
@@ -1292,6 +1293,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if(filterEl){
     filterEl.addEventListener("input", filterCards);
   }
+
+  clearDiagnosticEngine();
 });
 </script>
 
