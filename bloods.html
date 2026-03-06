@@ -477,6 +477,7 @@ li{ margin-bottom:6px; }
 
   <div class="section">
     <h2>Blood Test Diagnostic Engine (Teaching Support)</h2>
+    <p class="note">Enter blood results to generate pattern-based differentials and suggested primary care next steps. This does not replace local pathways or senior review.</p>
     <p class="note">Enter core markers to generate pattern-based differentials and suggested primary care next steps. This does not replace local pathways or senior review.</p>
 
     <div class="engine-grid">
@@ -487,6 +488,96 @@ li{ margin-bottom:6px; }
           <option value="male">Male</option>
         </select>
       </div>
+
+      <div class="engine-field">
+        <label for="engineHb">Hb (g/L)</label>
+        <input id="engineHb" type="number" step="1" placeholder="Ref: ♀ 115–165 / ♂ 130–180" />
+      </div>
+      <div class="engine-field">
+        <label for="engineWcc">WCC (×10⁹/L)</label>
+        <input id="engineWcc" type="number" step="0.1" placeholder="Ref: 4.0–11.0" />
+      </div>
+      <div class="engine-field">
+        <label for="engineNeut">Neutrophils (×10⁹/L)</label>
+        <input id="engineNeut" type="number" step="0.1" placeholder="Ref: 2.0–7.5" />
+      </div>
+      <div class="engine-field">
+        <label for="engineLymph">Lymphocytes (×10⁹/L)</label>
+        <input id="engineLymph" type="number" step="0.1" placeholder="Ref: 1.0–4.0" />
+      </div>
+      <div class="engine-field">
+        <label for="enginePlatelets">Platelets (×10⁹/L)</label>
+        <input id="enginePlatelets" type="number" step="1" placeholder="Ref: 150–400" />
+      </div>
+      <div class="engine-field">
+        <label for="engineRbc">RBC (×10¹²/L)</label>
+        <input id="engineRbc" type="number" step="0.1" placeholder="Ref: ♀ 3.8–5.2 / ♂ 4.3–5.7" />
+      </div>
+      <div class="engine-field">
+        <label for="engineHct">Haematocrit (L/L)</label>
+        <input id="engineHct" type="number" step="0.01" placeholder="Ref: ♀ 0.36–0.46 / ♂ 0.40–0.52" />
+      </div>
+      <div class="engine-field">
+        <label for="engineMch">MCH (pg)</label>
+        <input id="engineMch" type="number" step="0.1" placeholder="Ref: 27–32" />
+      </div>
+      <div class="engine-field">
+        <label for="engineMchc">MCHC (g/L)</label>
+        <input id="engineMchc" type="number" step="1" placeholder="Ref: 320–360" />
+      </div>
+      <div class="engine-field">
+        <label for="engineMcv">MCV (fL)</label>
+        <input id="engineMcv" type="number" step="0.1" placeholder="Ref: 80–100" />
+      </div>
+
+      <div class="engine-field">
+        <label for="engineHba1c">HbA1c (mmol/mol)</label>
+        <input id="engineHba1c" type="number" step="1" placeholder="Ref: &lt;42 normal" />
+      </div>
+      <div class="engine-field">
+        <label for="engineBnp">BNP (pg/mL)</label>
+        <input id="engineBnp" type="number" step="1" placeholder="Ref: usually &lt;100" />
+      </div>
+      <div class="engine-field">
+        <label for="engineFerritin">Ferritin (µg/L)</label>
+        <input id="engineFerritin" type="number" step="1" placeholder="Ref: ~30–400 lab dependent" />
+      </div>
+      <div class="engine-field">
+        <label for="engineFolate">Folate (µg/L)</label>
+        <input id="engineFolate" type="number" step="0.1" placeholder="Ref: usually &gt;4" />
+      </div>
+
+      <div class="engine-field">
+        <label for="engineCr">Creatinine (µmol/L)</label>
+        <input id="engineCr" type="number" step="1" placeholder="Ref: ~64–104" />
+      </div>
+      <div class="engine-field">
+        <label for="engineEgfr">eGFR (mL/min/1.73m²)</label>
+        <input id="engineEgfr" type="number" step="1" placeholder="Ref: &gt;60" />
+      </div>
+      <div class="engine-field">
+        <label for="engineSodium">Sodium (mmol/L)</label>
+        <input id="engineSodium" type="number" step="1" placeholder="Ref: 135–145" />
+      </div>
+      <div class="engine-field">
+        <label for="enginePotassium">Potassium (mmol/L)</label>
+        <input id="enginePotassium" type="number" step="0.1" placeholder="Ref: 3.5–5.0" />
+      </div>
+      <div class="engine-field">
+        <label for="engineAlt">ALT (U/L)</label>
+        <input id="engineAlt" type="number" step="1" placeholder="Ref: ~7–56" />
+      </div>
+      <div class="engine-field">
+        <label for="engineAlp">ALP (U/L)</label>
+        <input id="engineAlp" type="number" step="1" placeholder="Ref: ~30–130" />
+      </div>
+      <div class="engine-field">
+        <label for="engineBili">Bilirubin (µmol/L)</label>
+        <input id="engineBili" type="number" step="1" placeholder="Ref: 3–21" />
+      </div>
+      <div class="engine-field">
+        <label for="engineCrp">CRP (mg/L)</label>
+        <input id="engineCrp" type="number" step="1" placeholder="Ref: &lt;10" />
       <div class="engine-field">
         <label for="engineHb">Hb (g/L)</label>
         <input id="engineHb" type="number" step="1" placeholder="e.g. 102" />
@@ -546,6 +637,8 @@ li{ margin-bottom:6px; }
     </div>
 
     <div class="controls">
+      <button id="runDiagnosticBtn" class="btn-primary" type="button" onclick="runDiagnosticEngine()">Run diagnostic engine</button>
+      <button id="clearDiagnosticBtn" class="btn-lite" type="button" onclick="clearDiagnosticEngine()">Clear values</button>
       <button class="btn-primary" type="button" onclick="runDiagnosticEngine()">Run diagnostic engine</button>
       <button class="btn-lite" type="button" onclick="clearDiagnosticEngine()">Clear values</button>
     </div>
@@ -1136,12 +1229,49 @@ function filterCards(){
 function getNum(id){
   const el = document.getElementById(id);
   if(!el) return null;
+  const raw = (el.value || "").trim();
+  if(raw === "") return null;
+  const val = Number(raw);
   const val = Number(el.value);
   return Number.isFinite(val) ? val : null;
 }
 
 function runDiagnosticEngine(){
   const sex = (document.getElementById("engineSex")?.value || "female").toLowerCase();
+
+  const numericInputIds = [
+    "engineHb","engineWcc","engineNeut","engineLymph","enginePlatelets",
+    "engineRbc","engineHct","engineMch","engineMchc","engineMcv",
+    "engineHba1c","engineBnp","engineFerritin","engineFolate",
+    "engineCr","engineEgfr","engineSodium","enginePotassium",
+    "engineAlt","engineAlp","engineBili","engineCrp"
+  ];
+
+  const hasAnyRawInput = numericInputIds.some((id) => {
+    const el = document.getElementById(id);
+    return !!el && (el.value || "").trim() !== "";
+  });
+
+  const resultEl = document.getElementById("engineResults");
+  if(!resultEl) return;
+
+  if(!hasAnyRawInput){
+    resultEl.innerHTML = '<span class="kicker">You need to input data:</span> Please enter one or more blood test results before running the diagnostic engine.';
+    return;
+  }
+
+  const hb = getNum("engineHb");
+  const mcv = getNum("engineMcv");
+  const ferritin = getNum("engineFerritin");
+  const folate = getNum("engineFolate");
+  const wcc = getNum("engineWcc");
+  const neut = getNum("engineNeut");
+  const lymph = getNum("engineLymph");
+  const platelets = getNum("enginePlatelets");
+  const rbc = getNum("engineRbc");
+  const hct = getNum("engineHct");
+  const mch = getNum("engineMch");
+  const mchc = getNum("engineMchc");
   const hb = getNum("engineHb");
   const mcv = getNum("engineMcv");
   const ferritin = getNum("engineFerritin");
@@ -1156,6 +1286,38 @@ function runDiagnosticEngine(){
   const bilirubin = getNum("engineBili");
   const crp = getNum("engineCrp");
   const hba1c = getNum("engineHba1c");
+  const bnp = getNum("engineBnp");
+
+  const values = [hb,mcv,ferritin,folate,wcc,neut,lymph,platelets,rbc,hct,mch,mchc,creatinine,egfr,sodium,potassium,alt,alp,bilirubin,crp,hba1c,bnp];
+  const enteredCount = values.filter((v) => v !== null).length;
+
+  const hasStandaloneInterpretation = (
+    hba1c !== null ||
+    bnp !== null ||
+    ferritin !== null
+  );
+
+  const hasInterpretablePair = (
+    (hb !== null && mcv !== null) ||
+    (mcv !== null && folate !== null) ||
+    (wcc !== null && crp !== null) ||
+    (creatinine !== null && egfr !== null) ||
+    (sodium !== null && potassium !== null) ||
+    (alp !== null && bilirubin !== null)
+  );
+
+  const anaemiaInputsPresent = (hb !== null || mcv !== null || rbc !== null || hct !== null || mch !== null || mchc !== null);
+  const anaemiaPairsComplete = (hb !== null && mcv !== null);
+
+  if(anaemiaInputsPresent && !anaemiaPairsComplete && enteredCount <= 2 && !hasStandaloneInterpretation){
+    resultEl.innerHTML = '<span class="kicker">Not enough information to interpret anaemia:</span> Please add at least Hb + MCV (then ferritin/folate as needed).';
+    return;
+  }
+
+  if(!hasStandaloneInterpretation && !hasInterpretablePair){
+    resultEl.innerHTML = '<span class="kicker">Not enough information to make diagnosis:</span> Please enter more related values (for example Hb + MCV, Creatinine + eGFR, Sodium + Potassium, or ALP + Bilirubin).';
+    return;
+  }
 
   const findings = [];
   const actions = [];
@@ -1190,6 +1352,12 @@ function runDiagnosticEngine(){
     findings.push("Leucocytosis (raised WCC).");
     actions.push("Correlate with infection/inflammation symptoms and differential count.");
   }
+  if(neut !== null && neut > 7.5){
+    findings.push("Neutrophilia present.");
+  }
+  if(lymph !== null && lymph < 1.0){
+    findings.push("Lymphopenia present.");
+  }
 
   if(platelets !== null && platelets > 400){
     findings.push("Thrombocytosis (often reactive).");
@@ -1207,6 +1375,7 @@ function runDiagnosticEngine(){
 
   if(sodium !== null && sodium < 130){
     findings.push("Moderate/severe hyponatraemia.");
+    actions.push("Assess volume status, medications, and symptoms urgently.");
     actions.push("Assess volume status, medications (e.g. SSRIs/diuretics), and symptoms urgently.");
     severity = "Urgent same-day review";
     severityClass = "dot-red";
@@ -1305,6 +1474,9 @@ function runDiagnosticEngine(){
 
 function clearDiagnosticEngine(){
   [
+    "engineHb","engineMcv","engineFerritin","engineFolate","engineWcc","engineNeut","engineLymph","enginePlatelets","engineRbc","engineHct","engineMch","engineMchc",
+    "engineCr","engineEgfr","engineSodium","enginePotassium","engineAlt","engineAlp","engineBili","engineCrp",
+    "engineHba1c","engineBnp"
     "engineHb","engineMcv","engineFerritin","engineWcc","enginePlatelets",
     "engineCr","engineEgfr","engineSodium","enginePotassium","engineAlt",
     "engineAlp","engineBili","engineCrp","engineHba1c"
@@ -1328,6 +1500,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterEl = document.getElementById("testFilter");
   if(filterEl){
     filterEl.addEventListener("input", filterCards);
+  }
+
+  const runBtn = document.getElementById("runDiagnosticBtn");
+  if(runBtn){
+    runBtn.addEventListener("click", runDiagnosticEngine);
+  }
+
+  const clearBtn = document.getElementById("clearDiagnosticBtn");
+  if(clearBtn){
+    clearBtn.addEventListener("click", clearDiagnosticEngine);
   }
 
   clearDiagnosticEngine();
