@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/pipc-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pipc-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="PIPC" />
+  <title>Prescribing | PIPC</title>
+
+  <style>
+    :root{
+      --bg: #f3f5f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --blue: #1e88e5;
+      --border: #e5e7eb;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --warn-bg: #fff7ed;
+      --warn-border: #fed7aa;
+      --good-bg: #f0fdf4;
+      --good-border: #bbf7d0;
+      --alert-bg: #fef2f2;
+      --alert-border: #fecaca;
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .topbar{
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 900;
+    }
+
+    .brand img{
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
+    .btn{
+      border: 1px solid var(--border);
+      background: #fff;
+      color: #0f172a;
+      padding: 8px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 0 16px 36px;
+    }
+
+    .crumb{ margin: 6px 0 14px; }
+    .crumb a{
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    h1{
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .sub{
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 900px;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .card h2{
+      margin: 0 0 8px;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .card ul{
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .card li{
+      margin: 6px 0;
+      line-height: 1.35;
+    }
+
+    .card.warn{ background: var(--warn-bg); border-color: var(--warn-border); }
+    .card.good{ background: var(--good-bg); border-color: var(--good-border); }
+    .card.alert{ background: var(--alert-bg); border-color: var(--alert-border); }
+
+    .quick{
+      margin-top: 14px;
+      background: #e8f3ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .quick h2{ margin: 0 0 8px; font-size: 1rem; }
+    .quick ol{ margin: 0; padding-left: 20px; }
+    .quick li{ margin: 7px 0; }
+
+    .small-note{
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 560px){
+      .brand img{ height: 40px; }
+      h1{ font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" title="PIPC Home">
+        <img src="assets/pipc-short.png" alt="PIPC logo" />
+        <span>PIPC Prescribing</span>
+      </a>
+      <a class="btn" href="index.html">← Systems</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="crumb"><a href="index.html">Home</a> / Prescribing</p>
+    <h1>Simple Prescribing: KISS Checklist</h1>
+    <p class="sub">
+      A quick, practical guide for safer prescribing in Primary Care. Keep it simple: use the right medicine,
+      for the right person, at the lowest effective dose, for the shortest appropriate time.
+    </p>
+
+    <section class="quick">
+      <h2>10-second safety pause before you prescribe</h2>
+      <ol>
+        <li>Do they actually need a medicine today?</li>
+        <li>Any red flags, allergy, pregnancy, frailty, renal/liver issues?</li>
+        <li>Could this medicine worsen falls, confusion, constipation, or drowsiness?</li>
+        <li>Start low, go slow, and set a clear review date.</li>
+      </ol>
+    </section>
+
+    <section class="grid" aria-label="Prescribing guidance cards">
+      <article class="card good">
+        <h2>1) Core best practice (every prescription)</h2>
+        <ul>
+          <li>Confirm diagnosis or likely working diagnosis first.</li>
+          <li>Check current meds to avoid duplication and interactions.</li>
+          <li>Use one clear goal: symptom relief, prevention, or cure.</li>
+          <li>Document indication, dose, duration, and review plan.</li>
+          <li>Safety-net: what to do if worse, no better, or side effects occur.</li>
+        </ul>
+      </article>
+
+      <article class="card warn">
+        <h2>2) Lowest effective dose: start low, go slow</h2>
+        <ul>
+          <li>Use the minimum effective starting dose whenever possible.</li>
+          <li>Titrate only if needed and only after checking benefit and harm.</li>
+          <li>Older adults often need lower starting doses.</li>
+          <li>Avoid multiple medicine changes at once where possible.</li>
+          <li>Review early after starting: effect, side effects, adherence.</li>
+        </ul>
+      </article>
+
+      <article class="card alert">
+        <h2>3) ACB + falls in older adults</h2>
+        <ul>
+          <li>Anticholinergic burden (ACB) can cause confusion, dry mouth, constipation, urinary retention, and falls.</li>
+          <li>Before adding medicines, check if current meds already raise ACB.</li>
+          <li>Be extra cautious with sedating or hypotensive medicines in people with falls risk.</li>
+          <li>If risk is high, consider non-drug options or safer alternatives first.</li>
+          <li>After prescribing, ask about dizziness, drowsiness, delirium, and near-falls at review.</li>
+        </ul>
+      </article>
+
+      <article class="card warn">
+        <h2>4) Antibiotic stewardship (KISS)</h2>
+        <ul>
+          <li>Only prescribe antibiotics when bacterial infection is likely and benefit is clear.</li>
+          <li>Use local/national guideline choice, dose, and shortest effective duration.</li>
+          <li>Avoid antibiotics for likely viral self-limiting illness.</li>
+          <li>Consider delayed/back-up prescribing where appropriate.</li>
+          <li>Give clear advice on red flags, expected illness length, and re-consult triggers.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>5) Practical checks before signing</h2>
+        <ul>
+          <li>Right patient, right drug, right dose, right route, right duration.</li>
+          <li>Check renal/hepatic function if relevant to dosing.</li>
+          <li>Check interactions with anticoagulants, opioids, CNS depressants, and OTC/herbal products.</li>
+          <li>Use plain language: when and how to take it, and common side effects.</li>
+          <li>Add review/stop date for short-term or high-risk medicines.</li>
+        </ul>
+      </article>
+
+      <article class="card good">
+        <h2>6) Deprescribing mindset</h2>
+        <ul>
+          <li>At each review, ask: is this medicine still needed?</li>
+          <li>Stop ineffective, duplicate, or harmful treatment.</li>
+          <li>Taper medicines that need gradual withdrawal.</li>
+          <li>Prioritise reducing medicines that increase falls, confusion, and hospital risk.</li>
+        </ul>
+      </article>
+    </section>
+
+    <p class="small-note">
+      Educational quick-reference only. Always follow your local formulary, national guidance, and independent prescribing standards.
+    </p>
+  </main>
+</body>
+</html>
