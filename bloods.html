@@ -1175,6 +1175,10 @@ function runDiagnosticEngine(){
       }
     } else if(mcv !== null && mcv > 100){
       findings.push("Macrocytic anaemia pattern.");
+      if(folate !== null && folate < 4){
+        findings.push("Low folate supports folate deficiency.");
+      }
+      actions.push("Check folate/B12, alcohol history, TFTs and LFT context before treatment.");
       actions.push("Check B12/folate, TFTs, alcohol history and LFT context before treatment.");
     } else {
       findings.push("Normocytic anaemia pattern.");
@@ -1250,6 +1254,38 @@ function runDiagnosticEngine(){
   } else if(hba1c !== null && hba1c >= 42){
     findings.push("Prediabetes-range HbA1c.");
     actions.push("Lifestyle intervention with planned repeat HbA1c monitoring.");
+  }
+
+  if(bnp !== null){
+    if(bnp >= 400){
+      findings.push("Markedly raised BNP (HF likely; urgent assessment pathway usually required).");
+      if(severity !== "Urgent same-day review"){
+        severity = "Prompt review (24–72h)";
+        severityClass = "dot-amber";
+      }
+    } else if(bnp >= 100){
+      findings.push("Raised BNP can support heart failure in the right clinical context.");
+      actions.push("Correlate with symptoms/exam and follow local echo/HF pathway thresholds.");
+    }
+  }
+
+  if(ferritin !== null){
+    if(ferritin < 30){
+      findings.push("Low ferritin suggests iron deficiency.");
+      actions.push("Check full FBC pattern (especially Hb + MCV), identify cause of iron loss, and treat per pathway.");
+    } else if(ferritin >= 30 && ferritin <= 400){
+      findings.push("Ferritin within typical reference range (interpret with CRP/context).");
+    }
+  }
+
+  if(folate !== null && folate < 4){
+    findings.push("Low folate result.");
+    actions.push("Check B12 status and replace folate per pathway after excluding/treating B12 deficiency.");
+  }
+
+  if(findings.length === 0){
+    findings.push("No major pattern triggered from entered markers.");
+    actions.push("Use trend and symptom context; compare with local laboratory ranges.");
   }
 
   if(findings.length === 0){
