@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/pipc-icon.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/pipc-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="PIPC" />
+  <title>Systems – PIPC</title>
+
+  <!-- Supabase CDN (load once) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --bg: #f3f5f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --blue: #1e88e5;
+      --border: #e5e7eb;
+      --shadow: 0 6px 18px rgba(0,0,0,0.10);
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* HEADER (FULL LOGO) */
+    .topbar{
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img{
+      height: 56px;          /* full logo size */
+      width: auto;
+      display: block;
+    }
+
+    .brand-sub{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    /* Account controls */
+    .account{
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 900;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.88rem;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+
+    .dev-pill{
+      background:#065f46;
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .btn{
+      display: inline-block;
+      border: 0;
+      background: var(--blue);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 900;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn.ghost{
+      background: #fff;
+      color: #0f172a;
+      border: 1px solid var(--border);
+    }
+
+    /* CONTENT */
+    .wrap{
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 0 16px 40px 16px;
+    }
+
+    h1{
+      margin: 18px 0 8px 0;
+      font-size: 2.1rem;
+      letter-spacing: 0.2px;
+    }
+
+    p.sub{
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* SYSTEM TILES */
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .tile{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+    }
+
+    .tile:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .tile h3{
+      margin: 0 0 6px 0;
+      font-size: 1.06rem;
+    }
+
+    .tile p{
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .tile a{
+      display: inline-block;
+      text-decoration: none;
+      background: var(--blue);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 9px;
+      font-weight: 900;
+      font-size: 0.86rem;
+    }
+
+    /* Locked look (only for normal guests) */
+    .tile.locked{
+      opacity: 0.55;
+      filter: grayscale(35%);
+    }
+
+    .tile.locked a{
+      background: #cbd5e1;
+      color: #334155;
+    }
+
+    .lock-badge{
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #0f172a;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 0.78rem;
+      user-select: none;
+    }
+
+    /* Mobile tidy */
+    @media (max-width: 520px){
+      .brand img{ height: 50px; }
+      .brand-sub{ display:none; }
+      .account{ gap: 8px; }
+      .pill{ display:none; } /* hide status pill on tiny screens */
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html" title="PIPC Home">
+      <img src="assets/pipc-full.png" alt="Paramedics in Primary Care (PIPC) logo" />
+      <div>
+        <div class="brand-sub">Clinical quick-reference for paramedics in Primary Care</div>
+      </div>
+    </a>
+
+    <div class="account">
+      <span id="statusPill" class="pill">Guest</span>
+      <button id="devBtn" class="btn ghost" type="button">Dev mode</button>
+      <a id="loginBtn" class="btn" href="login.html">Log in</a>
+      <button id="logoutBtn" class="btn ghost" type="button" style="display:none;">Log out</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Systems</h1>
+  <p class="sub">
+    Click a system to open quick clinical summaries, red flags, and guideline links.
+    Built for paramedics new to Primary Care: simple, fast, and practical.
+  </p>
+
+  <div class="grid">
+
+    <!-- FREE -->
+    <div class="tile" data-href="respiratory.html">
+      <h3>🫁 Respiratory</h3>
+      <p>Asthma, URTI, bronchitis, COPD, pneumonia, PE, pneumothorax, HF + comparisons + red flags.</p>
+      <a href="respiratory.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+
+    <div class="tile" data-href="bloods.html">
+      <h3>🩸 Blood Result Interpretation</h3>
+      <p>Simply explained.</p>
+      <a href="bloods.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+
+    <div class="tile" data-href="prescribing.html">
+      <h3>💊 Prescribing (KISS)</h3>
+      <p>Simple best-practice guide: safe prescribing, ACB + falls, and antibiotic stewardship.</p>
+      <a href="prescribing.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+
+    <!-- LOCKED UNTIL LOGIN (but fully opens in DEV MODE) -->
+    <div class="tile locked" data-lock data-href="ent.html">
+      <div class="lock-badge">🔒 Subscriber</div>
+      <h3>👂 ENT</h3>
+      <p>Otitis, sinusitis, sore throat, vertigo + red flags + comparisons.</p>
+      <a href="ent.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="neuro.html">
+      <div class="lock-badge">🔒 Subscriber</div>
+      <h3>🧠 Neurology</h3>
+      <p>Headache, seizures, TIA/stroke, red flags.</p>
+      <a href="neuro.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="cardiovascular.html">
+      <div class="lock-badge">🔒 Subscriber</div>
+      <h3>💓 Cardiovascular</h3>
+      <p>Chest pain, AF, HTN urgency, heart failure.</p>
+      <a href="cardiovascular.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="abdominal.html">
+      <div class="lock-badge">🔒 Subscriber</div>
+      <h3>🍽️ Abdominal</h3>
+      <p>Abdo pain pathways, appendicitis clues, biliary, gastroenteritis.</p>
+      <a href="abdominal.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+
+    <div class="tile" data-href="genitourinary.html">
+      <h3>🚻 Genitourinary</h3>
+      <p>UTI, pyelonephritis, renal colic, testicular pain red flags.</p>
+      <a href="genitourinary.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+
+    <div class="tile locked" data-lock data-href="dermatology.html">
+      <div class="lock-badge">🔒 Subscriber</div>
+      <h3>🧴 Dermatology</h3>
+      <p>Cellulitis, shingles, eczema, drug rashes, red flags.</p>
+      <a href="dermatology.html" onclick="event.stopPropagation();">Locked</a>
+    </div>
+    <div class="tile" data-href="paediatric.html">
+      <h3>🧸 Paediatrics</h3>
+      <p>PAT, ABCDE, ENTT + tummy exam, PEWS/POPS, fever and common conditions.</p>
+      <a href="paediatric.html" onclick="event.stopPropagation();">Open</a>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase, getAccessState } from "./supabase-client.js";
+
+/* ===== INIT ===== */
+const params = new URLSearchParams(window.location.search);
+const DEV_MODE = params.get("dev") === "true";
+
+const statusPill = document.getElementById("statusPill");
+const loginBtn   = document.getElementById("loginBtn");
+const logoutBtn  = document.getElementById("logoutBtn");
+const devBtn     = document.getElementById("devBtn");
+
+function go(href){ window.location.href = href; }
+
+function setUnlockedUI(){
+  // Remove locked look + badge + set buttons to Open
+  document.querySelectorAll(".tile[data-lock]").forEach(tile => {
+    tile.classList.remove("locked");
+    tile.querySelector(".lock-badge")?.remove();
+    const a = tile.querySelector("a");
+    if (a) a.textContent = "Open";
+  });
+}
+
+function wireTiles(unlocked){
+  document.querySelectorAll(".tile").forEach(tile => {
+    const href = tile.getAttribute("data-href");
+    const requiresLogin = tile.hasAttribute("data-lock");
+
+    tile.onclick = () => {
+      if (!unlocked && requiresLogin) {
+        return go("login.html");
+      }
+      return go(href);
+    };
+  });
+}
+
+async function init(){
+  let unlocked = false;
+  let isLoggedIn = false;
+
+  if (DEV_MODE){
+    unlocked = true;
+    statusPill.innerHTML = '<span class="dev-pill">DEV MODE</span>';
+    devBtn.style.display = "none";
+  } else {
+    try{
+      const access = await getAccessState();
+      isLoggedIn = access.isLoggedIn;
+      unlocked = access.isLoggedIn && access.isSubscriber;
+
+      if (unlocked) {
+        statusPill.textContent = "Subscriber";
+      } else if (isLoggedIn) {
+        statusPill.textContent = "Logged in (no subscription)";
+      } else {
+        statusPill.textContent = "Guest";
+      }
+    } catch {
+      unlocked = false;
+      isLoggedIn = false;
+      statusPill.textContent = "Guest";
+    }
+  }
+
+  loginBtn.style.display  = isLoggedIn ? "none" : "inline-block";
+  logoutBtn.style.display = (isLoggedIn && !DEV_MODE) ? "inline-block" : "none";
+  devBtn.style.display = (!DEV_MODE && !isLoggedIn) ? "inline-block" : "none";
+
+  if (unlocked) setUnlockedUI();
+  wireTiles(unlocked);
+}
+
+devBtn.onclick = () => window.location.href = "systems.html?dev=true";
+
+logoutBtn.onclick = async () => {
+  await supabase.auth.signOut();
+  window.location.href = "systems.html";
+};
+
+init();
+</script>
+
+</body>
+</html>
