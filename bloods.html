@@ -23,11 +23,20 @@
   --primary:#1e40af;
   --primary-soft:#e8efff;
   --shadow:0 8px 22px rgba(15,23,42,0.06);
+  --danger:#b91c1c;
+  --danger-bg:#fef2f2;
+  --danger-border:#fecaca;
+  --warn:#92400e;
+  --warn-bg:#fffbeb;
+  --warn-border:#fde68a;
+  --success:#166534;
+  --success-bg:#f0fdf4;
+  --success-border:#bbf7d0;
 }
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.45;
@@ -112,7 +121,6 @@ li{ margin-bottom:6px; }
   gap:10px;
 }
 
-/* Clickable cards */
 .range-card{
   width:100%;
   text-align:left;
@@ -156,6 +164,7 @@ li{ margin-bottom:6px; }
   font-size:14px;
   color:#6b7280;
   user-select:none;
+  transition:transform 0.15s ease;
 }
 
 .range-card[data-open="true"] .chev{ transform:rotate(180deg); }
@@ -299,6 +308,12 @@ li{ margin-bottom:6px; }
   background:#fff;
 }
 
+.engine-field input:focus,
+.engine-field select:focus{
+  outline:2px solid var(--focus);
+  outline-offset:1px;
+}
+
 .engine-results{
   margin-top:14px;
   border:1px solid #dbe5ff;
@@ -328,6 +343,36 @@ li{ margin-bottom:6px; }
 .dot-red{ background:#dc2626; }
 .dot-amber{ background:#d97706; }
 .dot-green{ background:#16a34a; }
+
+.alert-box{
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+  border:1px solid transparent;
+}
+
+.alert-danger{
+  background:var(--danger-bg);
+  border-color:var(--danger-border);
+  color:var(--danger);
+}
+
+.alert-warning{
+  background:var(--warn-bg);
+  border-color:var(--warn-border);
+  color:var(--warn);
+}
+
+.alert-success{
+  background:var(--success-bg);
+  border-color:var(--success-border);
+  color:var(--success);
+}
+
+.alert-title{
+  font-weight:700;
+  margin-bottom:6px;
+}
 
 .hr{
   height:1px;
@@ -393,92 +438,89 @@ li{ margin-bottom:6px; }
   </div>
 
   <div class="section">
-  <h2>Interpret Bloods as Groups (Pattern Recognition)</h2>
-  <p class="note">In primary care you rarely interpret a single number. Use “panel logic”: pattern + context + trend → action.</p>
+    <h2>Interpret Bloods as Groups (Pattern Recognition)</h2>
+    <p class="note">In primary care you rarely interpret a single number. Use panel logic: pattern + context + trend → action.</p>
 
-  <div class="two-col">
+    <div class="two-col">
+      <div class="static-card">
+        <strong>Suspected Heart Failure: U&amp;E + BNP/NT-proBNP</strong>
+        <p>
+          <span class="kicker">Why together:</span> BNP supports diagnosis; U&amp;E tells you if kidneys/electrolytes can tolerate diuretics/ACEi/ARB/MRA.
+          <br><span class="kicker">Patterns:</span> high BNP + symptoms → HF more likely; worsening creatinine / low sodium can indicate severity/diuretic effect.
+          <br><span class="kicker">Next step:</span> compare baseline U&amp;E, review diuretics/RAAS meds, consider ECG/CXR/echo pathway.
+        </p>
+      </div>
 
-    <div class="static-card">
-      <strong>Suspected Heart Failure: U&amp;E + BNP/NT-proBNP</strong>
-      <p>
-        <span class="kicker">Why together:</span> BNP supports diagnosis; U&amp;E tells you if kidneys/electrolytes can tolerate diuretics/ACEi/ARB/MRA.
-        <br><span class="kicker">Patterns:</span> high BNP + symptoms → HF more likely; worsening creatinine / low sodium can indicate severity/diuretic effect.
-        <br><span class="kicker">Next step:</span> compare baseline U&amp;E, review diuretics/RAAS meds, consider ECG/CXR/echo pathway.
-      </p>
+      <div class="static-card">
+        <strong>AKI vs CKD: U&amp;E + Trend + Urine ACR</strong>
+        <p>
+          <span class="kicker">Why together:</span> one creatinine is a photo; trend tells the story. ACR helps stage/prognosis for CKD.
+          <br><span class="kicker">Patterns:</span> sudden rise vs baseline → AKI; persistent reduction ≥3 months → CKD.
+          <br><span class="kicker">Next step:</span> meds (NSAIDs/ACEi/diuretics), hydration, repeat timing by severity; add ACR/BP; CKD framework if persistent.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Microcytic Anaemia: FBC (Hb/MCV) + Ferritin (+ CRP)</strong>
+        <p>
+          <span class="kicker">Why together:</span> ferritin confirms iron deficiency; CRP helps if ferritin is falsely “normal” in inflammation.
+          <br><span class="kicker">Patterns:</span> low Hb + low MCV + low ferritin → iron deficiency; normal/high ferritin + raised CRP can still be iron-restricted.
+          <br><span class="kicker">Next step:</span> source of blood loss (GI/menstrual), start replacement per pathway, recheck Hb response.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Macrocytosis: FBC (MCV) + B12 + Folate + LFTs + TSH</strong>
+        <p>
+          <span class="kicker">Why together:</span> macrocytosis is multi-cause; these are the common reversible primary care causes.
+          <br><span class="kicker">Patterns:</span> low B12/folate → deficiency; raised LFTs/alcohol history → hepatic/alcohol; high TSH → hypothyroid.
+          <br><span class="kicker">Next step:</span> treat deficiency (don’t miss B12), address alcohol/thyroid, repeat FBC to confirm response.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Cholestatic LFTs: ALP + Bilirubin + GGT</strong>
+        <p>
+          <span class="kicker">Why together:</span> helps distinguish hepatic cholestasis from isolated bone-source ALP rise.
+          <br><span class="kicker">Patterns:</span> ALP + bilirubin + GGT rise suggests hepatobiliary source; isolated ALP rise with normal GGT may point away from liver.
+          <br><span class="kicker">Next step:</span> review meds/alcohol; repeat if mild; if persistent/symptomatic → ultrasound / hepatobiliary pathway.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Metabolic Syndrome Snapshot: HbA1c + Lipids + ALT</strong>
+        <p>
+          <span class="kicker">Why together:</span> diabetes risk + atherogenic lipids + fatty liver often travel together.
+          <br><span class="kicker">Patterns:</span> rising HbA1c + high TG/low HDL + raised ALT suggests insulin resistance/metabolic risk.
+          <br><span class="kicker">Next step:</span> lifestyle plan, CV risk management (BP/lipids), NAFLD pathway if persistent LFT rise.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Inflammation: CRP + FBC (WCC/neutrophils) + Clinical Picture</strong>
+        <p>
+          <span class="kicker">Why together:</span> CRP alone is non-specific; pairing with FBC and symptoms improves meaning.
+          <br><span class="kicker">Patterns:</span> neutrophilia + high CRP fits bacterial inflammation; lymphocytosis can fit viral; normal CRP doesn’t exclude early illness.
+          <br><span class="kicker">Next step:</span> treat the patient; repeat only if it changes management or safety-netting requires it.
+        </p>
+      </div>
+
+      <div class="static-card">
+        <strong>Statin Safety: Lipids + Baseline LFTs (+ CK only if symptomatic)</strong>
+        <p>
+          <span class="kicker">Why together:</span> lipids show benefit; LFTs provide baseline. CK is not routine unless symptoms/high risk.
+          <br><span class="kicker">Patterns:</span> improved non-HDL/LDL suggests adherence/response; new symptoms guide CK decision.
+          <br><span class="kicker">Next step:</span> reinforce adherence, side-effect check, repeat lipids per pathway.
+        </p>
+      </div>
     </div>
 
-    <div class="static-card">
-      <strong>AKI vs CKD: U&amp;E + Trend + Urine ACR</strong>
-      <p>
-        <span class="kicker">Why together:</span> one creatinine is a photo; trend tells the story. ACR helps stage/prognosis for CKD.
-        <br><span class="kicker">Patterns:</span> sudden rise vs baseline → AKI; persistent reduction ≥3 months → CKD.
-        <br><span class="kicker">Next step:</span> meds (NSAIDs/ACEi/diuretics), hydration, repeat timing by severity; add ACR/BP; CKD framework if persistent.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Microcytic Anaemia: FBC (Hb/MCV) + Ferritin (+ CRP)</strong>
-      <p>
-        <span class="kicker">Why together:</span> ferritin confirms iron deficiency; CRP helps if ferritin is falsely “normal” in inflammation.
-        <br><span class="kicker">Patterns:</span> low Hb + low MCV + low ferritin → iron deficiency; normal/high ferritin + raised CRP can still be iron-restricted.
-        <br><span class="kicker">Next step:</span> source of blood loss (GI/menstrual), start replacement per pathway, recheck Hb response.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Macrocytosis: FBC (MCV) + B12 + Folate + LFTs + TSH</strong>
-      <p>
-        <span class="kicker">Why together:</span> macrocytosis is “multi-cause”; these are the common reversible primary care causes.
-        <br><span class="kicker">Patterns:</span> low B12/folate → deficiency; raised LFTs/alcohol history → hepatic/alcohol; high TSH → hypothyroid.
-        <br><span class="kicker">Next step:</span> treat deficiency (don’t miss B12), address alcohol/thyroid, repeat FBC to confirm response.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Cholestatic LFTs: ALP + Bilirubin (+ GGT if available)</strong>
-      <p>
-        <span class="kicker">Why together:</span> distinguishes cholestatic pattern vs hepatocellular pattern; helps decide imaging urgency.
-        <br><span class="kicker">Patterns:</span> ALP ± bilirubin rise suggests cholestasis; bilirubin + symptoms (itch/jaundice) raises concern.
-        <br><span class="kicker">Next step:</span> review meds/alcohol; repeat if mild; if persistent/symptomatic → ultrasound / hepatobiliary pathway.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Metabolic Syndrome Snapshot: HbA1c + Lipids + ALT</strong>
-      <p>
-        <span class="kicker">Why together:</span> diabetes risk + atherogenic lipids + fatty liver often travel together.
-        <br><span class="kicker">Patterns:</span> rising HbA1c + high TG/low HDL + raised ALT suggests insulin resistance/metabolic risk.
-        <br><span class="kicker">Next step:</span> lifestyle plan, CV risk management (BP/lipids), NAFLD pathway if persistent LFT rise.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Inflammation: CRP + FBC (WCC/neutrophils) + Clinical Picture</strong>
-      <p>
-        <span class="kicker">Why together:</span> CRP alone is non-specific; pairing with FBC and symptoms improves meaning.
-        <br><span class="kicker">Patterns:</span> neutrophilia + high CRP fits bacterial inflammation; lymphocytosis can fit viral; normal CRP doesn’t exclude early illness.
-        <br><span class="kicker">Next step:</span> treat the patient; repeat only if it changes management or safety-netting requires it.
-      </p>
-    </div>
-
-    <div class="static-card">
-      <strong>Statin Safety: Lipids + Baseline LFTs (+ CK only if symptomatic)</strong>
-      <p>
-        <span class="kicker">Why together:</span> lipids show benefit; LFTs provide baseline. CK is not routine unless symptoms/high risk.
-        <br><span class="kicker">Patterns:</span> improved non-HDL/LDL suggests adherence/response; new symptoms guide CK decision.
-        <br><span class="kicker">Next step:</span> reinforce adherence, side-effect check, repeat lipids per pathway.
-      </p>
-    </div>
-
+    <p class="small-muted"><span class="kicker">Tip:</span> Always look for a pattern that answers your question: <em>diagnosis support</em>, <em>severity</em>, <em>treatment safety</em>, or <em>monitoring response</em>.</p>
   </div>
-
-  <p class="small-muted"><span class="kicker">Tip:</span> Always look for a pattern that answers your question: <em>diagnosis support</em>, <em>severity</em>, <em>treatment safety</em>, or <em>monitoring response</em>.</p>
-</div>
 
   <div class="section">
     <h2>Blood Test Diagnostic Engine (Teaching Support)</h2>
     <p class="note">Enter blood results to generate pattern-based differentials and suggested primary care next steps. This does not replace local pathways or senior review.</p>
-    <p class="note">Enter core markers to generate pattern-based differentials and suggested primary care next steps. This does not replace local pathways or senior review.</p>
 
     <div class="engine-grid">
       <div class="engine-field">
@@ -493,154 +535,141 @@ li{ margin-bottom:6px; }
         <label for="engineHb">Hb (g/L)</label>
         <input id="engineHb" type="number" step="1" placeholder="Ref: ♀ 115–165 / ♂ 130–180" />
       </div>
+
       <div class="engine-field">
         <label for="engineWcc">WCC (×10⁹/L)</label>
         <input id="engineWcc" type="number" step="0.1" placeholder="Ref: 4.0–11.0" />
       </div>
+
       <div class="engine-field">
         <label for="engineNeut">Neutrophils (×10⁹/L)</label>
         <input id="engineNeut" type="number" step="0.1" placeholder="Ref: 2.0–7.5" />
       </div>
+
       <div class="engine-field">
         <label for="engineLymph">Lymphocytes (×10⁹/L)</label>
         <input id="engineLymph" type="number" step="0.1" placeholder="Ref: 1.0–4.0" />
       </div>
+
       <div class="engine-field">
         <label for="enginePlatelets">Platelets (×10⁹/L)</label>
         <input id="enginePlatelets" type="number" step="1" placeholder="Ref: 150–400" />
       </div>
+
       <div class="engine-field">
         <label for="engineRbc">RBC (×10¹²/L)</label>
         <input id="engineRbc" type="number" step="0.1" placeholder="Ref: ♀ 3.8–5.2 / ♂ 4.3–5.7" />
       </div>
+
       <div class="engine-field">
         <label for="engineHct">Haematocrit (L/L)</label>
         <input id="engineHct" type="number" step="0.01" placeholder="Ref: ♀ 0.36–0.46 / ♂ 0.40–0.52" />
       </div>
+
       <div class="engine-field">
         <label for="engineMch">MCH (pg)</label>
         <input id="engineMch" type="number" step="0.1" placeholder="Ref: 27–32" />
       </div>
+
       <div class="engine-field">
         <label for="engineMchc">MCHC (g/L)</label>
         <input id="engineMchc" type="number" step="1" placeholder="Ref: 320–360" />
       </div>
+
       <div class="engine-field">
         <label for="engineMcv">MCV (fL)</label>
         <input id="engineMcv" type="number" step="0.1" placeholder="Ref: 80–100" />
       </div>
 
       <div class="engine-field">
-        <label for="engineHba1c">HbA1c (mmol/mol)</label>
-        <input id="engineHba1c" type="number" step="1" placeholder="Ref: &lt;42 normal" />
-      </div>
-      <div class="engine-field">
-        <label for="engineBnp">BNP (pg/mL)</label>
-        <input id="engineBnp" type="number" step="1" placeholder="Ref: usually &lt;100" />
-      </div>
-      <div class="engine-field">
         <label for="engineFerritin">Ferritin (µg/L)</label>
         <input id="engineFerritin" type="number" step="1" placeholder="Ref: ~30–400 lab dependent" />
       </div>
+
+      <div class="engine-field">
+        <label for="engineB12">B12 (ng/L or pg/mL)</label>
+        <input id="engineB12" type="number" step="1" placeholder="Lab dependent; low suggests deficiency" />
+      </div>
+
       <div class="engine-field">
         <label for="engineFolate">Folate (µg/L)</label>
-        <input id="engineFolate" type="number" step="0.1" placeholder="Ref: usually &gt;4" />
+        <input id="engineFolate" type="number" step="0.1" placeholder="Ref: usually >4" />
+      </div>
+
+      <div class="engine-field">
+        <label for="engineTsh">TSH (mU/L)</label>
+        <input id="engineTsh" type="number" step="0.1" placeholder="Ref: ~0.4–4.0" />
+      </div>
+
+      <div class="engine-field">
+        <label for="engineHba1c">HbA1c (mmol/mol)</label>
+        <input id="engineHba1c" type="number" step="1" placeholder="Ref: <42 normal" />
+      </div>
+
+      <div class="engine-field">
+        <label for="engineBnp">BNP (pg/mL)</label>
+        <input id="engineBnp" type="number" step="1" placeholder="Ref: usually <100" />
       </div>
 
       <div class="engine-field">
         <label for="engineCr">Creatinine (µmol/L)</label>
         <input id="engineCr" type="number" step="1" placeholder="Ref: ~64–104" />
       </div>
+
       <div class="engine-field">
         <label for="engineEgfr">eGFR (mL/min/1.73m²)</label>
-        <input id="engineEgfr" type="number" step="1" placeholder="Ref: &gt;60" />
+        <input id="engineEgfr" type="number" step="1" placeholder="Ref: >60" />
       </div>
+
       <div class="engine-field">
         <label for="engineSodium">Sodium (mmol/L)</label>
         <input id="engineSodium" type="number" step="1" placeholder="Ref: 135–145" />
       </div>
+
       <div class="engine-field">
         <label for="enginePotassium">Potassium (mmol/L)</label>
         <input id="enginePotassium" type="number" step="0.1" placeholder="Ref: 3.5–5.0" />
       </div>
+
+      <div class="engine-field">
+        <label for="engineCalcium">Adjusted Calcium (mmol/L)</label>
+        <input id="engineCalcium" type="number" step="0.01" placeholder="Ref: ~2.2–2.6" />
+      </div>
+
       <div class="engine-field">
         <label for="engineAlt">ALT (U/L)</label>
         <input id="engineAlt" type="number" step="1" placeholder="Ref: ~7–56" />
       </div>
+
       <div class="engine-field">
         <label for="engineAlp">ALP (U/L)</label>
         <input id="engineAlp" type="number" step="1" placeholder="Ref: ~30–130" />
       </div>
+
+      <div class="engine-field">
+        <label for="engineGgt">GGT (U/L)</label>
+        <input id="engineGgt" type="number" step="1" placeholder="Raised supports hepatobiliary source" />
+      </div>
+
       <div class="engine-field">
         <label for="engineBili">Bilirubin (µmol/L)</label>
         <input id="engineBili" type="number" step="1" placeholder="Ref: 3–21" />
       </div>
+
+      <div class="engine-field">
+        <label for="engineAlbumin">Albumin (g/L)</label>
+        <input id="engineAlbumin" type="number" step="1" placeholder="Ref: 35–50" />
+      </div>
+
       <div class="engine-field">
         <label for="engineCrp">CRP (mg/L)</label>
-        <input id="engineCrp" type="number" step="1" placeholder="Ref: &lt;10" />
-      <div class="engine-field">
-        <label for="engineHb">Hb (g/L)</label>
-        <input id="engineHb" type="number" step="1" placeholder="e.g. 102" />
-      </div>
-      <div class="engine-field">
-        <label for="engineMcv">MCV (fL)</label>
-        <input id="engineMcv" type="number" step="0.1" placeholder="e.g. 74" />
-      </div>
-      <div class="engine-field">
-        <label for="engineFerritin">Ferritin (µg/L)</label>
-        <input id="engineFerritin" type="number" step="1" placeholder="e.g. 9" />
-      </div>
-      <div class="engine-field">
-        <label for="engineWcc">WCC (×10⁹/L)</label>
-        <input id="engineWcc" type="number" step="0.1" placeholder="e.g. 12.5" />
-      </div>
-      <div class="engine-field">
-        <label for="enginePlatelets">Platelets (×10⁹/L)</label>
-        <input id="enginePlatelets" type="number" step="1" placeholder="e.g. 455" />
-      </div>
-      <div class="engine-field">
-        <label for="engineCr">Creatinine (µmol/L)</label>
-        <input id="engineCr" type="number" step="1" placeholder="e.g. 138" />
-      </div>
-      <div class="engine-field">
-        <label for="engineEgfr">eGFR (mL/min/1.73m²)</label>
-        <input id="engineEgfr" type="number" step="1" placeholder="e.g. 45" />
-      </div>
-      <div class="engine-field">
-        <label for="engineSodium">Sodium (mmol/L)</label>
-        <input id="engineSodium" type="number" step="1" placeholder="e.g. 129" />
-      </div>
-      <div class="engine-field">
-        <label for="enginePotassium">Potassium (mmol/L)</label>
-        <input id="enginePotassium" type="number" step="0.1" placeholder="e.g. 5.8" />
-      </div>
-      <div class="engine-field">
-        <label for="engineAlt">ALT (U/L)</label>
-        <input id="engineAlt" type="number" step="1" placeholder="e.g. 86" />
-      </div>
-      <div class="engine-field">
-        <label for="engineAlp">ALP (U/L)</label>
-        <input id="engineAlp" type="number" step="1" placeholder="e.g. 220" />
-      </div>
-      <div class="engine-field">
-        <label for="engineBili">Bilirubin (µmol/L)</label>
-        <input id="engineBili" type="number" step="1" placeholder="e.g. 34" />
-      </div>
-      <div class="engine-field">
-        <label for="engineCrp">CRP (mg/L)</label>
-        <input id="engineCrp" type="number" step="1" placeholder="e.g. 56" />
-      </div>
-      <div class="engine-field">
-        <label for="engineHba1c">HbA1c (mmol/mol)</label>
-        <input id="engineHba1c" type="number" step="1" placeholder="e.g. 52" />
+        <input id="engineCrp" type="number" step="1" placeholder="Ref: <5" />
       </div>
     </div>
 
     <div class="controls">
-      <button id="runDiagnosticBtn" class="btn-primary" type="button" onclick="runDiagnosticEngine()">Run diagnostic engine</button>
-      <button id="clearDiagnosticBtn" class="btn-lite" type="button" onclick="clearDiagnosticEngine()">Clear values</button>
-      <button class="btn-primary" type="button" onclick="runDiagnosticEngine()">Run diagnostic engine</button>
-      <button class="btn-lite" type="button" onclick="clearDiagnosticEngine()">Clear values</button>
+      <button id="runDiagnosticBtn" class="btn-primary" type="button">Run diagnostic engine</button>
+      <button id="clearDiagnosticBtn" class="btn-lite" type="button">Clear values</button>
     </div>
 
     <div id="engineResults" class="engine-results" aria-live="polite">
@@ -657,7 +686,7 @@ li{ margin-bottom:6px; }
       <button class="btn-lite" type="button" onclick="setAllCards(true)">Expand all</button>
       <button class="btn-lite" type="button" onclick="setAllCards(false)">Collapse all</button>
     </div>
-    <!-- FBC -->
+
     <div class="range-group">
       <h3>Full Blood Count</h3>
       <div class="range-grid">
@@ -731,7 +760,6 @@ li{ margin-bottom:6px; }
       </div>
     </div>
 
-    <!-- U&E -->
     <div class="range-group">
       <h3>Urea &amp; Electrolytes</h3>
       <div class="range-grid">
@@ -801,10 +829,26 @@ li{ margin-bottom:6px; }
             </ul>
           </div>
         </button>
+
+        <button class="range-card" type="button" onclick="toggleCard(this)">
+          <div class="range-top">
+            <div class="range-title">
+              <strong>Adjusted Calcium</strong>
+              <span>~2.2–2.6 mmol/L</span>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> hyperparathyroidism, malignancy, dehydration, thiazides.</li>
+              <li><span class="badge">Low</span> vitamin D deficiency, CKD, hypoparathyroid states.</li>
+              <li><span class="badge">PC move</span> consider albumin, PTH, vitamin D and symptoms.</li>
+            </ul>
+          </div>
+        </button>
       </div>
     </div>
 
-    <!-- LFTs -->
     <div class="range-group">
       <h3>Liver Function</h3>
       <div class="range-grid">
@@ -844,6 +888,23 @@ li{ margin-bottom:6px; }
         <button class="range-card" type="button" onclick="toggleCard(this)">
           <div class="range-top">
             <div class="range-title">
+              <strong>GGT</strong>
+              <span>Lab dependent</span>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Meaning</span> supports hepatic/biliary source when ALP is raised.</li>
+              <li><span class="badge">Common</span> alcohol use, cholestasis, enzyme induction, fatty liver.</li>
+              <li><span class="badge">PC move</span> interpret with ALP/ALT/bilirubin rather than in isolation.</li>
+            </ul>
+          </div>
+        </button>
+
+        <button class="range-card" type="button" onclick="toggleCard(this)">
+          <div class="range-top">
+            <div class="range-title">
               <strong>Bilirubin</strong>
               <span>&lt;21 µmol/L</span>
             </div>
@@ -876,7 +937,62 @@ li{ margin-bottom:6px; }
       </div>
     </div>
 
-    <!-- Inflammation -->
+    <div class="range-group">
+      <h3>Endocrine / Nutrition</h3>
+      <div class="range-grid">
+        <button class="range-card" type="button" onclick="toggleCard(this)">
+          <div class="range-top">
+            <div class="range-title">
+              <strong>B12</strong>
+              <span>Lab dependent</span>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> dietary deficiency, pernicious anaemia, malabsorption.</li>
+              <li><span class="badge">Clue</span> macrocytosis, neuropathy, glossitis, cognitive change.</li>
+              <li><span class="badge">PC move</span> don’t delay treatment if neurological features suspected.</li>
+            </ul>
+          </div>
+        </button>
+
+        <button class="range-card" type="button" onclick="toggleCard(this)">
+          <div class="range-top">
+            <div class="range-title">
+              <strong>Folate</strong>
+              <span>Usually &gt;4 µg/L</span>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">Low</span> poor intake, alcohol, malabsorption, increased demand.</li>
+              <li><span class="badge">Safety</span> exclude or treat B12 deficiency as well.</li>
+              <li><span class="badge">PC move</span> repeat FBC after treatment to confirm response.</li>
+            </ul>
+          </div>
+        </button>
+
+        <button class="range-card" type="button" onclick="toggleCard(this)">
+          <div class="range-top">
+            <div class="range-title">
+              <strong>TSH</strong>
+              <span>~0.4–4.0 mU/L</span>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+          <div class="range-details">
+            <ul class="detail-list">
+              <li><span class="badge">High</span> hypothyroid picture possible.</li>
+              <li><span class="badge">Low</span> hyperthyroid picture possible; interpret with FT4/FT3 where available.</li>
+              <li><span class="badge">PC move</span> useful in fatigue, weight change, macrocytosis, menstrual and mood presentations.</li>
+            </ul>
+          </div>
+        </button>
+      </div>
+    </div>
+
     <div class="range-group">
       <h3>Inflammation</h3>
       <div class="range-grid">
@@ -898,7 +1014,6 @@ li{ margin-bottom:6px; }
       </div>
     </div>
 
-    <!-- Glucose -->
     <div class="range-group">
       <h3>Glucose Control</h3>
       <div class="range-grid">
@@ -912,7 +1027,7 @@ li{ margin-bottom:6px; }
           </div>
           <div class="range-details">
             <ul class="detail-list">
-              <li><span class="badge">Meaning</span> ~2–3 month average glycaemia (not a “today” number).</li>
+              <li><span class="badge">Meaning</span> ~2–3 month average glycaemia (not a today number).</li>
               <li><span class="badge">PC move</span> diagnosis/monitoring per local thresholds; consider caveats (anaemia/haemoglobinopathies).</li>
             </ul>
           </div>
@@ -920,7 +1035,6 @@ li{ margin-bottom:6px; }
       </div>
     </div>
 
-    <!-- Lipids -->
     <div class="range-group">
       <h3>Lipids (Cholesterol)</h3>
       <p class="note">Targets vary by cardiovascular risk and local guidance. Use as a risk tool, not a standalone diagnosis.</p>
@@ -992,15 +1106,12 @@ li{ margin-bottom:6px; }
         </button>
       </div>
     </div>
-
   </div>
 
-  <!-- MANAGEMENT SECTIONS -->
   <div class="section">
     <h2>Focused Tests: When to order + Treatment + Monitoring</h2>
     <p class="note">Clinician-facing summary. Medication choices and follow-up intervals vary by local policy/NICE and patient factors.</p>
 
-    <!-- Ferritin / Iron -->
     <div class="range-group">
       <h3>Ferritin / Iron Deficiency</h3>
       <div class="two-col">
@@ -1029,7 +1140,6 @@ li{ margin-bottom:6px; }
 
     <hr class="hr" />
 
-    <!-- B12 -->
     <div class="range-group">
       <h3>Vitamin B12</h3>
       <div class="two-col">
@@ -1058,7 +1168,6 @@ li{ margin-bottom:6px; }
 
     <hr class="hr" />
 
-    <!-- Folate -->
     <div class="range-group">
       <h3>Folate</h3>
       <div class="two-col">
@@ -1083,7 +1192,6 @@ li{ margin-bottom:6px; }
 
     <hr class="hr" />
 
-    <!-- HbA1c -->
     <div class="range-group">
       <h3>HbA1c</h3>
       <div class="two-col">
@@ -1093,7 +1201,7 @@ li{ margin-bottom:6px; }
         </div>
         <div class="static-card">
           <strong>What it means</strong>
-          <p>Average glycaemia over ~2–3 months. Use plasma glucose if you need an acute “right now” answer</p>
+          <p>Average glycaemia over ~2–3 months. Use plasma glucose if you need an acute right now answer</p>
         </div>
         <div class="static-card">
           <strong>Treatment (typical)</strong>
@@ -1112,7 +1220,6 @@ li{ margin-bottom:6px; }
 
     <hr class="hr" />
 
-    <!-- Lipids -->
     <div class="range-group">
       <h3>Lipids</h3>
       <div class="two-col">
@@ -1126,7 +1233,7 @@ li{ margin-bottom:6px; }
         </div>
         <div class="static-card">
           <strong>Treatment (typical)</strong>
-          <p>Lifestyle first for most • statin for primary prevention based on risk • statin is standard for secondary prevention per pathway (e.g., atorvastatin class)</p>
+          <p>Lifestyle first for most • statin for primary prevention based on risk • statin is standard for secondary prevention per pathway (e.g. atorvastatin class)</p>
         </div>
         <div class="static-card">
           <strong>Monitoring</strong>
@@ -1140,7 +1247,7 @@ li{ margin-bottom:6px; }
 
       <div class="range-group" style="margin-top:14px;">
         <h3 style="font-size:16px; margin-bottom:8px;">Targets by Risk (Quick Panel)</h3>
-        <p class="note">These are common “teaching” targets. Always use your local/NICE pathway for exact thresholds and targets.</p>
+        <p class="note">These are common teaching targets. Always use your local/NICE pathway for exact thresholds and targets.</p>
 
         <div class="two-col">
           <div class="static-card">
@@ -1150,7 +1257,7 @@ li{ margin-bottom:6px; }
 
           <div class="static-card">
             <strong>Primary prevention (higher risk)</strong>
-            <p>Use a risk tool + shared decision-making. Targets are typically <span class="kicker">more stringent</span> than general reference, often focusing on <span class="kicker">non-HDL/LDL reduction</span> rather than one “magic number”.</p>
+            <p>Use a risk tool + shared decision-making. Targets are typically <span class="kicker">more stringent</span> than general reference, often focusing on <span class="kicker">non-HDL/LDL reduction</span> rather than one magic number.</p>
           </div>
 
           <div class="static-card">
@@ -1164,9 +1271,7 @@ li{ margin-bottom:6px; }
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 
   <div class="section">
@@ -1178,7 +1283,6 @@ li{ margin-bottom:6px; }
       <li>Not checking historical baseline (AKI vs CKD; chronic LFT rise, etc.).</li>
     </ul>
   </div>
-
 </div>
 
 <script>
@@ -1190,11 +1294,11 @@ function toggleCard(cardEl){
   if(isOpen){
     cardEl.setAttribute("data-open","false");
     cardEl.setAttribute("aria-expanded","false");
-    details.style.display="none";
+    details.style.display = "none";
   } else {
     cardEl.setAttribute("data-open","true");
     cardEl.setAttribute("aria-expanded","true");
-    details.style.display="block";
+    details.style.display = "block";
   }
 }
 
@@ -1222,7 +1326,9 @@ function filterCards(){
       if(visible) visibleCount += 1;
     });
 
-    group.style.display = visibleCount ? "block" : "none";
+    if(group.querySelectorAll(".range-card").length){
+      group.style.display = visibleCount ? "block" : "none";
+    }
   });
 }
 
@@ -1232,8 +1338,17 @@ function getNum(id){
   const raw = (el.value || "").trim();
   if(raw === "") return null;
   const val = Number(raw);
-  const val = Number(el.value);
   return Number.isFinite(val) ? val : null;
+}
+
+function buildAlertBox(typeClass, title, items){
+  if(!items.length) return "";
+  return `
+    <div class="alert-box ${typeClass}">
+      <div class="alert-title">${title}</div>
+      <ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </div>
+  `;
 }
 
 function runDiagnosticEngine(){
@@ -1242,9 +1357,9 @@ function runDiagnosticEngine(){
   const numericInputIds = [
     "engineHb","engineWcc","engineNeut","engineLymph","enginePlatelets",
     "engineRbc","engineHct","engineMch","engineMchc","engineMcv",
-    "engineHba1c","engineBnp","engineFerritin","engineFolate",
-    "engineCr","engineEgfr","engineSodium","enginePotassium",
-    "engineAlt","engineAlp","engineBili","engineCrp"
+    "engineFerritin","engineB12","engineFolate","engineTsh","engineHba1c","engineBnp",
+    "engineCr","engineEgfr","engineSodium","enginePotassium","engineCalcium",
+    "engineAlt","engineAlp","engineGgt","engineBili","engineAlbumin","engineCrp"
   ];
 
   const hasAnyRawInput = numericInputIds.some((id) => {
@@ -1263,7 +1378,9 @@ function runDiagnosticEngine(){
   const hb = getNum("engineHb");
   const mcv = getNum("engineMcv");
   const ferritin = getNum("engineFerritin");
+  const b12 = getNum("engineB12");
   const folate = getNum("engineFolate");
+  const tsh = getNum("engineTsh");
   const wcc = getNum("engineWcc");
   const neut = getNum("engineNeut");
   const lymph = getNum("engineLymph");
@@ -1272,55 +1389,62 @@ function runDiagnosticEngine(){
   const hct = getNum("engineHct");
   const mch = getNum("engineMch");
   const mchc = getNum("engineMchc");
-  const hb = getNum("engineHb");
-  const mcv = getNum("engineMcv");
-  const ferritin = getNum("engineFerritin");
-  const wcc = getNum("engineWcc");
-  const platelets = getNum("enginePlatelets");
   const creatinine = getNum("engineCr");
   const egfr = getNum("engineEgfr");
   const sodium = getNum("engineSodium");
   const potassium = getNum("enginePotassium");
+  const calcium = getNum("engineCalcium");
   const alt = getNum("engineAlt");
   const alp = getNum("engineAlp");
+  const ggt = getNum("engineGgt");
   const bilirubin = getNum("engineBili");
+  const albumin = getNum("engineAlbumin");
   const crp = getNum("engineCrp");
   const hba1c = getNum("engineHba1c");
   const bnp = getNum("engineBnp");
 
-  const values = [hb,mcv,ferritin,folate,wcc,neut,lymph,platelets,rbc,hct,mch,mchc,creatinine,egfr,sodium,potassium,alt,alp,bilirubin,crp,hba1c,bnp];
+  const values = [hb,mcv,ferritin,b12,folate,tsh,wcc,neut,lymph,platelets,rbc,hct,mch,mchc,creatinine,egfr,sodium,potassium,calcium,alt,alp,ggt,bilirubin,albumin,crp,hba1c,bnp];
   const enteredCount = values.filter((v) => v !== null).length;
 
   const hasStandaloneInterpretation = (
     hba1c !== null ||
     bnp !== null ||
-    ferritin !== null
+    ferritin !== null ||
+    b12 !== null ||
+    tsh !== null ||
+    calcium !== null
   );
 
   const hasInterpretablePair = (
     (hb !== null && mcv !== null) ||
     (mcv !== null && folate !== null) ||
+    (mcv !== null && b12 !== null) ||
+    (mcv !== null && tsh !== null) ||
     (wcc !== null && crp !== null) ||
     (creatinine !== null && egfr !== null) ||
     (sodium !== null && potassium !== null) ||
-    (alp !== null && bilirubin !== null)
+    (alp !== null && bilirubin !== null) ||
+    (alp !== null && ggt !== null)
   );
 
   const anaemiaInputsPresent = (hb !== null || mcv !== null || rbc !== null || hct !== null || mch !== null || mchc !== null);
   const anaemiaPairsComplete = (hb !== null && mcv !== null);
 
   if(anaemiaInputsPresent && !anaemiaPairsComplete && enteredCount <= 2 && !hasStandaloneInterpretation){
-    resultEl.innerHTML = '<span class="kicker">Not enough information to interpret anaemia:</span> Please add at least Hb + MCV (then ferritin/folate as needed).';
+    resultEl.innerHTML = '<span class="kicker">Not enough information to interpret anaemia:</span> Please add at least Hb + MCV (then ferritin/B12/folate as needed).';
     return;
   }
 
   if(!hasStandaloneInterpretation && !hasInterpretablePair){
-    resultEl.innerHTML = '<span class="kicker">Not enough information to make diagnosis:</span> Please enter more related values (for example Hb + MCV, Creatinine + eGFR, Sodium + Potassium, or ALP + Bilirubin).';
+    resultEl.innerHTML = '<span class="kicker">Not enough information to generate differentials:</span> Please enter more related values (for example Hb + MCV, Creatinine + eGFR, Sodium + Potassium, or ALP + Bilirubin/GGT).';
     return;
   }
 
   const findings = [];
   const actions = [];
+  const redFlags = [];
+  const amberFlags = [];
+
   let severity = "Routine review";
   let severityClass = "dot-green";
 
@@ -1337,10 +1461,16 @@ function runDiagnosticEngine(){
       }
     } else if(mcv !== null && mcv > 100){
       findings.push("Macrocytic anaemia pattern.");
+      if(b12 !== null && b12 < 200){
+        findings.push("Low B12 supports B12 deficiency.");
+        actions.push("Assess for neurological features and replace B12 promptly per pathway.");
+      }
       if(folate !== null && folate < 4){
         findings.push("Low folate supports folate deficiency.");
       }
-      actions.push("Check folate/B12, alcohol history, TFTs and LFT context before treatment.");
+      if(tsh !== null && tsh > 4){
+        findings.push("Raised TSH may contribute to macrocytosis/hypothyroid picture.");
+      }
       actions.push("Check B12/folate, TFTs, alcohol history and LFT context before treatment.");
     } else {
       findings.push("Normocytic anaemia pattern.");
@@ -1348,13 +1478,33 @@ function runDiagnosticEngine(){
     }
   }
 
+  if(b12 !== null && b12 < 200){
+    findings.push("Low B12 result.");
+    actions.push("Assess symptoms (neuropathy, glossitis, cognitive change), cause, and replace per pathway.");
+  }
+
+  if(folate !== null && folate < 4){
+    findings.push("Low folate result.");
+    actions.push("Check B12 status and replace folate per pathway after excluding/treating B12 deficiency.");
+  }
+
+  if(tsh !== null && tsh > 4){
+    findings.push("Raised TSH can fit hypothyroid pattern.");
+    actions.push("Correlate with symptoms and consider FT4 / local thyroid pathway.");
+  } else if(tsh !== null && tsh < 0.4){
+    findings.push("Suppressed TSH can fit hyperthyroid pattern.");
+    actions.push("Correlate with symptoms and consider FT4 / local thyroid pathway.");
+  }
+
   if(wcc !== null && wcc > 11){
     findings.push("Leucocytosis (raised WCC).");
     actions.push("Correlate with infection/inflammation symptoms and differential count.");
   }
+
   if(neut !== null && neut > 7.5){
     findings.push("Neutrophilia present.");
   }
+
   if(lymph !== null && lymph < 1.0){
     findings.push("Lymphopenia present.");
   }
@@ -1375,13 +1525,14 @@ function runDiagnosticEngine(){
 
   if(sodium !== null && sodium < 130){
     findings.push("Moderate/severe hyponatraemia.");
-    actions.push("Assess volume status, medications, and symptoms urgently.");
     actions.push("Assess volume status, medications (e.g. SSRIs/diuretics), and symptoms urgently.");
+    redFlags.push("Sodium <130 mmol/L needs urgent clinical review, especially if symptomatic.");
     severity = "Urgent same-day review";
     severityClass = "dot-red";
   } else if(sodium !== null && sodium < 135){
     findings.push("Mild hyponatraemia.");
     actions.push("Repeat and review fluid/medication contributors.");
+    amberFlags.push("Mild hyponatraemia may still need prompt review depending on symptoms and trend.");
     if(severity !== "Urgent same-day review"){
       severity = "Prompt review (24–72h)";
       severityClass = "dot-amber";
@@ -1391,15 +1542,36 @@ function runDiagnosticEngine(){
   if(potassium !== null && potassium >= 6){
     findings.push("Severe hyperkalaemia risk.");
     actions.push("Repeat urgently to exclude haemolysis and arrange immediate escalation per pathway.");
+    redFlags.push("Potassium ≥6.0 mmol/L is an urgent abnormality.");
     severity = "Urgent same-day review";
     severityClass = "dot-red";
   } else if(potassium !== null && potassium > 5.5){
     findings.push("Moderate hyperkalaemia.");
     actions.push("Medication review (ACEi/ARB/MRA), ECG consideration and prompt repeat.");
+    amberFlags.push("Potassium >5.5 mmol/L usually needs prompt repeat and medication review.");
     if(severity !== "Urgent same-day review"){
       severity = "Prompt review (24–72h)";
       severityClass = "dot-amber";
     }
+  }
+
+  if(calcium !== null && calcium >= 3.0){
+    findings.push("Severe hypercalcaemia.");
+    actions.push("Arrange urgent assessment and investigate cause per pathway.");
+    redFlags.push("Adjusted calcium ≥3.0 mmol/L is a red flag.");
+    severity = "Urgent same-day review";
+    severityClass = "dot-red";
+  } else if(calcium !== null && calcium > 2.6){
+    findings.push("Hypercalcaemia pattern.");
+    actions.push("Review symptoms, hydration, medications, and consider PTH / malignancy screen per pathway.");
+    amberFlags.push("Raised calcium should be repeated and interpreted with albumin/PTH context.");
+    if(severity !== "Urgent same-day review"){
+      severity = "Prompt review (24–72h)";
+      severityClass = "dot-amber";
+    }
+  } else if(calcium !== null && calcium < 2.1){
+    findings.push("Hypocalcaemia pattern.");
+    actions.push("Assess symptoms and consider albumin, vitamin D, magnesium and PTH context.");
   }
 
   if(alt !== null && alt > 120){
@@ -1407,13 +1579,25 @@ function runDiagnosticEngine(){
     actions.push("Assess alcohol/viral/medication causes and arrange repeat + liver pathway work-up.");
   }
 
-  
   if(alp !== null && alp > 130 && bilirubin !== null && bilirubin > 21){
     findings.push("Cholestatic pattern (ALP + bilirubin rise).");
     actions.push("Review for jaundice/pruritus and consider hepatobiliary imaging pathway.");
   }
 
-  if(crp !== null && crp > 10){
+  if(alp !== null && alp > 130 && ggt !== null && ggt > 60){
+    findings.push("Raised ALP + raised GGT supports hepatobiliary source.");
+    actions.push("Consider cholestatic or alcohol-related/hepatobiliary pattern and correlate clinically.");
+  } else if(alp !== null && alp > 130 && ggt !== null && ggt <= 60){
+    findings.push("Raised ALP with non-raised GGT may suggest non-hepatic source such as bone.");
+    actions.push("Consider bone profile / vitamin D / clinical context.");
+  }
+
+  if(albumin !== null && albumin < 35){
+    findings.push("Low albumin.");
+    actions.push("Interpret with inflammation, liver function, renal loss and nutrition status.");
+  }
+
+  if(crp !== null && crp > 5){
     findings.push("Inflammatory marker elevated (CRP).");
   }
 
@@ -1428,6 +1612,7 @@ function runDiagnosticEngine(){
   if(bnp !== null){
     if(bnp >= 400){
       findings.push("Markedly raised BNP (HF likely; urgent assessment pathway usually required).");
+      amberFlags.push("Markedly raised BNP should trigger prompt heart failure pathway review.");
       if(severity !== "Urgent same-day review"){
         severity = "Prompt review (24–72h)";
         severityClass = "dot-amber";
@@ -1447,25 +1632,19 @@ function runDiagnosticEngine(){
     }
   }
 
-  if(folate !== null && folate < 4){
-    findings.push("Low folate result.");
-    actions.push("Check B12 status and replace folate per pathway after excluding/treating B12 deficiency.");
-  }
-
   if(findings.length === 0){
     findings.push("No major pattern triggered from entered markers.");
     actions.push("Use trend and symptom context; compare with local laboratory ranges.");
   }
 
-  if(findings.length === 0){
-    findings.push("No major pattern triggered from entered markers.");
-    actions.push("Use trend and symptom context; compare with local ranges.");
-  }
-
-  const resultEl = document.getElementById("engineResults");
-  if(!resultEl) return;
+  const alertHtml = [
+    buildAlertBox("alert-danger", "Red flag urgent findings", redFlags),
+    buildAlertBox("alert-warning", "Prompt review findings", amberFlags),
+    (!redFlags.length && !amberFlags.length) ? '<div class="alert-box alert-success"><div class="alert-title">No immediate red flag pattern triggered</div><div>Still interpret with history, observations, examination, trend, and local pathways.</div></div>' : ""
+  ].join("");
 
   resultEl.innerHTML = `
+    ${alertHtml}
     <div class="engine-severity"><span class="dot ${severityClass}"></span>${severity}</div>
     <div style="margin-top:8px;"><span class="kicker">Likely patterns</span><ul>${findings.map((f) => `<li>${f}</li>`).join("")}</ul></div>
     <div style="margin-top:8px;"><span class="kicker">Suggested next steps</span><ul>${actions.map((a) => `<li>${a}</li>`).join("")}</ul></div>
@@ -1474,23 +1653,25 @@ function runDiagnosticEngine(){
 
 function clearDiagnosticEngine(){
   [
-    "engineHb","engineMcv","engineFerritin","engineFolate","engineWcc","engineNeut","engineLymph","enginePlatelets","engineRbc","engineHct","engineMch","engineMchc",
-    "engineCr","engineEgfr","engineSodium","enginePotassium","engineAlt","engineAlp","engineBili","engineCrp",
-    "engineHba1c","engineBnp"
-    "engineHb","engineMcv","engineFerritin","engineWcc","enginePlatelets",
-    "engineCr","engineEgfr","engineSodium","enginePotassium","engineAlt",
-    "engineAlp","engineBili","engineCrp","engineHba1c"
+    "engineHb","engineWcc","engineNeut","engineLymph","enginePlatelets",
+    "engineRbc","engineHct","engineMch","engineMchc","engineMcv",
+    "engineFerritin","engineB12","engineFolate","engineTsh",
+    "engineHba1c","engineBnp","engineCr","engineEgfr","engineSodium",
+    "enginePotassium","engineCalcium","engineAlt","engineAlp","engineGgt",
+    "engineBili","engineAlbumin","engineCrp"
   ].forEach((id) => {
     const el = document.getElementById(id);
     if(el) el.value = "";
   });
+
+  const sexEl = document.getElementById("engineSex");
+  if(sexEl) sexEl.value = "female";
 
   const resultEl = document.getElementById("engineResults");
   if(resultEl){
     resultEl.innerHTML = '<span class="kicker">Awaiting input:</span> Enter results and run engine.';
   }
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".range-card").forEach((card) => {
