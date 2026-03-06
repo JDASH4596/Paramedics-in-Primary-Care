@@ -109,6 +109,45 @@
   .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; }
   .tile p{ margin: 0; color: var(--muted); font-size: 0.92rem; }
 
+  .dyspnoea-intro{
+    margin-bottom: 10px;
+  }
+
+  .dyspnoea-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .dyspnoea-card{
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    padding: 10px;
+  }
+  .dyspnoea-head{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-weight: 900;
+  }
+  .dyspnoea-icon{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+    font-size: 1.1rem;
+  }
+  .dyspnoea-card ul{
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.88rem;
+  }
+  .dyspnoea-card li{ margin: 5px 0; }
+
   /* Subtle red flags pill */
   .flag-pill{
     position: absolute;
@@ -383,6 +422,13 @@
   <p class="sub">Tap a tile for detail. Sections are separated for fast scanning. Use the small 🚩 pill for red flags.</p>
 
   <div class="grid">
+    <div class="tile" onclick="openWindow('dyspnoea6p')">
+      <h3>🧩 6 P's of Dyspnoea</h3>
+      <p>Infographic reminder for common life-threatening causes of SOB</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('respiratory')">🚩</div>
+    </div>
+
+
     <div class="tile" onclick="openWindow('comparisons')">
       <h3>📊 Comparisons</h3>
       <p>Fast side-by-side tables (scan in seconds).</p>
@@ -557,6 +603,67 @@ function linksSection(title, links) {
 /* Content windows */
 function openWindow(key) {
   const content = {
+
+    dyspnoea6p: `
+      <div class="section">
+        <h4>6 P's of Dyspnoea (Reminder Tool)</h4>
+        <p class="dyspnoea-intro">Use this tile as a rapid visual prompt when a patient presents with shortness of breath. It is a memory aid, not a diagnostic rule.</p>
+        <div class="dyspnoea-grid">
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">🩸</span>PE (Pulmonary Embolism)</div>
+            <ul>
+              <li><strong>Supports:</strong> sudden dyspnoea, pleuritic chest pain, tachycardia, VTE risk factors, low SpO₂.</li>
+              <li><strong>Less supportive:</strong> clear viral URTI pattern with no VTE risk factors and stable observations.</li>
+            </ul>
+          </div>
+
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">🎈</span>Pneumothorax</div>
+            <ul>
+              <li><strong>Supports:</strong> sudden unilateral pleuritic pain, sudden SOB, reduced/absent unilateral breath sounds.</li>
+              <li><strong>Less supportive:</strong> bilateral wheeze with gradual onset and no unilateral signs.</li>
+            </ul>
+          </div>
+
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">🦠</span>Pneumonia</div>
+            <ul>
+              <li><strong>Supports:</strong> fever, productive cough, focal crackles/bronchial breathing, pleuritic pain, systemic illness.</li>
+              <li><strong>Less supportive:</strong> afebrile patient with clear chest and upper-airway-only symptoms.</li>
+            </ul>
+          </div>
+
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">💔</span>Pump Failure (Heart Failure)</div>
+            <ul>
+              <li><strong>Supports:</strong> orthopnoea/PND, peripheral oedema, bibasal crackles, raised JVP, cardiac history.</li>
+              <li><strong>Less supportive:</strong> isolated pleuritic pain without fluid overload features.</li>
+            </ul>
+          </div>
+
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">💨</span>Pulmonary Bronchial Constriction</div>
+            <ul>
+              <li><strong>Supports:</strong> wheeze, chest tightness, prolonged expiratory phase, variable/triggered symptoms, inhaler response.</li>
+              <li><strong>Less supportive:</strong> focal unilateral signs, haemoptysis, or marked pleuritic pain.</li>
+            </ul>
+          </div>
+
+          <div class="dyspnoea-card">
+            <div class="dyspnoea-head"><span class="dyspnoea-icon">🧱</span>Possible Foreign Body</div>
+            <ul>
+              <li><strong>Supports:</strong> abrupt onset after choking episode, stridor, unilateral wheeze/reduced air entry, voice change.</li>
+              <li><strong>Less supportive:</strong> gradual infective prodrome without aspiration/choking history.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      ${section("Safety note", [
+        "Always combine this reminder with ABCDE assessment, observations, and local escalation pathways.",
+        "Any red flag (severe distress, hypoxia, shock, confusion, or rapid deterioration) needs urgent escalation."
+      ], "danger")}
+    `,
 
     comparisons: `
       <div class="section">
@@ -964,6 +1071,7 @@ function openRedFlags(topic) {
 /* Titles */
 function titleFor(key){
   const map = {
+    dyspnoea6p: "6 P's of Dyspnoea",
     comparisons: "Comparisons",
     asthma: "Asthma",
     urti: "Viral URTI",
