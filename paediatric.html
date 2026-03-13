@@ -80,6 +80,36 @@
       background:var(--sec-bg); border:1px solid var(--sec-border);
       border-radius:14px; padding:12px; margin-top:10px;
     }
+
+    .vw-plan{
+      margin-top:12px;
+      border:1px solid var(--sec-border);
+      border-radius:14px;
+      background:#f8fbff;
+      padding:12px;
+    }
+    .vw-plan h3{margin:0 0 8px; font-size:15px}
+    .vw-flow{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:10px;
+      align-items:stretch;
+    }
+    .vw-step{
+      background:#fff;
+      border:1px solid #d6e7fb;
+      border-radius:12px;
+      padding:10px;
+      position:relative;
+    }
+    .vw-step .label{font-size:11px; font-weight:800; color:#2563eb; letter-spacing:.3px}
+    .vw-step b{display:block; margin-top:2px; margin-bottom:5px; font-size:14px}
+    .vw-step ul{margin-top:4px}
+    .video-list{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    .video-card{background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px}
+    .video-card a{color:var(--blue); font-weight:700; text-decoration:none}
+    .video-card a:hover{text-decoration:underline}
+    @media (max-width:800px){ .video-list{grid-template-columns:1fr;} }
   </style>
 </head>
 
@@ -315,6 +345,61 @@
             <li>Episode linked to viral URTI, often in younger children.</li>
             <li>Assess response to bronchodilator trial and work of breathing; escalate if poor response or persistent hypoxia.</li>
           </ul>
+
+          <div class="vw-plan" role="group" aria-label="Viral wheeze action plan">
+            <h3>Viral wheeze plan (quick visual guide)</h3>
+            <div class="vw-flow">
+              <div class="vw-step">
+                <div class="label">STEP 1</div>
+                <b>Recognise episode</b>
+                <ul>
+                  <li>Cold symptoms + new wheeze/cough.</li>
+                  <li>Check RR, SpO₂, WOB, ability to talk/feed.</li>
+                </ul>
+              </div>
+
+              <div class="vw-step">
+                <div class="label">STEP 2</div>
+                <b>Reliever treatment</b>
+                <ul>
+                  <li>Salbutamol via spacer, one puff at a time.</li>
+                  <li>Use age-appropriate mask/spacer and reassess after each cycle.</li>
+                </ul>
+              </div>
+
+              <div class="vw-step">
+                <div class="label">STEP 3</div>
+                <b>Review response</b>
+                <ul>
+                  <li><span class="badge b-green">Improving</span> continue home plan + safety netting.</li>
+                  <li><span class="badge b-amber">Not settling</span> same-day urgent review.</li>
+                  <li><span class="badge b-red">Severe signs</span> emergency escalation / 999.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="note"><b>Emergency signs:</b> exhaustion, cyanosis, silent chest, apnoea, or SpO₂ persistently low despite treatment.</p>
+          </div>
+
+          <div class="vw-plan" role="group" aria-label="Inhaler technique support">
+            <h3>Inhaler technique essentials</h3>
+            <ul>
+              <li>Shake inhaler and fit into spacer.</li>
+              <li>Give <b>one puff at a time</b>; child takes 5 calm tidal breaths (or one deep breath if able).</li>
+              <li>Wait 30–60 seconds between puffs and watch for symptom improvement.</li>
+              <li>Clean spacer regularly and replace cracked valves/masks.</li>
+            </ul>
+
+            <div class="video-list">
+              <div class="video-card">
+                <b>How to use an MDI with spacer + mask</b><br />
+                <a href="https://www.asthmaandlung.org.uk/living-with/inhaler-videos" target="_blank" rel="noopener">Asthma + Lung UK inhaler video library</a>
+              </div>
+              <div class="video-card">
+                <b>How to use an MDI with spacer (mouthpiece)</b><br />
+                <a href="https://www.ouh.nhs.uk/patient-guide/leaflets/files/124914asthmainhaler.pdf" target="_blank" rel="noopener">NHS spacer technique guide (patient leaflet)</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
