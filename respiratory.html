@@ -1084,7 +1084,285 @@ function titleFor(key){
   };
   return map[key] || key;
 }
+<!-- Respiratory Diagnostic Tree: URTI vs Bronchitis vs Pneumonia -->
+<style>
+  .resp-tree-wrap {
+    margin-top: 18px;
+  }
 
+  .resp-tree-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 20px;
+    border: 1px solid #e6edf5;
+  }
+
+  .resp-tree-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #184a8b;
+    margin-bottom: 8px;
+  }
+
+  .resp-tree-subtitle {
+    font-size: 0.95rem;
+    color: #5f6b7a;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .resp-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .tree-node {
+    background: #f7fbff;
+    border: 1px solid #d9e7f5;
+    border-radius: 16px;
+    padding: 14px 16px;
+    text-align: center;
+    width: min(100%, 420px);
+    box-shadow: 0 4px 14px rgba(24, 74, 139, 0.06);
+  }
+
+  .tree-node.start {
+    background: linear-gradient(135deg, #eaf4ff, #f7fbff);
+    border: 1px solid #bfd8f2;
+  }
+
+  .tree-node.question {
+    background: #ffffff;
+  }
+
+  .tree-node.outcome {
+    font-weight: 700;
+    color: #1d2733;
+  }
+
+  .tree-node.outcome.urti {
+    background: #eefaf0;
+    border-color: #bfe3c5;
+  }
+
+  .tree-node.outcome.bronchitis {
+    background: #fff8e9;
+    border-color: #efd89b;
+  }
+
+  .tree-node.outcome.pneumonia {
+    background: #fff0f0;
+    border-color: #e7b3b3;
+  }
+
+  .node-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1d2733;
+    margin-bottom: 6px;
+  }
+
+  .node-text {
+    font-size: 0.92rem;
+    color: #5f6b7a;
+    line-height: 1.45;
+  }
+
+  .tree-arrow {
+    font-size: 1.3rem;
+    color: #7b8a9a;
+    line-height: 1;
+  }
+
+  .tree-branch-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .tree-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .branch-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #184a8b;
+    background: #edf5fd;
+    border: 1px solid #d7e7f7;
+    border-radius: 999px;
+    padding: 6px 12px;
+  }
+
+  .tree-redflags {
+    margin-top: 18px;
+    background: #f8fbff;
+    border: 1px solid #dbe8f6;
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .tree-redflags h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.98rem;
+    color: #184a8b;
+  }
+
+  .tree-redflags ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #44505e;
+    line-height: 1.6;
+    font-size: 0.92rem;
+  }
+
+  .tree-note {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: #5f6b7a;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 700px) {
+    .resp-tree-card {
+      padding: 16px;
+      border-radius: 16px;
+    }
+
+    .tree-branch-row {
+      grid-template-columns: 1fr;
+    }
+
+    .tree-node {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="resp-tree-wrap">
+  <div class="resp-tree-card">
+    <div class="resp-tree-title">Diagnostic Tree: Viral URTI vs Acute Bronchitis vs Pneumonia</div>
+    <div class="resp-tree-subtitle">
+      Use this quick visual discriminator for adults presenting with acute cough, fever, shortness of breath, or chest symptoms.
+    </div>
+
+    <div class="resp-tree">
+      <div class="tree-node start">
+        <div class="node-title">Acute cough ± fever ± SOB</div>
+        <div class="node-text">Initial presentation with respiratory symptoms</div>
+      </div>
+
+      <div class="tree-arrow">↓</div>
+
+      <div class="tree-node question">
+        <div class="node-title">Systemically unwell?</div>
+        <div class="node-text">
+          Fever ≥38°C, tachycardia, tachypnoea, hypoxia, rigors, or toxic appearance
+        </div>
+      </div>
+
+      <div class="tree-branch-row">
+        <div class="tree-branch">
+          <div class="branch-label">Yes</div>
+          <div class="tree-arrow">↓</div>
+          <div class="tree-node outcome pneumonia">
+            <div class="node-title">Pneumonia more likely</div>
+            <div class="node-text">
+              Particularly if cough, fever, pleuritic pain, hypoxia, or focal chest findings are present
+            </div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="branch-label">No</div>
+          <div class="tree-arrow">↓</div>
+          <div class="tree-node question">
+            <div class="node-title">Focal chest signs?</div>
+            <div class="node-text">
+              Localised crackles, bronchial breathing, dull percussion note
+            </div>
+          </div>
+
+          <div class="tree-branch-row">
+            <div class="tree-branch">
+              <div class="branch-label">Yes</div>
+              <div class="tree-arrow">↓</div>
+              <div class="tree-node outcome pneumonia">
+                <div class="node-title">Pneumonia</div>
+                <div class="node-text">
+                  Focal examination findings increase likelihood of consolidation
+                </div>
+              </div>
+            </div>
+
+            <div class="tree-branch">
+              <div class="branch-label">No</div>
+              <div class="tree-arrow">↓</div>
+              <div class="tree-node question">
+                <div class="node-title">Predominant symptom pattern?</div>
+                <div class="node-text">
+                  Distinguish upper airway features from lower airway irritation
+                </div>
+              </div>
+
+              <div class="tree-branch-row">
+                <div class="tree-branch">
+                  <div class="branch-label">Upper airway dominant</div>
+                  <div class="tree-arrow">↓</div>
+                  <div class="tree-node outcome urti">
+                    <div class="node-title">Viral URTI</div>
+                    <div class="node-text">
+                      Coryza, sore throat, sneezing, mild cough, mild or no fever, normal chest exam
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tree-branch">
+                  <div class="branch-label">Lower airway irritation</div>
+                  <div class="tree-arrow">↓</div>
+                  <div class="tree-node outcome bronchitis">
+                    <div class="node-title">Acute Bronchitis</div>
+                    <div class="node-text">
+                      Persistent cough, chest tightness, wheeze, scattered coarse sounds, but no focal consolidation
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-redflags">
+      <h4>Red flags — override the pathway</h4>
+      <ul>
+        <li>SpO₂ &lt;94% (or &lt;92% if known COPD)</li>
+        <li>Respiratory rate &gt;20–24</li>
+        <li>Heart rate &gt;100</li>
+        <li>Confusion or new altered mental state</li>
+        <li>Hypotension</li>
+        <li>Pleuritic chest pain with focal signs</li>
+        <li>Significant frailty, immunosuppression, or sepsis concern</li>
+      </ul>
+    </div>
+
+    <div class="tree-note">
+      This is a support tool only and should be interpreted alongside full clinical assessment, obs, risk factors, and safety-netting.
+    </div>
+  </div>
+</div>
 /* ===== Persistent banner + first-visit modal logic ===== */
 (function initDisclaimers(){
   // Banner dismiss
