@@ -101,13 +101,34 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     cursor: pointer;
     transition: transform 0.06s ease, box-shadow 0.12s ease;
+    overflow: hidden;
+  }
+  .tile::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
+    pointer-events:none;
   }
   .tile:hover{
     transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(0,0,0,0.08);
   }
-  .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; }
-  .tile p{ margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .tile h3{ margin: 0 0 6px 0; font-size: 1.06rem; position:relative; z-index:1; }
+  .tile p{ margin: 0; color: var(--muted); font-size: 0.92rem; position:relative; z-index:1; }
+
+  .tile-feature{
+    background: linear-gradient(135deg, #eef6ff, #ffffff);
+    border: 1px solid #cfe3fb;
+    box-shadow: 0 8px 24px rgba(30,136,229,0.10);
+  }
+  .tile-feature h3{
+    color: #0f4c8a;
+  }
+  .tile-feature:hover{
+    box-shadow: 0 14px 30px rgba(30,136,229,0.16);
+  }
 
   .dyspnoea-intro{
     margin-bottom: 10px;
@@ -162,6 +183,7 @@
     border-radius: 999px;
     cursor: pointer;
     user-select: none;
+    z-index: 2;
   }
 
   /* ===== Overlay (tap outside to close) ===== */
@@ -209,9 +231,10 @@
 
   .section h4{
     margin: 0 0 8px 0;
-    font-size: 0.95rem;
-    letter-spacing: 0.2px;
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    color: #0f4c8a;
   }
 
   .section ul{
@@ -264,10 +287,307 @@
   table.compare{table-layout:fixed;width:100%;}
   .compare th,.compare td{white-space:normal;overflow-wrap:anywhere;word-break:break-word;}
 
+  /* ===== Diagnostic tree ===== */
+  .resp-tree-wrap{
+    margin-top: 4px;
+  }
+
+  .resp-tree-shell{
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    border: 1px solid #dbe8f6;
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  .resp-tree-head{
+    margin-bottom: 18px;
+  }
+
+  .resp-tree-kicker{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #0f4c8a;
+    background: #eaf4ff;
+    border: 1px solid #cfe3fb;
+    border-radius: 999px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+  }
+
+  .resp-tree-title{
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .resp-tree-subtitle{
+    color: var(--muted);
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  .resp-tree-flow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tree-node{
+    width: min(100%, 460px);
+    background: #fff;
+    border: 1px solid #dbe8f6;
+    border-radius: 18px;
+    padding: 14px 16px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    transition: 0.2s ease;
+  }
+
+  .tree-node.start{
+    background: linear-gradient(135deg, #eaf4ff, #f8fbff);
+    border-color: #bfd8f2;
+  }
+
+  .tree-node.question{
+    background: #ffffff;
+    border-color: #dbe8f6;
+  }
+
+  .tree-node.outcome{
+    font-weight: 900;
+  }
+
+  .tree-node.urti{
+    background: #eefbf1;
+    border: 1px solid #bfe5c8;
+  }
+
+  .tree-node.bronchitis{
+    background: #fff8eb;
+    border: 1px solid #f0daa2;
+  }
+
+  .tree-node.pneumonia{
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+  }
+
+  .node-title{
+    font-size: 1rem;
+    font-weight: 900;
+    color: #111827;
+    margin-bottom: 6px;
+  }
+
+  .node-text{
+    font-size: 0.92rem;
+    color: #5f6b7a;
+    line-height: 1.45;
+  }
+
+  .tree-arrow{
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(180deg, #bfd8f2, #7aaee5);
+    position: relative;
+    border-radius: 999px;
+  }
+
+  .tree-arrow::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #7aaee5;
+  }
+
+  .tree-split{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .tree-branch{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .branch-chip{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid #dbe8f6;
+    background: #edf5fd;
+    color: #184a8b;
+    cursor: pointer;
+    transition: 0.15s ease;
+    user-select: none;
+  }
+  .branch-chip:hover{
+    transform: scale(1.05);
+  }
+  .branch-chip.yes{
+    background: #eefbf1;
+    border-color: #bfe5c8;
+    color: #166534;
+  }
+  .branch-chip.no{
+    background: #f8fafc;
+    border-color: #e5e7eb;
+    color: #475569;
+  }
+  .branch-chip.upper{
+    background: #eefbf1;
+    border-color: #bfe5c8;
+    color: #166534;
+  }
+  .branch-chip.lower{
+    background: #fff8eb;
+    border-color: #f0daa2;
+    color: #b45309;
+  }
+  .branch-chip.selected{
+    background: #1e88e5 !important;
+    color: #ffffff !important;
+    border-color: #1e88e5 !important;
+  }
+
+  .tree-mini-grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .tree-summary{
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .summary-card{
+    border-radius: 16px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+  }
+
+  .summary-card h4{
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #111827;
+  }
+
+  .summary-card ul{
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.9rem;
+  }
+
+  .summary-card li{
+    margin: 5px 0;
+  }
+
+  .summary-card.urti{
+    background: #eefbf1;
+    border-color: #bfe5c8;
+  }
+
+  .summary-card.bronchitis{
+    background: #fff8eb;
+    border-color: #f0daa2;
+  }
+
+  .summary-card.pneumonia{
+    background: #fff1f2;
+    border-color: #fecdd3;
+  }
+
+  .tree-redflags{
+    margin-top: 18px;
+    border: 1px solid #fecdd3;
+    background: #fff1f2;
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .tree-redflags h4{
+    margin: 0 0 10px 0;
+    font-size: 0.98rem;
+    color: #b91c1c;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .tree-redflags ul{
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .tree-note{
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tree-node.dimmed{
+    opacity: 0.35;
+  }
+
+  .tree-node.active{
+    transform: scale(1.02);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    border-color: #1e88e5;
+  }
+
   @media (max-width:820px){
       .window{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:24px;bottom:24px;width:auto;max-width:none;border-radius:16px;}
       .window-header{cursor:default;}
       .window-body{max-height:calc(100vh - 24px - 24px - 56px);overflow-y:auto;}
+    }
+    @media (max-width:780px){
+      .tree-split,
+      .tree-mini-grid,
+      .tree-summary{
+        grid-template-columns: 1fr;
+      }
+
+      .tree-node{
+        width: 100%;
+      }
+
+      .resp-tree-shell{
+        padding: 14px;
+        border-radius: 16px;
+      }
     }
     @media (max-width:640px){
       .window-body{font-size:.95rem;line-height:1.45;padding:14px 12px;}
@@ -428,6 +748,11 @@
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('respiratory')">🚩</div>
     </div>
 
+    <div class="tile tile-feature" onclick="openWindow('respTree')">
+      <h3>🧭 Diagnostic Tree</h3>
+      <p>Interactive visual discriminator for Viral URTI, Acute Bronchitis and Pneumonia</p>
+      <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('chestInfection')">🚩</div>
+    </div>
 
     <div class="tile" onclick="openWindow('comparisons')">
       <h3>📊 Comparisons</h3>
@@ -600,6 +925,54 @@ function linksSection(title, links) {
   `;
 }
 
+/* Interactive diagnostic tree */
+function selectTreePath(step, value){
+  document.querySelectorAll(".tree-node").forEach(n=>{
+    n.classList.remove("active","dimmed");
+  });
+
+  document.querySelectorAll(".branch-chip").forEach(c=>{
+    c.classList.remove("selected");
+  });
+
+  const chip = document.querySelector(`.branch-chip[data-step="${step}"][data-value="${value}"]`);
+  if(chip) chip.classList.add("selected");
+
+  if(step === "systemic"){
+    if(value === "yes"){
+      activateNodes(["start","systemic","pneumonia1"]);
+    } else {
+      activateNodes(["start","systemic","focal"]);
+    }
+  }
+
+  if(step === "focal"){
+    if(value === "yes"){
+      activateNodes(["start","systemic","focal","pneumonia2"]);
+    } else {
+      activateNodes(["start","systemic","focal","pattern"]);
+    }
+  }
+
+  if(step === "pattern"){
+    if(value === "upper"){
+      activateNodes(["start","systemic","focal","pattern","urti"]);
+    } else {
+      activateNodes(["start","systemic","focal","pattern","bronchitis"]);
+    }
+  }
+}
+
+function activateNodes(ids){
+  document.querySelectorAll(".tree-node").forEach(n=>{
+    if(!ids.includes(n.dataset.id)){
+      n.classList.add("dimmed");
+    } else {
+      n.classList.add("active");
+    }
+  });
+}
+
 /* Content windows */
 function openWindow(key) {
   const content = {
@@ -663,6 +1036,157 @@ function openWindow(key) {
         "Always combine this reminder with ABCDE assessment, observations, and local escalation pathways.",
         "Any red flag (severe distress, hypoxia, shock, confusion, or rapid deterioration) needs urgent escalation."
       ], "danger")}
+    `,
+
+    respTree: `
+      <div class="resp-tree-wrap">
+        <div class="resp-tree-shell">
+          <div class="resp-tree-head">
+            <div class="resp-tree-kicker">🩺 Clinical discriminator</div>
+            <div class="resp-tree-title">Viral URTI vs Acute Bronchitis vs Pneumonia</div>
+            <div class="resp-tree-subtitle">
+              Tap the pathway chips below to guide the visual flow. This supports rapid differentiation in adults presenting with acute cough, fever, breathlessness, or chest symptoms.
+            </div>
+          </div>
+
+          <div class="resp-tree-flow">
+            <div class="tree-node start active" data-id="start">
+              <div class="node-title">Acute cough ± fever ± SOB</div>
+              <div class="node-text">Initial respiratory presentation</div>
+            </div>
+
+            <div class="tree-arrow"></div>
+
+            <div class="tree-node question active" data-id="systemic">
+              <div class="node-title">Systemically unwell?</div>
+              <div class="node-text">
+                Fever ≥38°C, rigors, tachycardia, tachypnoea, hypoxia, marked fatigue, or toxic appearance
+              </div>
+            </div>
+
+            <div class="tree-split">
+              <div class="tree-branch">
+                <div class="branch-chip yes" data-step="systemic" data-value="yes" onclick="selectTreePath('systemic','yes')">Yes</div>
+                <div class="tree-arrow"></div>
+                <div class="tree-node outcome pneumonia" data-id="pneumonia1">
+                  <div class="node-title">Pneumonia more likely</div>
+                  <div class="node-text">
+                    Particularly if pleuritic pain, productive cough, hypoxia, or focal chest findings are present
+                  </div>
+                </div>
+              </div>
+
+              <div class="tree-branch">
+                <div class="branch-chip no" data-step="systemic" data-value="no" onclick="selectTreePath('systemic','no')">No</div>
+                <div class="tree-arrow"></div>
+
+                <div class="tree-node question" data-id="focal">
+                  <div class="node-title">Focal chest signs?</div>
+                  <div class="node-text">
+                    Localised crackles, bronchial breathing, or reduced focal air entry
+                  </div>
+                </div>
+
+                <div class="tree-split">
+                  <div class="tree-branch">
+                    <div class="branch-chip yes" data-step="focal" data-value="yes" onclick="selectTreePath('focal','yes')">Yes</div>
+                    <div class="tree-arrow"></div>
+                    <div class="tree-node outcome pneumonia" data-id="pneumonia2">
+                      <div class="node-title">Pneumonia</div>
+                      <div class="node-text">
+                        Consolidation is more likely when examination is focal
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tree-branch">
+                    <div class="branch-chip no" data-step="focal" data-value="no" onclick="selectTreePath('focal','no')">No</div>
+                    <div class="tree-arrow"></div>
+
+                    <div class="tree-node question" data-id="pattern">
+                      <div class="node-title">Predominant symptom pattern?</div>
+                      <div class="node-text">
+                        Decide whether the presentation is upper-airway dominant or lower-airway irritative
+                      </div>
+                    </div>
+
+                    <div class="tree-mini-grid">
+                      <div class="tree-branch">
+                        <div class="branch-chip upper" data-step="pattern" data-value="upper" onclick="selectTreePath('pattern','upper')">Upper airway</div>
+                        <div class="tree-arrow"></div>
+                        <div class="tree-node outcome urti" data-id="urti">
+                          <div class="node-title">Viral URTI</div>
+                          <div class="node-text">
+                            Coryza, sore throat, sneezing, headache, mild cough, and normal chest exam
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tree-branch">
+                        <div class="branch-chip lower" data-step="pattern" data-value="lower" onclick="selectTreePath('pattern','lower')">Lower airway</div>
+                        <div class="tree-arrow"></div>
+                        <div class="tree-node outcome bronchitis" data-id="bronchitis">
+                          <div class="node-title">Acute Bronchitis</div>
+                          <div class="node-text">
+                            Persistent cough, chest tightness, wheeze, or scattered coarse sounds without focal consolidation
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tree-summary">
+            <div class="summary-card urti">
+              <h4>Viral URTI</h4>
+              <ul>
+                <li>Upper airway symptoms dominate</li>
+                <li>Chest usually clear</li>
+                <li>Usually no antibiotics</li>
+              </ul>
+            </div>
+
+            <div class="summary-card bronchitis">
+              <h4>Acute Bronchitis</h4>
+              <ul>
+                <li>Cough is the main feature</li>
+                <li>May wheeze or have rhonchi</li>
+                <li>No focal consolidation signs</li>
+              </ul>
+            </div>
+
+            <div class="summary-card pneumonia">
+              <h4>Pneumonia</h4>
+              <ul>
+                <li>Systemic upset more likely</li>
+                <li>Focal chest signs more likely</li>
+                <li>Hypoxia / pleuritic pain are concerning</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tree-redflags">
+            <h4>Red flags — override the pathway</h4>
+            <ul>
+              <li>SpO₂ &lt; 94% or dropping rapidly</li>
+              <li>SpO₂ &lt; 92% in suspected chest infection / severe disease concern</li>
+              <li>Marked respiratory distress or exhaustion</li>
+              <li>RR ≥ 30</li>
+              <li>Hypotension or signs of sepsis</li>
+              <li>New confusion or reduced consciousness</li>
+              <li>Significant frailty, immunosuppression, or inability to maintain oral intake</li>
+            </ul>
+          </div>
+
+          <div class="tree-note">
+            Support tool only — interpret alongside full clinical assessment, NEWS2, risk factors, and safety-netting.
+          </div>
+        </div>
+      </div>
     `,
 
     comparisons: `
@@ -1072,6 +1596,7 @@ function openRedFlags(topic) {
 function titleFor(key){
   const map = {
     dyspnoea6p: "6 P's of Dyspnoea",
+    respTree: "Diagnostic Tree",
     comparisons: "Comparisons",
     asthma: "Asthma",
     urti: "Viral URTI",
@@ -1084,285 +1609,7 @@ function titleFor(key){
   };
   return map[key] || key;
 }
-<!-- Respiratory Diagnostic Tree: URTI vs Bronchitis vs Pneumonia -->
-<style>
-  .resp-tree-wrap {
-    margin-top: 18px;
-  }
 
-  .resp-tree-card {
-    background: #ffffff;
-    border-radius: 18px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    padding: 20px;
-    border: 1px solid #e6edf5;
-  }
-
-  .resp-tree-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #184a8b;
-    margin-bottom: 8px;
-  }
-
-  .resp-tree-subtitle {
-    font-size: 0.95rem;
-    color: #5f6b7a;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .resp-tree {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .tree-node {
-    background: #f7fbff;
-    border: 1px solid #d9e7f5;
-    border-radius: 16px;
-    padding: 14px 16px;
-    text-align: center;
-    width: min(100%, 420px);
-    box-shadow: 0 4px 14px rgba(24, 74, 139, 0.06);
-  }
-
-  .tree-node.start {
-    background: linear-gradient(135deg, #eaf4ff, #f7fbff);
-    border: 1px solid #bfd8f2;
-  }
-
-  .tree-node.question {
-    background: #ffffff;
-  }
-
-  .tree-node.outcome {
-    font-weight: 700;
-    color: #1d2733;
-  }
-
-  .tree-node.outcome.urti {
-    background: #eefaf0;
-    border-color: #bfe3c5;
-  }
-
-  .tree-node.outcome.bronchitis {
-    background: #fff8e9;
-    border-color: #efd89b;
-  }
-
-  .tree-node.outcome.pneumonia {
-    background: #fff0f0;
-    border-color: #e7b3b3;
-  }
-
-  .node-title {
-    font-weight: 700;
-    font-size: 1rem;
-    color: #1d2733;
-    margin-bottom: 6px;
-  }
-
-  .node-text {
-    font-size: 0.92rem;
-    color: #5f6b7a;
-    line-height: 1.45;
-  }
-
-  .tree-arrow {
-    font-size: 1.3rem;
-    color: #7b8a9a;
-    line-height: 1;
-  }
-
-  .tree-branch-row {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-
-  .tree-branch {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .branch-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #184a8b;
-    background: #edf5fd;
-    border: 1px solid #d7e7f7;
-    border-radius: 999px;
-    padding: 6px 12px;
-  }
-
-  .tree-redflags {
-    margin-top: 18px;
-    background: #f8fbff;
-    border: 1px solid #dbe8f6;
-    border-radius: 16px;
-    padding: 16px;
-  }
-
-  .tree-redflags h4 {
-    margin: 0 0 10px 0;
-    font-size: 0.98rem;
-    color: #184a8b;
-  }
-
-  .tree-redflags ul {
-    margin: 0;
-    padding-left: 18px;
-    color: #44505e;
-    line-height: 1.6;
-    font-size: 0.92rem;
-  }
-
-  .tree-note {
-    margin-top: 14px;
-    font-size: 0.9rem;
-    color: #5f6b7a;
-    line-height: 1.5;
-  }
-
-  @media (max-width: 700px) {
-    .resp-tree-card {
-      padding: 16px;
-      border-radius: 16px;
-    }
-
-    .tree-branch-row {
-      grid-template-columns: 1fr;
-    }
-
-    .tree-node {
-      width: 100%;
-    }
-  }
-</style>
-
-<div class="resp-tree-wrap">
-  <div class="resp-tree-card">
-    <div class="resp-tree-title">Diagnostic Tree: Viral URTI vs Acute Bronchitis vs Pneumonia</div>
-    <div class="resp-tree-subtitle">
-      Use this quick visual discriminator for adults presenting with acute cough, fever, shortness of breath, or chest symptoms.
-    </div>
-
-    <div class="resp-tree">
-      <div class="tree-node start">
-        <div class="node-title">Acute cough ± fever ± SOB</div>
-        <div class="node-text">Initial presentation with respiratory symptoms</div>
-      </div>
-
-      <div class="tree-arrow">↓</div>
-
-      <div class="tree-node question">
-        <div class="node-title">Systemically unwell?</div>
-        <div class="node-text">
-          Fever ≥38°C, tachycardia, tachypnoea, hypoxia, rigors, or toxic appearance
-        </div>
-      </div>
-
-      <div class="tree-branch-row">
-        <div class="tree-branch">
-          <div class="branch-label">Yes</div>
-          <div class="tree-arrow">↓</div>
-          <div class="tree-node outcome pneumonia">
-            <div class="node-title">Pneumonia more likely</div>
-            <div class="node-text">
-              Particularly if cough, fever, pleuritic pain, hypoxia, or focal chest findings are present
-            </div>
-          </div>
-        </div>
-
-        <div class="tree-branch">
-          <div class="branch-label">No</div>
-          <div class="tree-arrow">↓</div>
-          <div class="tree-node question">
-            <div class="node-title">Focal chest signs?</div>
-            <div class="node-text">
-              Localised crackles, bronchial breathing, dull percussion note
-            </div>
-          </div>
-
-          <div class="tree-branch-row">
-            <div class="tree-branch">
-              <div class="branch-label">Yes</div>
-              <div class="tree-arrow">↓</div>
-              <div class="tree-node outcome pneumonia">
-                <div class="node-title">Pneumonia</div>
-                <div class="node-text">
-                  Focal examination findings increase likelihood of consolidation
-                </div>
-              </div>
-            </div>
-
-            <div class="tree-branch">
-              <div class="branch-label">No</div>
-              <div class="tree-arrow">↓</div>
-              <div class="tree-node question">
-                <div class="node-title">Predominant symptom pattern?</div>
-                <div class="node-text">
-                  Distinguish upper airway features from lower airway irritation
-                </div>
-              </div>
-
-              <div class="tree-branch-row">
-                <div class="tree-branch">
-                  <div class="branch-label">Upper airway dominant</div>
-                  <div class="tree-arrow">↓</div>
-                  <div class="tree-node outcome urti">
-                    <div class="node-title">Viral URTI</div>
-                    <div class="node-text">
-                      Coryza, sore throat, sneezing, mild cough, mild or no fever, normal chest exam
-                    </div>
-                  </div>
-                </div>
-
-                <div class="tree-branch">
-                  <div class="branch-label">Lower airway irritation</div>
-                  <div class="tree-arrow">↓</div>
-                  <div class="tree-node outcome bronchitis">
-                    <div class="node-title">Acute Bronchitis</div>
-                    <div class="node-text">
-                      Persistent cough, chest tightness, wheeze, scattered coarse sounds, but no focal consolidation
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tree-redflags">
-      <h4>Red flags — override the pathway</h4>
-      <ul>
-        <li>SpO₂ &lt;94% (or &lt;92% if known COPD)</li>
-        <li>Respiratory rate &gt;20–24</li>
-        <li>Heart rate &gt;100</li>
-        <li>Confusion or new altered mental state</li>
-        <li>Hypotension</li>
-        <li>Pleuritic chest pain with focal signs</li>
-        <li>Significant frailty, immunosuppression, or sepsis concern</li>
-      </ul>
-    </div>
-
-    <div class="tree-note">
-      This is a support tool only and should be interpreted alongside full clinical assessment, obs, risk factors, and safety-netting.
-    </div>
-  </div>
-</div>
 /* ===== Persistent banner + first-visit modal logic ===== */
 (function initDisclaimers(){
   // Banner dismiss
@@ -1370,13 +1617,15 @@ function titleFor(key){
   const banner = document.getElementById("disclaimerBanner");
   const dismissBtn = document.getElementById("bannerDismissBtn");
 
-  if (localStorage.getItem(bannerKey) === "1") {
+  if (localStorage.getItem(bannerKey) === "1" && banner) {
     banner.style.display = "none";
   }
-  dismissBtn.addEventListener("click", () => {
-    localStorage.setItem(bannerKey, "1");
-    banner.style.display = "none";
-  });
+  if (dismissBtn && banner) {
+    dismissBtn.addEventListener("click", () => {
+      localStorage.setItem(bannerKey, "1");
+      banner.style.display = "none";
+    });
+  }
 
   // First visit modal
   const firstVisitKey = "pipc_first_visit_ack";
@@ -1392,16 +1641,18 @@ function titleFor(key){
     if (!clinicalOverlayOpen) document.body.style.overflow = "";
   }
 
-  if (localStorage.getItem(firstVisitKey) !== "1") {
+  if (localStorage.getItem(firstVisitKey) !== "1" && firstOverlay) {
     firstOverlay.style.display = "flex";
     lockScroll();
   }
 
-  acknowledgeBtn.addEventListener("click", () => {
-    localStorage.setItem(firstVisitKey, "1");
-    firstOverlay.style.display = "none";
-    unlockScrollIfSafe();
-  });
+  if (acknowledgeBtn && firstOverlay) {
+    acknowledgeBtn.addEventListener("click", () => {
+      localStorage.setItem(firstVisitKey, "1");
+      firstOverlay.style.display = "none";
+      unlockScrollIfSafe();
+    });
+  }
 })();
 </script>
 
