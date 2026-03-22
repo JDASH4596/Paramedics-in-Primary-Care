@@ -427,13 +427,39 @@
     gap: 12px;
   }
 
-  .branch-chip{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 74px;
-    padding: 6px 12px;
+  .tree-decision-label{
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 999px;
+    padding: 5px 10px;
+  }
+
+  .tree-step-hint{
+    width: min(100%, 460px);
+    text-align: center;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: #47607d;
+    background: #eff6ff;
+    border: 1px dashed #bfd8f2;
+    border-radius: 14px;
+    padding: 9px 12px;
+  }
+
+  .branch-chip{
+    appearance: none;
+    display: grid;
+    place-items: center;
+    gap: 2px;
+    width: min(100%, 180px);
+    min-height: 72px;
+    padding: 12px 14px;
+    border-radius: 18px;
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.04em;
@@ -442,11 +468,29 @@
     background: #edf5fd;
     color: #184a8b;
     cursor: pointer;
-    transition: 0.15s ease;
+    transition: 0.18s ease;
     user-select: none;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
   }
-  .branch-chip:hover{
-    transform: scale(1.05);
+
+  .branch-chip strong{
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .branch-chip span{
+    font-size: 0.78rem;
+    letter-spacing: 0;
+    text-transform: none;
+    opacity: 0.9;
+  }
+
+  .branch-chip:hover,
+  .branch-chip:focus-visible{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    outline: none;
   }
   .branch-chip.yes{
     background: #eefbf1;
@@ -469,9 +513,14 @@
     color: #b45309;
   }
   .branch-chip.selected{
-    background: #1e88e5 !important;
+    background: linear-gradient(135deg, #1e88e5, #0f6dca) !important;
     color: #ffffff !important;
-    border-color: #1e88e5 !important;
+    border-color: #0f6dca !important;
+    box-shadow: 0 14px 28px rgba(30, 136, 229, 0.28) !important;
+  }
+
+  .branch-chip.selected span{
+    opacity: 1;
   }
 
   .tree-mini-grid{
@@ -933,10 +982,14 @@ function selectTreePath(step, value){
 
   document.querySelectorAll(".branch-chip").forEach(c=>{
     c.classList.remove("selected");
+    c.setAttribute("aria-pressed", "false");
   });
 
   const chip = document.querySelector(`.branch-chip[data-step="${step}"][data-value="${value}"]`);
-  if(chip) chip.classList.add("selected");
+  if(chip){
+    chip.classList.add("selected");
+    chip.setAttribute("aria-pressed", "true");
+  }
 
   if(step === "systemic"){
     if(value === "yes"){
@@ -1045,7 +1098,7 @@ function openWindow(key) {
             <div class="resp-tree-kicker">🩺 Clinical discriminator</div>
             <div class="resp-tree-title">Viral URTI vs Acute Bronchitis vs Pneumonia</div>
             <div class="resp-tree-subtitle">
-              Tap the pathway chips below to guide the visual flow. This supports rapid differentiation in adults presenting with acute cough, fever, breathlessness, or chest symptoms.
+              Tap the decision cards below to guide the visual flow. This supports rapid differentiation in adults presenting with acute cough, fever, breathlessness, or chest symptoms.
             </div>
           </div>
 
@@ -1064,9 +1117,15 @@ function openWindow(key) {
               </div>
             </div>
 
+            <div class="tree-step-hint">Choose the clearest fit below to continue the pathway.</div>
+
             <div class="tree-split">
               <div class="tree-branch">
-                <div class="branch-chip yes" data-step="systemic" data-value="yes" onclick="selectTreePath('systemic','yes')">Yes</div>
+                <div class="tree-decision-label">Select branch</div>
+                <button type="button" aria-pressed="false" class="branch-chip yes" data-step="systemic" data-value="yes" onclick="selectTreePath('systemic','yes')">
+                  <strong>Yes</strong>
+                  <span>Looks unwell / septic</span>
+                </button>
                 <div class="tree-arrow"></div>
                 <div class="tree-node outcome pneumonia" data-id="pneumonia1">
                   <div class="node-title">Pneumonia more likely</div>
@@ -1077,7 +1136,11 @@ function openWindow(key) {
               </div>
 
               <div class="tree-branch">
-                <div class="branch-chip no" data-step="systemic" data-value="no" onclick="selectTreePath('systemic','no')">No</div>
+                <div class="tree-decision-label">Select branch</div>
+                <button type="button" aria-pressed="false" class="branch-chip no" data-step="systemic" data-value="no" onclick="selectTreePath('systemic','no')">
+                  <strong>No</strong>
+                  <span>Stable overall</span>
+                </button>
                 <div class="tree-arrow"></div>
 
                 <div class="tree-node question" data-id="focal">
@@ -1089,7 +1152,11 @@ function openWindow(key) {
 
                 <div class="tree-split">
                   <div class="tree-branch">
-                    <div class="branch-chip yes" data-step="focal" data-value="yes" onclick="selectTreePath('focal','yes')">Yes</div>
+                    <div class="tree-decision-label">Select branch</div>
+                    <button type="button" aria-pressed="false" class="branch-chip yes" data-step="focal" data-value="yes" onclick="selectTreePath('focal','yes')">
+                      <strong>Yes</strong>
+                      <span>Focal exam findings present</span>
+                    </button>
                     <div class="tree-arrow"></div>
                     <div class="tree-node outcome pneumonia" data-id="pneumonia2">
                       <div class="node-title">Pneumonia</div>
@@ -1100,7 +1167,11 @@ function openWindow(key) {
                   </div>
 
                   <div class="tree-branch">
-                    <div class="branch-chip no" data-step="focal" data-value="no" onclick="selectTreePath('focal','no')">No</div>
+                    <div class="tree-decision-label">Select branch</div>
+                    <button type="button" aria-pressed="false" class="branch-chip no" data-step="focal" data-value="no" onclick="selectTreePath('focal','no')">
+                      <strong>No</strong>
+                      <span>No focal consolidation signs</span>
+                    </button>
                     <div class="tree-arrow"></div>
 
                     <div class="tree-node question" data-id="pattern">
@@ -1112,7 +1183,11 @@ function openWindow(key) {
 
                     <div class="tree-mini-grid">
                       <div class="tree-branch">
-                        <div class="branch-chip upper" data-step="pattern" data-value="upper" onclick="selectTreePath('pattern','upper')">Upper airway</div>
+                        <div class="tree-decision-label">Select pattern</div>
+                        <button type="button" aria-pressed="false" class="branch-chip upper" data-step="pattern" data-value="upper" onclick="selectTreePath('pattern','upper')">
+                          <strong>Upper airway</strong>
+                          <span>Coryza / sore throat dominant</span>
+                        </button>
                         <div class="tree-arrow"></div>
                         <div class="tree-node outcome urti" data-id="urti">
                           <div class="node-title">Viral URTI</div>
@@ -1123,7 +1198,11 @@ function openWindow(key) {
                       </div>
 
                       <div class="tree-branch">
-                        <div class="branch-chip lower" data-step="pattern" data-value="lower" onclick="selectTreePath('pattern','lower')">Lower airway</div>
+                        <div class="tree-decision-label">Select pattern</div>
+                        <button type="button" aria-pressed="false" class="branch-chip lower" data-step="pattern" data-value="lower" onclick="selectTreePath('pattern','lower')">
+                          <strong>Lower airway</strong>
+                          <span>Cough / chest tightness dominant</span>
+                        </button>
                         <div class="tree-arrow"></div>
                         <div class="tree-node outcome bronchitis" data-id="bronchitis">
                           <div class="node-title">Acute Bronchitis</div>
