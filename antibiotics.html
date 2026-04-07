@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/pipc-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pipc-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="PIPC" />
+  <title>Antibiotic Prescribing | PIPC</title>
+  <style>
+    :root{
+      --bg:#f4f8fb;
+      --card:#ffffff;
+      --text:#163047;
+      --muted:#5f7487;
+      --line:#d9e4ee;
+      --blue:#2e79b9;
+      --blue-dark:#1f5f93;
+      --blue-soft:#eaf4fb;
+      --green:#2f9368;
+      --green-soft:#eaf8f2;
+      --amber:#d98a1d;
+      --amber-soft:#fff5e8;
+      --red:#c94c4c;
+      --red-soft:#fff0f0;
+      --purple:#6f59b3;
+      --purple-soft:#f2effc;
+      --shadow:0 10px 30px rgba(22,48,71,.12);
+      --radius:18px;
+      --radius-sm:12px;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
+    body.modal-open{overflow:hidden;}
+
+    a{color:var(--blue-dark);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .site-header{
+      background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+      color:#fff;
+      padding:18px 20px;
+      position:sticky;
+      top:0;
+      z-index:30;
+      box-shadow:0 4px 16px rgba(0,0,0,.12);
+    }
+
+    .header-inner{
+      max-width:1300px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand-wrap{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand-badge{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:rgba(255,255,255,.14);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      font-weight:700;
+      backdrop-filter:blur(6px);
+    }
+
+    .brand-text h1{
+      margin:0;
+      font-size:1.35rem;
+      letter-spacing:.2px;
+    }
+
+    .brand-text p{
+      margin:3px 0 0;
+      font-size:.92rem;
+      opacity:.95;
+    }
+
+    .crumb{
+      font-size:.95rem;
+      opacity:.95;
+      white-space:nowrap;
+    }
+
+    .crumb a{
+      color:#fff;
+      font-weight:600;
+    }
+
+    .page{
+      max-width:1300px;
+      margin:0 auto;
+      padding:22px 18px 44px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#ffffff,#f7fbff);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    .hero-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      font-size:1.8rem;
+      line-height:1.15;
+      color:var(--blue-dark);
+    }
+
+    .hero p{
+      margin:0;
+      line-height:1.6;
+      color:var(--muted);
+      max-width:900px;
+    }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--blue-soft);
+      color:var(--blue-dark);
+      border:1px solid #cde1f2;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:.92rem;
+      font-weight:700;
+    }
+
+    .notice-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:14px;
+      margin:18px 0 22px;
+    }
+
+    .notice{
+      border-radius:16px;
+      padding:16px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:0 6px 18px rgba(22,48,71,.06);
+    }
+
+    .notice h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .notice p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:.95rem;
+    }
+
+    .notice.blue{background:var(--blue-soft);}
+    .notice.green{background:var(--green-soft);}
+    .notice.amber{background:var(--amber-soft);}
+    .notice.red{background:var(--red-soft);}
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:28px 0 14px;
+    }
+
+    .section-title h3{
+      margin:0;
+      font-size:1.35rem;
+      color:var(--blue-dark);
+    }
+
+    .section-title span{
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:14px;
+      margin-bottom:20px;
+    }
+
+    .info-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 6px 18px rgba(22,48,71,.06);
+    }
+
+    .info-card h4{
+      margin:0 0 8px;
+      color:var(--blue-dark);
+      font-size:1rem;
+    }
+
+    .info-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:.95rem;
+    }
+
+    .compare-wrap{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 8px 24px rgba(22,48,71,.08);
+      overflow:hidden;
+      margin-bottom:22px;
+    }
+
+    .table-scroll{
+      width:100%;
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:900px;
+      border-collapse:collapse;
+      font-size:.95rem;
+    }
+
+    th,td{
+      padding:14px 12px;
+      vertical-align:top;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+    }
+
+    th{
+      background:#eef6fc;
+      color:var(--blue-dark);
+      font-size:.92rem;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    td{
+      line-height:1.5;
+      color:var(--text);
+      background:#fff;
+    }
+
+    tr:last-child td{border-bottom:none;}
+
+    .tile-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:16px;
+    }
+
+    .tile{
+      position:relative;
+      border:none;
+      text-align:left;
+      padding:16px;
+      min-height:168px;
+      border-radius:18px;
+      cursor:pointer;
+      background:linear-gradient(180deg,#ffffff,#f9fcff);
+      border:1px solid var(--line);
+      box-shadow:0 8px 22px rgba(22,48,71,.08);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .tile:hover{
+      transform:translateY(-3px);
+      box-shadow:0 14px 28px rgba(22,48,71,.12);
+      border-color:#c6d8e7;
+    }
+
+    .tile .icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      margin-bottom:12px;
+      background:var(--blue-soft);
+    }
+
+    .tile h4{
+      margin:0 0 8px;
+      font-size:1.05rem;
+      color:var(--blue-dark);
+    }
+
+    .tile p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.94rem;
+    }
+
+    .red-flag{
+      position:absolute;
+      top:14px;
+      right:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.8rem;
+      font-weight:700;
+      color:var(--red);
+      background:var(--red-soft);
+      border:1px solid #f1c7c7;
+      padding:5px 8px;
+      border-radius:999px;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(10,27,42,.48);
+      backdrop-filter:blur(2px);
+      z-index:90;
+      display:none;
+    }
+
+    .overlay.show{display:block;}
+
+    .window{
+      position:fixed;
+      top:80px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(960px, calc(100vw - 32px));
+      max-height:calc(100vh - 110px);
+      background:#fff;
+      border-radius:22px;
+      box-shadow:0 24px 70px rgba(0,0,0,.22);
+      z-index:100;
+      overflow:hidden;
+      display:none;
+      border:1px solid #d7e4ee;
+    }
+
+    .window.show{display:block;}
+
+    .window-header{
+      background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+      color:#fff;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      cursor:move;
+      touch-action:none;
+    }
+
+    .window-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .window-title .win-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:rgba(255,255,255,.14);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      flex:0 0 auto;
+    }
+
+    .window-title-text{
+      min-width:0;
+    }
+
+    .window-title-text h4{
+      margin:0;
+      font-size:1.1rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .window-title-text p{
+      margin:4px 0 0;
+      opacity:.92;
+      font-size:.9rem;
+    }
+
+    .close-btn{
+      border:none;
+      background:rgba(255,255,255,.16);
+      color:#fff;
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:20px;
+      line-height:1;
+      flex:0 0 auto;
+    }
+
+    .close-btn:hover{background:rgba(255,255,255,.24);}
+
+    .window-body{
+      padding:18px;
+      overflow:auto;
+      max-height:calc(100vh - 180px);
+      background:#f9fcff;
+    }
+
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .detail-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:15px;
+      box-shadow:0 5px 14px rgba(22,48,71,.05);
+    }
+
+    .detail-card h5{
+      margin:0 0 10px;
+      color:var(--blue-dark);
+      font-size:1rem;
+    }
+
+    .detail-card ul{
+      margin:0;
+      padding-left:18px;
+    }
+
+    .detail-card li{
+      margin:0 0 8px;
+      color:var(--text);
+      line-height:1.5;
+    }
+
+    .detail-card li:last-child{margin-bottom:0;}
+
+    .detail-card p{
+      margin:0;
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    .banner{
+      border-radius:14px;
+      padding:14px 16px;
+      margin-bottom:14px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .banner strong{color:var(--blue-dark);}
+
+    .banner.blue{background:var(--blue-soft);}
+    .banner.green{background:var(--green-soft);}
+    .banner.amber{background:var(--amber-soft);}
+    .banner.red{background:var(--red-soft);}
+    .banner.purple{background:var(--purple-soft);}
+
+    .link-list{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .link-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+    }
+
+    .link-item strong{
+      display:block;
+      margin-bottom:4px;
+      color:var(--blue-dark);
+    }
+
+    .footer-note{
+      margin-top:24px;
+      padding:16px;
+      border-radius:16px;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.94rem;
+    }
+
+    @media (max-width: 900px){
+      .detail-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 700px){
+      .hero h2{font-size:1.45rem;}
+      .site-header{padding:16px;}
+      .page{padding:16px 14px 34px;}
+      .window{
+        top:10px !important;
+        left:10px !important;
+        right:10px;
+        width:auto;
+        max-height:calc(100vh - 20px);
+        height:calc(100vh - 20px);
+        transform:none !important;
+        border-radius:18px;
+      }
+      .window-body{
+        max-height:calc(100vh - 110px);
+      }
+      .window-header{
+        cursor:default;
+      }
+      table{
+        min-width:760px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <div class="brand-badge">💊</div>
+        <div class="brand-text">
+          <h1>PIPC</h1>
+          <p>Antibiotic Prescribing: Choosing the Right Class</p>
+        </div>
+      </div>
+      <div class="crumb"><a href="systems.html">← Home</a> / <a href="prescribing.html">Prescribing</a> / Antibiotics</div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h2>Antibiotic prescribing in primary care</h2>
+          <p>
+            Use antibiotics only when there is a likely <strong>bacterial infection</strong>, when benefits outweigh harms,
+            and when the <strong>narrowest effective option</strong> can be chosen. The aim is not just to treat infection,
+            but to treat it safely, appropriately, and with good antimicrobial stewardship.
+          </p>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <div class="pill">✅ Check allergy status</div>
+        <div class="pill">✅ Think likely organism</div>
+        <div class="pill">✅ Use the narrowest sensible option</div>
+        <div class="pill">✅ Check renal function / pregnancy</div>
+        <div class="pill">✅ Review local / NICE guidance</div>
+        <div class="pill">✅ Safety-net and escalate if red flags</div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h3>Original KISS prescribing essentials</h3>
+      <span>Core safety content retained from the original prescribing page</span>
+    </div>
+
+    <section class="info-grid">
+      <div class="info-card">
+        <h4>10-second safety pause</h4>
+        <p>Before prescribing: confirm medicine is needed now, check allergy/pregnancy/frailty/renal-liver risk, and set a clear review date.</p>
+      </div>
+      <div class="info-card">
+        <h4>Core best practice</h4>
+        <p>Use one clear goal, check interactions/duplication, document indication + duration, and always safety-net for deterioration.</p>
+      </div>
+      <div class="info-card">
+        <h4>Start low, go slow</h4>
+        <p>Use the lowest effective dose and review early for efficacy, side effects, and adherence—especially in older adults.</p>
+      </div>
+      <div class="info-card">
+        <h4>ACB + falls risk check</h4>
+        <p>Consider anticholinergic burden and sedative effects before adding medicines in people with falls/confusion risk.</p>
+      </div>
+      <div class="info-card">
+        <h4>Deprescribing mindset</h4>
+        <p>At review, stop ineffective or harmful medicines and taper agents that require gradual withdrawal.</p>
+      </div>
+      <div class="info-card">
+        <h4>Need the full non-antibiotic page?</h4>
+        <p><a href="prescribing.html"><strong>Open full Prescribing (KISS) page →</strong></a></p>
+      </div>
+    </section>
+
+    <section class="notice-grid">
+      <div class="notice blue">
+        <h3>Why choose one antibiotic over another?</h3>
+        <p>Choice depends on the likely site of infection, likely bacteria, severity, patient factors, allergy status, pregnancy, renal function, previous cultures, and local resistance patterns.</p>
+      </div>
+      <div class="notice green">
+        <h3>Think stewardship</h3>
+        <p>Broader-spectrum antibiotics are not “better” by default. Use the narrowest effective drug whenever possible to reduce resistance, adverse effects, and C. difficile risk.</p>
+      </div>
+      <div class="notice amber">
+        <h3>Common prescribing mistake</h3>
+        <p>Choosing an antibiotic because it “covers more” rather than because it best fits the likely organism and clinical scenario.</p>
+      </div>
+      <div class="notice red">
+        <h3>Escalate urgently if needed</h3>
+        <p>Systemic toxicity, sepsis features, rapidly progressive infection, immunosuppression, deep space infection, or failure of appropriate oral treatment may require urgent review or admission.</p>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h3>Quick prescribing principles</h3>
+      <span>Simple, punchy rules to guide antibiotic choice</span>
+    </div>
+
+    <section class="info-grid">
+      <div class="info-card">
+        <h4>1. Is it likely bacterial?</h4>
+        <p>Many coughs, sore throats, sinus symptoms, and viral-type illnesses do not need antibiotics. Prescribing “just in case” causes harm and increases resistance.</p>
+      </div>
+      <div class="info-card">
+        <h4>2. Where is the infection?</h4>
+        <p>Antibiotics are chosen by source: chest, urine, skin, dental, ENT, abdominal, or genital infection all have different likely organisms and first-line options.</p>
+      </div>
+      <div class="info-card">
+        <h4>3. What bacteria are likely?</h4>
+        <p>Think common pathogens for that syndrome. Cellulitis is different from UTI; tonsillitis is different from COPD exacerbation; dental infection is different from pyelonephritis.</p>
+      </div>
+      <div class="info-card">
+        <h4>4. Use the narrowest effective agent</h4>
+        <p>If a narrower-spectrum antibiotic will do the job, it is usually preferred over a broader one. This supports stewardship and reduces collateral damage.</p>
+      </div>
+      <div class="info-card">
+        <h4>5. Patient factors matter</h4>
+        <p>Always check drug allergy, renal impairment, liver disease, pregnancy, breastfeeding, QT risk, drug interactions, swallowing ability, and adherence likelihood.</p>
+      </div>
+      <div class="info-card">
+        <h4>6. Review and safety-net</h4>
+        <p>Tell patients what improvement to expect, what red flags to watch for, and when to re-attend. Antibiotics are not the only management step.</p>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h3>Bacteria basics</h3>
+      <span>The terms you actually need to understand prescribing decisions</span>
+    </div>
+
+    <section class="info-grid">
+      <div class="info-card">
+        <h4>Gram-positive bacteria</h4>
+        <p>These have a thick peptidoglycan cell wall and no outer membrane. Common Gram-positive organisms include <strong>streptococci</strong> and <strong>staphylococci</strong>. Many skin, soft tissue, and throat infections involve Gram-positive bacteria.</p>
+      </div>
+      <div class="info-card">
+        <h4>Gram-negative bacteria</h4>
+        <p>These have a thinner cell wall but also an <strong>outer membrane</strong>, which can make them harder for some antibiotics to penetrate. Common Gram-negative organisms include <strong>E. coli</strong>, <strong>Haemophilus influenzae</strong>, and <strong>Klebsiella</strong>.</p>
+      </div>
+      <div class="info-card">
+        <h4>Atypical bacteria</h4>
+        <p>These are organisms not well covered by standard beta-lactam antibiotics because they lack a typical cell wall or behave differently. Examples include <strong>Mycoplasma</strong>, <strong>Chlamydia</strong>, and <strong>Legionella</strong>. This is one reason macrolides or doxycycline may be chosen.</p>
+      </div>
+      <div class="info-card">
+        <h4>Anaerobes</h4>
+        <p>Anaerobic bacteria grow in low-oxygen environments. They are often relevant in <strong>dental infection</strong>, <strong>deep tissue infection</strong>, <strong>intra-abdominal infection</strong>, and some abscesses. <strong>Metronidazole</strong> is commonly chosen when anaerobic cover is needed.</p>
+      </div>
+      <div class="info-card">
+        <h4>Beta-lactam antibiotics</h4>
+        <p>This group includes <strong>penicillins</strong>, <strong>cephalosporins</strong>, and other related antibiotics. They work by interfering with <strong>bacterial cell wall synthesis</strong>. They are widely used, but not all bacteria are equally susceptible.</p>
+      </div>
+      <div class="info-card">
+        <h4>Beta-lactamase</h4>
+        <p>Beta-lactamase is an enzyme made by some bacteria that can <strong>break down beta-lactam antibiotics</strong> and make them ineffective. This is one reason drugs like <strong>co-amoxiclav</strong> can be useful: clavulanic acid helps inhibit some beta-lactamases.</p>
+      </div>
+      <div class="info-card">
+        <h4>Bactericidal vs bacteriostatic</h4>
+        <p><strong>Bactericidal</strong> antibiotics kill bacteria. <strong>Bacteriostatic</strong> antibiotics mainly stop bacteria multiplying, allowing the immune system to clear infection. In day-to-day primary care, the clinical context matters more than the label alone.</p>
+      </div>
+      <div class="info-card">
+        <h4>Resistance</h4>
+        <p>Resistance means bacteria are no longer reliably inhibited or killed by an antibiotic. It can arise through mutation or gene transfer. Broader-spectrum use, repeated use, and unnecessary prescribing all increase selection pressure.</p>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h3>Why choose one class over another?</h3>
+      <span>Quick comparison for day-to-day prescribing</span>
+    </div>
+
+    <section class="compare-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Class / drug</th>
+              <th>Choose when</th>
+              <th>Why it may be preferred</th>
+              <th>Why it may not be preferred</th>
+              <th>Common primary care relevance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phenoxymethylpenicillin</strong></td>
+              <td>Likely streptococcal infection and a narrow option is appropriate</td>
+              <td>Narrower spectrum, good stewardship, useful for streptococcal tonsillitis when indicated</td>
+              <td>Not suitable when broader cover or staphylococcal cover is needed</td>
+              <td>Tonsillitis / streptococcal infection</td>
+            </tr>
+            <tr>
+              <td><strong>Amoxicillin</strong></td>
+              <td>When guideline-supported for susceptible community pathogens</td>
+              <td>Broadly useful, familiar, often well tolerated</td>
+              <td>Does not provide good anti-staphylococcal cover; resistance may limit usefulness in some scenarios</td>
+              <td>ENT / respiratory / some dental indications depending on guidance</td>
+            </tr>
+            <tr>
+              <td><strong>Flucloxacillin</strong></td>
+              <td>Likely staphylococcal or skin / soft tissue infection</td>
+              <td>Good anti-staphylococcal activity</td>
+              <td>Not the best choice when Gram-negative or anaerobic cover is required</td>
+              <td>Cellulitis / skin infection</td>
+            </tr>
+            <tr>
+              <td><strong>Co-amoxiclav</strong></td>
+              <td>When broader cover is needed, polymicrobial infection is possible, or beta-lactamase-producing organisms are more likely</td>
+              <td>Broader spectrum and beta-lactamase inhibitor component</td>
+              <td>More collateral damage, higher stewardship concern, higher C. difficile risk than narrower options</td>
+              <td>Bite wounds / selected dental or more complex infections depending on guidance</td>
+            </tr>
+            <tr>
+              <td><strong>Macrolides</strong></td>
+              <td>Penicillin allergy, atypical cover needed, or specific guidance supports use</td>
+              <td>Useful alternative to penicillins; can cover atypicals</td>
+              <td>QT risk, interactions, GI upset, resistance issues</td>
+              <td>Respiratory infection / penicillin allergy alternatives</td>
+            </tr>
+            <tr>
+              <td><strong>Doxycycline</strong></td>
+              <td>Atypical cover, penicillin allergy, or guideline-supported respiratory / skin indications</td>
+              <td>Useful breadth, convenient dosing, good atypical activity</td>
+              <td>Pregnancy / child cautions, photosensitivity, oesophageal irritation</td>
+              <td>Respiratory infection / acne / Lyme disease / some skin conditions</td>
+            </tr>
+            <tr>
+              <td><strong>Metronidazole</strong></td>
+              <td>Anaerobic infection suspected or mixed infection where anaerobes are relevant</td>
+              <td>Excellent anaerobic cover</td>
+              <td>Not enough alone if aerobic cover is also needed</td>
+              <td>Dental / BV / anaerobic infection / combined regimens</td>
+            </tr>
+            <tr>
+              <td><strong>Nitrofurantoin</strong></td>
+              <td>Lower uncomplicated UTI with adequate renal function</td>
+              <td>Focused urinary activity, strong first-line option for cystitis</td>
+              <td>Not for pyelonephritis or systemic illness</td>
+              <td>Lower UTI</td>
+            </tr>
+            <tr>
+              <td><strong>Trimethoprim</strong></td>
+              <td>Lower UTI when susceptibility supports it or guidance allows</td>
+              <td>Can be useful if known susceptible</td>
+              <td>Resistance may be higher; not always the best empiric choice</td>
+              <td>Selected lower UTI cases</td>
+            </tr>
+            <tr>
+              <td><strong>Cephalosporins / quinolones</strong></td>
+              <td>Only when clearly indicated, or when first-line choices are unsuitable</td>
+              <td>Useful in selected cases</td>
+              <td>Broader-spectrum, greater stewardship concern, higher collateral damage</td>
+              <td>Usually selected / second-line / specialist-influenced prescribing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h3>Antibiotic class quick guide</h3>
+      <span>Tap a tile to open detailed prescribing notes</span>
+    </div>
+
+    <section class="tile-grid">
+      <button class="tile" data-window="penicillins">
+        <div class="icon">🧱</div>
+        <h4>Penicillins</h4>
+        <p>Often first-line when a narrow, effective beta-lactam option fits the likely organism and infection source.</p>
+      </button>
+
+      <button class="tile" data-window="flucloxacillin">
+        <div class="icon">🩹</div>
+        <h4>Flucloxacillin</h4>
+        <p>Think skin and soft tissue infection, especially where staphylococcal cover is needed.</p>
+      </button>
+
+      <button class="tile" data-window="coamoxiclav">
+        <span class="red-flag">🚩 Broader</span>
+        <div class="icon">🛡️</div>
+        <h4>Co-amoxiclav</h4>
+        <p>Useful when broader cover is justified, but avoid using it when a narrower option would do.</p>
+      </button>
+
+      <button class="tile" data-window="macrolides">
+        <div class="icon">🫁</div>
+        <h4>Macrolides</h4>
+        <p>Common penicillin-allergy alternative and useful where atypical cover matters.</p>
+      </button>
+
+      <button class="tile" data-window="doxycycline">
+        <div class="icon">🌤️</div>
+        <h4>Doxycycline</h4>
+        <p>Useful for atypicals, respiratory infection, acne, Lyme disease, and some skin indications.</p>
+      </button>
+
+      <button class="tile" data-window="metronidazole">
+        <div class="icon">🦷</div>
+        <h4>Metronidazole</h4>
+        <p>Choose when anaerobes are likely, especially dental, abdominal, or mixed anaerobic infection.</p>
+      </button>
+
+      <button class="tile" data-window="nitrofurantoin">
+        <div class="icon">🚽</div>
+        <h4>Nitrofurantoin</h4>
+        <p>Strong first-line option for lower UTI when renal function is suitable and no upper UTI features are present.</p>
+      </button>
+
+      <button class="tile" data-window="trimethoprim">
+        <div class="icon">🧫</div>
+        <h4>Trimethoprim</h4>
+        <p>Useful in selected UTIs where susceptibility or guidance supports it, but resistance can limit empiric use.</p>
+      </button>
+
+      <button class="tile" data-window="cephalosporins">
+        <span class="red-flag">🚩 Stewardship</span>
+        <div class="icon">📘</div>
+        <h4>Cephalosporins</h4>
+        <p>Selected uses only. Valuable in the right scenario, but broader-spectrum use needs justification.</p>
+      </button>
+
+      <button class="tile" data-window="quinolones">
+        <span class="red-flag">🚩 Caution</span>
+        <div class="icon">⚠️</div>
+        <h4>Quinolones</h4>
+        <p>Reserved and cautious use. Good activity, but important safety and stewardship concerns.</p>
+      </button>
+
+      <button class="tile" data-window="specialist">
+        <span class="red-flag">🚩 Usually specialist</span>
+        <div class="icon">🏥</div>
+        <h4>Hospital / specialist agents</h4>
+        <p>Aminoglycosides, glycopeptides, carbapenems, and linezolid are usually beyond routine first-line primary care use.</p>
+      </button>
+    </section>
+
+    <div class="section-title">
+      <h3>Useful links</h3>
+      <span>Guidance and stewardship resources</span>
+    </div>
+
+    <section class="link-list">
+      <div class="link-item">
+        <strong>NICE antimicrobial prescribing guidelines</strong>
+        <a href="https://www.nice.org.uk/guidance/published?type=apg" target="_blank" rel="noopener">Open NICE antimicrobial prescribing guidance</a>
+      </div>
+      <div class="link-item">
+        <strong>NICE CKS</strong>
+        <a href="https://cks.nice.org.uk/" target="_blank" rel="noopener">Open NICE CKS</a>
+      </div>
+      <div class="link-item">
+        <strong>UKHSA / antimicrobial stewardship resources</strong>
+        <a href="https://www.gov.uk/government/collections/antimicrobial-stewardship-start-smart-then-focus" target="_blank" rel="noopener">Open stewardship resources</a>
+      </div>
+      <div class="link-item">
+        <strong>BNF</strong>
+        <a href="https://bnf.nice.org.uk/" target="_blank" rel="noopener">Open BNF</a>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      This page is designed as a <strong>quick-reference aid</strong> for clinicians and learners in primary care. Always use current
+      <strong>local antimicrobial guidance</strong>, NICE guidance, the BNF, microbiology advice, and clinical judgement. Antibiotic
+      choice should be based on the full patient picture, not class summaries alone.
+    </div>
+  </main>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="window" id="window-penicillins">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🧱</div>
+        <div class="window-title-text">
+          <h4>Penicillins</h4>
+          <p>Narrow when possible, broader only when justified</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner blue"><strong>Best thought of as:</strong> the backbone of many common antibiotic choices, especially when a <strong>beta-lactam</strong> is appropriate and a narrower option can be used.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Examples</h5>
+          <ul>
+            <li>Phenoxymethylpenicillin</li>
+            <li>Amoxicillin</li>
+            <li>Flucloxacillin</li>
+            <li>Co-amoxiclav</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose penicillins?</h5>
+          <ul>
+            <li>Commonly effective against susceptible community pathogens</li>
+            <li>Often first-line when guideline-supported</li>
+            <li>Can allow a relatively narrow and stewardship-friendly approach</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose one penicillin over another?</h5>
+          <ul>
+            <li><strong>Phenoxymethylpenicillin:</strong> narrower streptococcal cover</li>
+            <li><strong>Amoxicillin:</strong> broader community use in selected ENT / respiratory settings</li>
+            <li><strong>Flucloxacillin:</strong> better anti-staphylococcal activity</li>
+            <li><strong>Co-amoxiclav:</strong> broader polymicrobial / beta-lactamase scenarios</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Main cautions</h5>
+          <ul>
+            <li>Penicillin allergy must be checked carefully</li>
+            <li>Broader options should not replace narrower options without reason</li>
+            <li>Co-amoxiclav carries higher stewardship and C. difficile concern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-flucloxacillin">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🩹</div>
+        <div class="window-title-text">
+          <h4>Flucloxacillin</h4>
+          <p>Think staphylococcal skin and soft tissue infection</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner green"><strong>Why it stands out:</strong> flucloxacillin is usually chosen because you want <strong>better anti-staphylococcal cover</strong> than amoxicillin would provide.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Choose when</h5>
+          <ul>
+            <li>Cellulitis is suspected</li>
+            <li>Skin / soft tissue infection fits typical Gram-positive skin flora</li>
+            <li>You want focused anti-staphylococcal activity</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose it over amoxicillin?</h5>
+          <ul>
+            <li>Amoxicillin is not the best anti-staphylococcal option</li>
+            <li>Flucloxacillin better fits common skin pathogens</li>
+            <li>More targeted choice for many uncomplicated skin infections</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>When it may not be enough</h5>
+          <ul>
+            <li>If polymicrobial infection is likely</li>
+            <li>If anaerobes are relevant</li>
+            <li>If bite-related infection changes likely organism mix</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Key prescribing point</h5>
+          <p>Use it because the likely organism profile fits it — not just because the infection “looks bacterial”.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-coamoxiclav">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🛡️</div>
+        <div class="window-title-text">
+          <h4>Co-amoxiclav</h4>
+          <p>Useful when broader cover is justified</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner amber"><strong>Remember:</strong> co-amoxiclav is not “better” because it is broader. It is useful when its <strong>extra breadth actually matters</strong>.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why choose it?</h5>
+          <ul>
+            <li>Broader spectrum than plain amoxicillin</li>
+            <li>Contains clavulanic acid to inhibit some beta-lactamases</li>
+            <li>Useful when polymicrobial infection is more likely</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Clinical situations where it may be chosen</h5>
+          <ul>
+            <li>Bite wounds</li>
+            <li>Selected dental infections</li>
+            <li>Some more complex or mixed infections if guidance supports it</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why avoid unnecessary use?</h5>
+          <ul>
+            <li>Broader-spectrum antibiotics increase resistance pressure</li>
+            <li>Higher collateral damage to normal flora</li>
+            <li>Higher risk of C. difficile than narrower choices</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Punchy rule</h5>
+          <p>If <strong>amoxicillin or another narrower agent would do</strong>, co-amoxiclav is often not the right first choice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-macrolides">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🫁</div>
+        <div class="window-title-text">
+          <h4>Macrolides</h4>
+          <p>Penicillin-allergy alternative and atypical cover</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner purple"><strong>Main reason to choose:</strong> a <strong>true penicillin allergy</strong>, or the need for <strong>atypical organism cover</strong>.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Examples</h5>
+          <ul>
+            <li>Clarithromycin</li>
+            <li>Erythromycin</li>
+            <li>Azithromycin</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose them?</h5>
+          <ul>
+            <li>Useful alternative to penicillins</li>
+            <li>Can cover atypical respiratory pathogens</li>
+            <li>Commonly used in respiratory and ENT settings where guidance supports it</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>When they may be preferred over penicillins</h5>
+          <ul>
+            <li>Documented penicillin allergy</li>
+            <li>Atypical infection felt more likely</li>
+            <li>Guidance specifically recommends them</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Main cautions</h5>
+          <ul>
+            <li>QT prolongation risk</li>
+            <li>Drug interactions</li>
+            <li>GI upset</li>
+            <li>Resistance can limit usefulness</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-doxycycline">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🌤️</div>
+        <div class="window-title-text">
+          <h4>Doxycycline</h4>
+          <p>Useful breadth, especially where atypicals matter</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner blue"><strong>Why choose doxycycline?</strong> It gives useful cover in a range of community scenarios and is especially helpful where <strong>atypicals</strong> are relevant.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Common reasons to choose it</h5>
+          <ul>
+            <li>Respiratory infection where guideline-supported</li>
+            <li>Penicillin allergy alternative</li>
+            <li>Atypical organism cover</li>
+            <li>Acne or Lyme disease</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose it over a macrolide?</h5>
+          <ul>
+            <li>Often convenient dosing</li>
+            <li>Good atypical activity</li>
+            <li>Can be a useful alternative if macrolide interaction / QT concerns exist</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Main cautions</h5>
+          <ul>
+            <li>Pregnancy cautions</li>
+            <li>Not routinely suitable for young children in many scenarios</li>
+            <li>Photosensitivity</li>
+            <li>Oesophageal irritation if taken incorrectly</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Punchy rule</h5>
+          <p>Doxycycline is often chosen because it covers the right organisms in the right context — not just because it is “broad”.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-metronidazole">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🦷</div>
+        <div class="window-title-text">
+          <h4>Metronidazole</h4>
+          <p>Think anaerobes</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner green"><strong>Main reason to choose metronidazole:</strong> you think <strong>anaerobic bacteria</strong> are important.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Common scenarios</h5>
+          <ul>
+            <li>Dental infection</li>
+            <li>Bacterial vaginosis</li>
+            <li>Intra-abdominal / anaerobic infection</li>
+            <li>Combined regimens where anaerobic cover is needed</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose it over others?</h5>
+          <ul>
+            <li>Excellent anaerobic activity</li>
+            <li>Especially useful when oxygen-poor tissue infection is suspected</li>
+            <li>Can complement another antibiotic if mixed cover is required</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why it may not be enough alone</h5>
+          <ul>
+            <li>May not adequately cover relevant aerobic bacteria</li>
+            <li>Some infections need dual coverage, not just anaerobic cover</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Main cautions</h5>
+          <ul>
+            <li>Alcohol advice</li>
+            <li>Metallic taste</li>
+            <li>Neuropathy risk with prolonged use</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-nitrofurantoin">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🚽</div>
+        <div class="window-title-text">
+          <h4>Nitrofurantoin</h4>
+          <p>Focused lower UTI treatment</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner blue"><strong>Main reason to choose:</strong> likely <strong>lower UTI</strong> with no features suggesting upper UTI or sepsis, and renal function is adequate.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why choose nitrofurantoin?</h5>
+          <ul>
+            <li>Strong first-line option for uncomplicated cystitis</li>
+            <li>Focused urinary activity</li>
+            <li>More stewardship-friendly than broader agents</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why choose it over trimethoprim?</h5>
+          <ul>
+            <li>Empiric resistance patterns often favour nitrofurantoin</li>
+            <li>A strong default first-line option where guidance supports it</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Do not choose if...</h5>
+          <ul>
+            <li>Pyelonephritis is suspected</li>
+            <li>The patient is systemically unwell</li>
+            <li>Renal function is inadequate</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Punchy rule</h5>
+          <p>Nitrofurantoin is for the <strong>bladder</strong>, not the <strong>kidney</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-trimethoprim">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🧫</div>
+        <div class="window-title-text">
+          <h4>Trimethoprim</h4>
+          <p>Selected use rather than automatic first choice</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner amber"><strong>Best used when:</strong> susceptibility is known or local guidance supports its use for lower UTI.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why choose it?</h5>
+          <ul>
+            <li>Can be effective in susceptible lower UTI</li>
+            <li>Sometimes used when prior culture supports it</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why it may not be preferred empirically</h5>
+          <ul>
+            <li>Resistance can be higher than with nitrofurantoin</li>
+            <li>Not always the best “default” first-line choice</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Main cautions</h5>
+          <ul>
+            <li>Hyperkalaemia risk</li>
+            <li>Renal impairment considerations</li>
+            <li>Drug interactions, including methotrexate concerns</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Punchy rule</h5>
+          <p>Trimethoprim is often a <strong>susceptibility-led choice</strong>, not a reflex choice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-cephalosporins">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">📘</div>
+        <div class="window-title-text">
+          <h4>Cephalosporins</h4>
+          <p>Useful drugs, but use should be justified</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner red"><strong>Stewardship point:</strong> cephalosporins can be valuable, but broader-spectrum antibiotics should not be used casually in primary care.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why choose them?</h5>
+          <ul>
+            <li>Selected infections where guidance supports them</li>
+            <li>Useful when a cephalosporin’s spectrum fits the likely organism</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why caution is needed</h5>
+          <ul>
+            <li>Broader ecological impact</li>
+            <li>Increased stewardship concern</li>
+            <li>C. difficile risk can be higher than with narrower choices</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Primary care view</h5>
+          <p>Think of these as <strong>selected-use antibiotics</strong>, not everyday routine first-line options.</p>
+        </div>
+        <div class="detail-card">
+          <h5>Key message</h5>
+          <p>If a narrower, safer, guideline-supported antibiotic is enough, that is usually the better choice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-quinolones">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">⚠️</div>
+        <div class="window-title-text">
+          <h4>Quinolones</h4>
+          <p>Good activity, but important safety and stewardship concerns</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner red"><strong>High-yield message:</strong> quinolones are not casual “strong antibiotics”. Their risks and stewardship implications matter.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why they may be chosen</h5>
+          <ul>
+            <li>Specific infections where guideline or specialist advice supports them</li>
+            <li>Situations where alternative options are unsuitable</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why they are used cautiously</h5>
+          <ul>
+            <li>Important adverse effect profile</li>
+            <li>Collateral damage and resistance concerns</li>
+            <li>Not usually a first reflex choice in routine primary care</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Practical view</h5>
+          <p>Use only when there is a good reason — not because they seem “powerful”.</p>
+        </div>
+        <div class="detail-card">
+          <h5>Key message</h5>
+          <p>Stronger stewardship concern usually means you should pause and ask whether a safer first-line option exists.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="window-specialist">
+    <div class="window-header">
+      <div class="window-title">
+        <div class="win-icon">🏥</div>
+        <div class="window-title-text">
+          <h4>Hospital / specialist agents</h4>
+          <p>Usually not routine first-line primary care prescribing</p>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="window-body">
+      <div class="banner purple"><strong>Examples:</strong> aminoglycosides, glycopeptides, carbapenems, and oxazolidinones such as linezolid.</div>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Why they matter to know about</h5>
+          <ul>
+            <li>You may see them in discharge letters or microbiology advice</li>
+            <li>They are often used for resistant or severe infection</li>
+            <li>They help explain escalation pathways</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Why they are not routine primary care choices</h5>
+          <ul>
+            <li>Need monitoring, IV delivery, or specialist oversight</li>
+            <li>Used for more resistant or severe pathogens</li>
+            <li>Higher-risk prescribing environment</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Examples of what they cover</h5>
+          <ul>
+            <li><strong>Vancomycin:</strong> resistant Gram-positive infection</li>
+            <li><strong>Gentamicin:</strong> serious Gram-negative infection</li>
+            <li><strong>Meropenem:</strong> very broad-spectrum severe infection</li>
+            <li><strong>Linezolid:</strong> resistant Gram-positive infection</li>
+          </ul>
+        </div>
+        <div class="detail-card">
+          <h5>Primary care takeaway</h5>
+          <p>Recognise them, but think of them mainly as <strong>hospital / specialist tools</strong> rather than standard primary care prescribing options.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const windows = document.querySelectorAll('.window');
+    const tileButtons = document.querySelectorAll('.tile');
+
+    function closeAllWindows() {
+      windows.forEach(win => {
+        win.classList.remove('show');
+        win.style.zIndex = '';
+        if (window.innerWidth <= 700) {
+          win.style.top = '10px';
+          win.style.left = '10px';
+        }
+      });
+      overlay.classList.remove('show');
+      document.body.classList.remove('modal-open');
+    }
+
+    function openWindow(id) {
+      closeAllWindows();
+      const win = document.getElementById('window-' + id);
+      if (!win) return;
+      overlay.classList.add('show');
+      win.classList.add('show');
+      document.body.classList.add('modal-open');
+
+      if (window.innerWidth > 700) {
+        win.style.top = '80px';
+        win.style.left = '50%';
+        win.style.transform = 'translateX(-50%)';
+      } else {
+        win.style.top = '10px';
+        win.style.left = '10px';
+        win.style.transform = 'none';
+      }
+    }
+
+    tileButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        openWindow(btn.dataset.window);
+      });
+    });
+
+    overlay.addEventListener('click', closeAllWindows);
+
+    document.querySelectorAll('.close-btn').forEach(btn => {
+      btn.addEventListener('click', closeAllWindows);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAllWindows();
+    });
+
+    windows.forEach(makeDraggable);
+
+    function makeDraggable(win) {
+      const header = win.querySelector('.window-header');
+      if (!header) return;
+
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let initialLeft = 0;
+      let initialTop = 0;
+
+      const startDrag = (clientX, clientY) => {
+        if (window.innerWidth <= 700) return;
+        isDragging = true;
+        win.style.transform = 'none';
+        const rect = win.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+        startX = clientX;
+        startY = clientY;
+        win.style.left = initialLeft + 'px';
+        win.style.top = initialTop + 'px';
+        win.style.zIndex = 120;
+      };
+
+      const doDrag = (clientX, clientY) => {
+        if (!isDragging) return;
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+        const newLeft = initialLeft + dx;
+        const newTop = initialTop + dy;
+
+        const maxLeft = window.innerWidth - win.offsetWidth - 8;
+        const maxTop = window.innerHeight - 80;
+
+        win.style.left = Math.max(8, Math.min(newLeft, maxLeft)) + 'px';
+        win.style.top = Math.max(8, Math.min(newTop, maxTop)) + 'px';
+      };
+
+      const stopDrag = () => {
+        isDragging = false;
+      };
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.close-btn')) return;
+        startDrag(e.clientX, e.clientY);
+      });
+
+      window.addEventListener('mousemove', (e) => doDrag(e.clientX, e.clientY));
+      window.addEventListener('mouseup', stopDrag);
+
+      header.addEventListener('touchstart', (e) => {
+        if (e.target.closest('.close-btn')) return;
+        const t = e.touches[0];
+        startDrag(t.clientX, t.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const t = e.touches[0];
+        doDrag(t.clientX, t.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchend', stopDrag);
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 700) {
+        windows.forEach(win => {
+          if (win.classList.contains('show')) {
+            win.style.top = '10px';
+            win.style.left = '10px';
+            win.style.transform = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
