@@ -653,27 +653,42 @@ function openWindow(key) {
 
     sinusitis: `
       ${section("Definition", [
-        "Inflammation/infection of paranasal sinuses (often viral; sometimes bacterial)."
+        "<strong>What it is:</strong> inflammation/swelling of the paranasal sinuses, usually after a viral URTI.",
+        "<strong>Natural course:</strong> most acute cases settle within 2–3 weeks.",
+        "<strong>Think chronic rhinosinusitis:</strong> symptoms persisting for more than 12 weeks."
       ])}
       ${section("Key features", [
-        "Facial pain/pressure (worse bending)",
-        "Nasal obstruction",
-        "Purulent discharge",
-        "Hyposmia",
-        "Tooth pain (sometimes)"
+        "<strong>Pain/pressure:</strong> face or maxillary area, often worse bending forward.",
+        "<strong>Nasal symptoms:</strong> blockage/congestion and anterior or post-nasal discharge.",
+        "<strong>Smell change:</strong> reduced or altered sense of smell.",
+        "<strong>Associated symptoms:</strong> tooth/jaw pain, halitosis, headache, cough, ear pressure."
       ], "alt")}
-      ${section("Quick assessment", [
-        "Duration <10 days often viral",
-        "High fever/severe pain/worse after initial improvement → consider bacterial",
-        "Eye symptoms/neuro symptoms are red flags"
+      ${section("Assessment", [
+        "<strong>Timeline first:</strong> ≤10 days, >10 days not improving, recurrent episodes, or >12 weeks persistent symptoms.",
+        "<strong>Severity check:</strong> fever, unilateral severe pain, sleep/function impact, and worsening trajectory.",
+        "<strong>Rule out differentials:</strong> dental infection, allergic rhinitis, migraine/facial pain syndromes.",
+        "<strong>Risk factors:</strong> immunosuppression or significant comorbidity raise concern for complications."
       ], "good")}
-      ${section("Management (Primary Care)", [
-        "Analgesia, saline irrigation",
-        "Intranasal steroid if appropriate",
-        "Antibiotics only if indicated (local + NICE CKS)",
-        "Safety-net for orbital/neuro features"
+      ${section("Diagnosis (clinical)", [
+        "<strong>Usually clinical diagnosis:</strong> no routine imaging in uncomplicated acute sinusitis.",
+        "<strong>Bacterial more likely when several features coexist:</strong> symptoms >10 days, purulent/discoloured discharge, severe unilateral maxillary/tooth pain, fever, or “double-sickening”.",
+        "<strong>Review early:</strong> if rapid deterioration or not following expected recovery."
       ])}
+      ${section("Management (Primary Care)", [
+        "<strong>Start with self-care:</strong> analgesia, hydration, rest, saline irrigation, avoid smoking.",
+        "<strong>Consider intranasal steroid:</strong> especially if symptoms are present for 10 days or more.",
+        "<strong>Antibiotic stewardship:</strong> most mild/moderate cases do not need immediate antibiotics; use no-antibiotic or delayed strategy where appropriate.",
+        "<strong>Use immediate antibiotics</strong> if systemically very unwell, high risk of complications, or severe illness features.",
+        "<strong>Safety-net advice:</strong> return urgently if worsening, not improving as expected, or red flags appear."
+      ])}
+      ${section("Referral / escalation", [
+        "<strong>Urgent same-day hospital/ENT:</strong> severe systemic infection or any orbital/periorbital or intracranial complication signs.",
+        "<strong>Routine/soon ENT consideration:</strong> persistent symptoms after 3 months of appropriate treatment, frequent recurrences, or unilateral persistent symptoms.",
+        "<strong>Lower threshold to escalate:</strong> children, immunocompromised patients, or high diagnostic uncertainty."
+      ], "danger")}
       ${linksSection("Guidelines", [
+        { label: "NHS – Sinusitis (sinus infection)", href: "https://www.nhs.uk/conditions/sinusitis-sinus-infection/" },
+        { label: "NICE – Sinusitis (acute): antimicrobial prescribing (NG79)", href: "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations" },
         { label: "NICE CKS – Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" }
       ])}
     `,
