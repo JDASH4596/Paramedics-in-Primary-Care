@@ -314,6 +314,11 @@ li{ margin-bottom:6px; }
   outline-offset:1px;
 }
 
+.engine-context{ border:1px solid var(--border); border-radius:10px; padding:12px; margin-top:14px; }
+.engine-context legend, .engine-context summary{ font-weight:600; }
+.engine-checks{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; margin-top:12px; font-size:13px; }
+[aria-invalid="true"]{ border-color:var(--danger) !important; }
+.dot-neutral{ background:#64748b; }
 .engine-results{
   margin-top:14px;
   border:1px solid #dbe5ff;
@@ -454,7 +459,7 @@ li{ margin-bottom:6px; }
       <div class="static-card">
         <strong>2) MCV (and MCH): Classify the anaemia pattern fast</strong>
         <p>
-          <span class="kicker">Microcytic / low MCH:</span> iron deficiency until proven otherwise (consider chronic blood loss).
+          <span class="kicker">Microcytic / low MCH:</span> consider iron deficiency and thalassaemia/iron restriction (check ferritin, inflammation and blood loss).
           <br><span class="kicker">Normocytic:</span> early deficiency, chronic disease, renal disease, acute blood loss, mixed patterns.
           <br><span class="kicker">Macrocytic:</span> B12/folate deficiency, alcohol/liver disease, hypothyroidism, reticulocytosis, medicines.
           <br><span class="kicker">Primary care move:</span> use MCV to choose targeted follow-on tests rather than broad repeat panels.
@@ -586,154 +591,213 @@ li{ margin-bottom:6px; }
   </div>
 
   <div class="section">
-    <h2>Blood Test Diagnostic Engine (Teaching Support)</h2>
-    <p class="note">Enter blood results to generate pattern-based differentials and suggested primary care next steps. This does not replace local pathways or senior review.</p>
+    <h2>Blood Test Interpretation Engine (Adult Teaching Support)</h2>
+    <p class="note">Enter results in the stated units. Safety alerts run even when companion tests are missing. Confirm adult scope and clinical context for pattern interpretation. This tool cannot establish that a patient is safe; use laboratory critical alerts, local pathways and senior review.</p>
 
+
+    <fieldset class="engine-context">
+      <legend>Clinical context and red flags</legend>
+      <p class="note">Severe symptoms override blood results. Select only features that are present; leave the assessment unknown until checked.</p>
+      <div class="engine-grid">
+<div class="engine-field"><label for="context-scope">Scope</label><select id="context-scope" data-engine-context="scope">
+        <option value="unknown">Not yet confirmed</option>
+        <option value="adult">Adult 18+ and not pregnant</option>
+        <option value="outside">Child / pregnant — use specialist pathway</option>
+      </select></div>
+      <div class="engine-field"><label for="context-symptomStatus">Red-flag assessment</label><select id="context-symptomStatus" data-engine-context="symptomStatus">
+        <option value="unknown">Not yet assessed</option>
+        <option value="none">Assessed: none of the listed red flags</option>
+        <option value="checked">Assessed: selected features present</option>
+      </select></div>
+      <div class="engine-field"><label for="context-peptideAssay">Natriuretic peptide assay</label><select id="context-peptideAssay" data-engine-context="peptideAssay">
+        <option value="unknown">Select from laboratory report</option>
+        <option value="ntprobnp">NT-proBNP</option>
+        <option value="bnp">BNP — local assay pathway</option>
+      </select></div>
+      <div class="engine-field"><label for="context-b12Unit">Total B12 units</label><select id="context-b12Unit" data-engine-context="b12Unit">
+        <option value="unknown">Select from laboratory report</option>
+        <option value="ng/L">ng/L (same as pg/mL)</option>
+        <option value="pmol/L">pmol/L — total B12 only</option>
+      </select></div>
+      <div class="engine-field"><label for="context-diabetesStatus">Diabetes status</label><select id="context-diabetesStatus" data-engine-context="diabetesStatus">
+        <option value="unknown">Unknown</option>
+        <option value="notKnown">No established diabetes diagnosis</option>
+        <option value="known">Known diabetes: monitoring</option>
+      </select></div></div>
+      <div class="engine-checks"><label><input type="checkbox" data-engine-context="unstable" /> Instability, syncope, chest pain or breathlessness at rest</label>
+      <label><input type="checkbox" data-engine-context="neuro" /> New confusion, seizure or reduced consciousness</label>
+      <label><input type="checkbox" data-engine-context="bleeding" /> Significant active bleeding</label>
+      <label><input type="checkbox" data-engine-context="fever" /> Fever or systemic illness (assess sepsis now)</label>
+      <label><input type="checkbox" data-engine-context="oliguria" /> New markedly reduced urine output</label>
+      <label><input type="checkbox" data-engine-context="jaundice" /> New jaundice / concerning hepatobiliary symptoms</label>
+      <label><input type="checkbox" data-engine-context="hyperglycaemia" /> Acute hyperglycaemic features: vomiting, dehydration or drowsiness</label>
+      <label><input type="checkbox" data-engine-context="b12Neuro" /> Neurological features with suspected B12 deficiency</label>
+      <label><input type="checkbox" data-engine-context="abnormalFilm" /> Blasts / concerning blood film reported</label>
+      <label><input type="checkbox" data-engine-context="lowCalciumSymptoms" /> Tetany, carpopedal spasm or significant hypocalcaemic symptoms</label>
+      <label><input type="checkbox" data-engine-context="labCritical" /> Laboratory critical-result flag / urgent laboratory advice</label>
+      <label><input type="checkbox" data-engine-context="akiReport" /> Laboratory AKI alert reported</label>
+      <label><input type="checkbox" data-engine-context="hba1cUnreliable" /> HbA1c may be unreliable: transfusion, haemoglobinopathy, altered red-cell survival or dialysis</label></div></fieldset>
     <div class="engine-grid">
       <div class="engine-field">
-        <label for="engineSex">Sex</label>
+        <label for="engineSex">Hb / RBC / haematocrit reference range</label>
         <select id="engineSex">
-          <option value="female">Female</option>
-          <option value="male">Male</option>
+          <option value="unknown">Select applicable reference range</option>
+          <option value="female">Female indicative adult range</option>
+          <option value="male">Male indicative adult range</option>
         </select>
       </div>
 
       <div class="engine-field">
         <label for="engineHb">Hb (g/L)</label>
-        <input id="engineHb" type="number" step="1" placeholder="Ref: ♀ 115–165 / ♂ 130–180" />
+        <input id="engineHb" data-engine-key="hb" type="number" step="any" placeholder="Ref: ♀ 115–165 / ♂ 130–180" />
       </div>
 
       <div class="engine-field">
         <label for="engineWcc">WCC (×10⁹/L)</label>
-        <input id="engineWcc" type="number" step="0.1" placeholder="Ref: 4.0–11.0" />
+        <input id="engineWcc" data-engine-key="wcc" type="number" step="any" placeholder="Ref: 4.0–11.0" />
       </div>
 
       <div class="engine-field">
         <label for="engineNeut">Neutrophils (×10⁹/L)</label>
-        <input id="engineNeut" type="number" step="0.1" placeholder="Ref: 2.0–7.5" />
+        <input id="engineNeut" data-engine-key="neut" type="number" step="any" placeholder="Ref: 2.0–7.5" />
       </div>
 
       <div class="engine-field">
         <label for="engineLymph">Lymphocytes (×10⁹/L)</label>
-        <input id="engineLymph" type="number" step="0.1" placeholder="Ref: 1.0–4.0" />
+        <input id="engineLymph" data-engine-key="lymph" type="number" step="any" placeholder="Ref: 1.0–4.0" />
       </div>
 
       <div class="engine-field">
         <label for="enginePlatelets">Platelets (×10⁹/L)</label>
-        <input id="enginePlatelets" type="number" step="1" placeholder="Ref: 150–400" />
+        <input id="enginePlatelets" data-engine-key="platelets" type="number" step="any" placeholder="Ref: 150–400" />
       </div>
 
       <div class="engine-field">
         <label for="engineRbc">RBC (×10¹²/L)</label>
-        <input id="engineRbc" type="number" step="0.1" placeholder="Ref: ♀ 3.8–5.2 / ♂ 4.3–5.7" />
+        <input id="engineRbc" data-engine-key="rbc" type="number" step="any" placeholder="Ref: ♀ 3.8–5.2 / ♂ 4.3–5.7" />
       </div>
 
       <div class="engine-field">
         <label for="engineHct">Haematocrit (L/L)</label>
-        <input id="engineHct" type="number" step="0.01" placeholder="Ref: ♀ 0.36–0.46 / ♂ 0.40–0.52" />
+        <input id="engineHct" data-engine-key="hct" type="number" step="any" placeholder="Ref: ♀ 0.36–0.46 / ♂ 0.40–0.52" />
       </div>
 
       <div class="engine-field">
         <label for="engineMch">MCH (pg)</label>
-        <input id="engineMch" type="number" step="0.1" placeholder="Ref: 27–32" />
+        <input id="engineMch" data-engine-key="mch" type="number" step="any" placeholder="Ref: 27–32" />
       </div>
 
       <div class="engine-field">
         <label for="engineMchc">MCHC (g/L)</label>
-        <input id="engineMchc" type="number" step="1" placeholder="Ref: 320–360" />
+        <input id="engineMchc" data-engine-key="mchc" type="number" step="any" placeholder="Ref: 320–360" />
       </div>
 
       <div class="engine-field">
         <label for="engineMcv">MCV (fL)</label>
-        <input id="engineMcv" type="number" step="0.1" placeholder="Ref: 80–100" />
+        <input id="engineMcv" data-engine-key="mcv" type="number" step="any" placeholder="Ref: 80–100" />
       </div>
 
       <div class="engine-field">
         <label for="engineFerritin">Ferritin (µg/L)</label>
-        <input id="engineFerritin" type="number" step="1" placeholder="Ref: ~30–400 lab dependent" />
+        <input id="engineFerritin" data-engine-key="ferritin" type="number" step="any" placeholder="Interpret with inflammation and lab range" />
       </div>
 
       <div class="engine-field">
-        <label for="engineB12">B12 (ng/L or pg/mL)</label>
-        <input id="engineB12" type="number" step="1" placeholder="Lab dependent; low suggests deficiency" />
+        <label for="engineB12">Total B12 (select units above)</label>
+        <input id="engineB12" data-engine-key="b12" type="number" step="any" placeholder="Lab dependent; low suggests deficiency" />
       </div>
 
       <div class="engine-field">
         <label for="engineFolate">Folate (µg/L)</label>
-        <input id="engineFolate" type="number" step="0.1" placeholder="Ref: usually >4" />
+        <input id="engineFolate" data-engine-key="folate" type="number" step="any" placeholder="Ref: usually >4" />
       </div>
 
       <div class="engine-field">
         <label for="engineTsh">TSH (mU/L)</label>
-        <input id="engineTsh" type="number" step="0.1" placeholder="Ref: ~0.4–4.0" />
+        <input id="engineTsh" data-engine-key="tsh" type="number" step="any" placeholder="Ref: ~0.4–4.0" />
       </div>
 
       <div class="engine-field">
         <label for="engineHba1c">HbA1c (mmol/mol)</label>
-        <input id="engineHba1c" type="number" step="1" placeholder="Ref: <42 normal" />
+        <input id="engineHba1c" data-engine-key="hba1c" type="number" step="any" placeholder="42–47 high risk; ≥48 diabetes range" />
       </div>
 
       <div class="engine-field">
-        <label for="engineBnp">BNP (pg/mL)</label>
-        <input id="engineBnp" type="number" step="1" placeholder="Ref: usually <100" />
+        <label for="engineBnp">BNP / NT-proBNP (ng/L = pg/mL)</label>
+        <input id="engineBnp" data-engine-key="bnp" type="number" step="any" placeholder="Select assay above" />
       </div>
 
       <div class="engine-field">
         <label for="engineCr">Creatinine (µmol/L)</label>
-        <input id="engineCr" type="number" step="1" placeholder="Ref: ~64–104" />
+        <input id="engineCr" data-engine-key="cr" type="number" step="any" placeholder="Ref: ~64–104" />
       </div>
 
       <div class="engine-field">
         <label for="engineEgfr">eGFR (mL/min/1.73m²)</label>
-        <input id="engineEgfr" type="number" step="1" placeholder="Ref: >60" />
+        <input id="engineEgfr" data-engine-key="egfr" type="number" step="any" placeholder="Ref: >60" />
       </div>
 
       <div class="engine-field">
         <label for="engineSodium">Sodium (mmol/L)</label>
-        <input id="engineSodium" type="number" step="1" placeholder="Ref: 135–145" />
+        <input id="engineSodium" data-engine-key="sodium" type="number" step="any" placeholder="Ref: 135–145" />
       </div>
 
       <div class="engine-field">
         <label for="enginePotassium">Potassium (mmol/L)</label>
-        <input id="enginePotassium" type="number" step="0.1" placeholder="Ref: 3.5–5.0" />
+        <input id="enginePotassium" data-engine-key="potassium" type="number" step="any" placeholder="Ref: 3.5–5.0" />
       </div>
 
       <div class="engine-field">
         <label for="engineCalcium">Adjusted Calcium (mmol/L)</label>
-        <input id="engineCalcium" type="number" step="0.01" placeholder="Ref: ~2.2–2.6" />
+        <input id="engineCalcium" data-engine-key="calcium" type="number" step="any" placeholder="Ref: ~2.2–2.6" />
       </div>
 
       <div class="engine-field">
         <label for="engineAlt">ALT (U/L)</label>
-        <input id="engineAlt" type="number" step="1" placeholder="Ref: ~7–56" />
+        <input id="engineAlt" data-engine-key="alt" type="number" step="any" placeholder="Enter lab ALT upper limit below" />
       </div>
 
       <div class="engine-field">
         <label for="engineAlp">ALP (U/L)</label>
-        <input id="engineAlp" type="number" step="1" placeholder="Ref: ~30–130" />
+        <input id="engineAlp" data-engine-key="alp" type="number" step="any" placeholder="Ref: ~30–130" />
       </div>
 
       <div class="engine-field">
         <label for="engineGgt">GGT (U/L)</label>
-        <input id="engineGgt" type="number" step="1" placeholder="Raised supports hepatobiliary source" />
+        <input id="engineGgt" data-engine-key="ggt" type="number" step="any" placeholder="Raised supports hepatobiliary source" />
       </div>
 
       <div class="engine-field">
         <label for="engineBili">Bilirubin (µmol/L)</label>
-        <input id="engineBili" type="number" step="1" placeholder="Ref: 3–21" />
+        <input id="engineBili" data-engine-key="bili" type="number" step="any" placeholder="Ref: 3–21" />
       </div>
 
       <div class="engine-field">
         <label for="engineAlbumin">Albumin (g/L)</label>
-        <input id="engineAlbumin" type="number" step="1" placeholder="Ref: 35–50" />
+        <input id="engineAlbumin" data-engine-key="albumin" type="number" step="any" placeholder="Ref: 35–50" />
       </div>
 
       <div class="engine-field">
         <label for="engineCrp">CRP (mg/L)</label>
-        <input id="engineCrp" type="number" step="1" placeholder="Ref: <5" />
+        <input id="engineCrp" data-engine-key="crp" type="number" step="any" placeholder="Ref: <5" />
       </div>
     </div>
 
+
+    <details class="engine-context">
+      <summary>Renal trend and laboratory reference limits</summary>
+      <p class="note">Use the laboratory report. Blank limits remain unknown; indicative Hb and calcium ranges are used where specified. For a new creatinine/eGFR abnormality, check the laboratory AKI alert and baseline before considering CKD.</p>
+      <div class="engine-grid">
+<div class="engine-field"><label for="context-baselineCr">Baseline creatinine (µmol/L)</label><input id="context-baselineCr" data-engine-key="baselineCr" type="number" step="any" placeholder="" /></div>
+      <div class="engine-field"><label for="context-elapsedHours">Hours between baseline and current sample</label><input id="context-elapsedHours" data-engine-key="elapsedHours" type="number" step="any" placeholder="48 hours = 2 days; 168 = 7 days" /></div>
+      <div class="engine-field"><label for="context-hbLow">Lab Hb lower limit (g/L)</label><input id="context-hbLow" data-engine-key="hbLow" type="number" step="any" placeholder="Overrides selected indicative range" /></div>
+      <div class="engine-field"><label for="context-hbHigh">Lab Hb upper limit (g/L)</label><input id="context-hbHigh" data-engine-key="hbHigh" type="number" step="any" placeholder="Overrides selected indicative range" /></div>
+      <div class="engine-field"><label for="context-altUln">Lab ALT upper limit (U/L)</label><input id="context-altUln" data-engine-key="altUln" type="number" step="any" placeholder="" /></div>
+      <div class="engine-field"><label for="context-alpUln">Lab ALP upper limit (U/L)</label><input id="context-alpUln" data-engine-key="alpUln" type="number" step="any" placeholder="" /></div>
+      <div class="engine-field"><label for="context-ggtUln">Lab GGT upper limit (U/L)</label><input id="context-ggtUln" data-engine-key="ggtUln" type="number" step="any" placeholder="" /></div>
+      <div class="engine-field"><label for="context-calciumLow">Lab adjusted calcium lower limit (mmol/L)</label><input id="context-calciumLow" data-engine-key="calciumLow" type="number" step="any" placeholder="Indicative fallback: 2.2" /></div>
+      <div class="engine-field"><label for="context-calciumHigh">Lab adjusted calcium upper limit (mmol/L)</label><input id="context-calciumHigh" data-engine-key="calciumHigh" type="number" step="any" placeholder="Indicative fallback: 2.6" /></div>
+      <div class="engine-field"><label for="context-ferritinUln">Lab ferritin upper limit (µg/L)</label><input id="context-ferritinUln" data-engine-key="ferritinUln" type="number" step="any" placeholder="" /></div></div></details>
     <div class="controls">
       <button id="runDiagnosticBtn" class="btn-primary" type="button">Run diagnostic engine</button>
       <button id="clearDiagnosticBtn" class="btn-lite" type="button">Clear values</button>
@@ -742,7 +806,7 @@ li{ margin-bottom:6px; }
     <div id="engineResults" class="engine-results" aria-live="polite">
       <span class="kicker">Awaiting input:</span> Enter results and run engine.
     </div>
-    <p class="small-muted"><span class="kicker">Safety net:</span> If result severity and clinical presentation conflict, treat the patient not the number; escalate urgent abnormalities per local pathway.</p>
+    <p class="small-muted"><span class="kicker">Safety net:</span> Clinical presentation and laboratory critical alerts override this limited teaching output. A missing result or untriggered rule does not establish safety. Emergency escalation must not wait for repeat samples. See the sources and policy notes below.</p>
   </div>
 
   <div class="section">
@@ -923,7 +987,7 @@ li{ margin-bottom:6px; }
           <div class="range-top">
             <div class="range-title">
               <strong>ALT / AST</strong>
-              <span>&lt;40 IU/L</span>
+              <span>Use laboratory upper limit (often ~40 U/L)</span>
             </div>
             <div class="chev">▼</div>
           </div>
@@ -931,7 +995,7 @@ li{ margin-bottom:6px; }
             <ul class="detail-list">
               <li><span class="badge">Pattern</span> hepatocellular injury marker (ALT more liver-specific).</li>
               <li><span class="badge">Common</span> MASLD/NAFLD, alcohol, meds, viral hepatitis.</li>
-              <li><span class="badge">PC move</span> repeat if mild; persistent/higher → structured liver pathway.</li>
+              <li><span class="badge">PC move</span> investigate in clinical context; follow the structured liver pathway. Marked derangement or concerning symptoms → urgent assessment.</li>
             </ul>
           </div>
         </button>
@@ -1341,6 +1405,22 @@ li{ margin-bottom:6px; }
     </div>
   </div>
 
+
+  <div class="section" id="engine-policy">
+    <h2>Engine safety rules and sources</h2>
+    <p class="note">Adult teaching rules, updated 3 October 2026. Local pathways and laboratory ranges take precedence. Added numeric safety prompts are conservative review triggers, not diagnoses, transfusion thresholds or automatic admission rules.</p>
+    <ul>
+      <li><strong>Potassium:</strong> 5.5 to &lt;6.0: mild (unexpected result: repeat within 3 days); 6.0 to &lt;6.5: moderate (same-day review, repeat within 1 day); ≥6.5: emergency hospital assessment. Acute illness/AKI can require hospital assessment at lower levels. <a href="https://guidelines.ukkidney.org/hyperkalaemia/">UK Kidney Association</a>.</li>
+      <li><strong>Sodium:</strong> 130–134: mild; 125–129: moderate; &lt;125: profound. Urgency also depends on symptoms and acuity. Severe neurological features require emergency care. High sodium is assessed too: ≥150 prompts same-day review and ≥160 emergency assessment as conservative teaching triggers. <a href="https://www.endocrinology.org/media/xhrhxhxm/emergency-management-of-severe-and-moderately-severely-symptomatic-hyponatraemia-in-adult-patients-2022.pdf">Society for Endocrinology</a>.</li>
+      <li><strong>Adjusted calcium:</strong> &lt;1.9 or symptomatic below the lab range: emergency; 3.0–3.5: same-day assessment; &gt;3.5: emergency assessment. Enter a laboratory-adjusted result. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8117371/">Hypocalcaemia guidance</a> and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5314807/">hypercalcaemia guidance</a>.</li>
+      <li><strong>FBC:</strong> low platelets/neutrophils, severe anaemia, multiple cytopenias and concerning films are assessed. Fever/systemic illness with neutrophils &lt;1 requires emergency assessment. Repeat/film must not delay treatment of bleeding or neutropenic sepsis. Hb &lt;80 and platelets &lt;50 prompt same-day review; severity and baseline determine the destination. <a href="https://www.rightdecisions.scot.nhs.uk/tam-treatments-and-medicines-nhs-highland/adult-therapeutic-guidelines/haematology/neutropenia-guidelines/">Neutropenia pathway</a>; <a href="https://www.rightdecisions.scot.nhs.uk/tam-treatments-and-medicines-nhs-highland/therapeutic-guidelines/haematology/thrombocytopenia-guidelines/">platelet pathway</a>.</li>
+      <li><strong>Renal:</strong> creatinine rise ≥26 µmol/L within 48h or ≥50% within 7 days triggers suspected AKI. One eGFR cannot establish CKD (usually persistence ≥3 months). Very low eGFR/marked creatinine prompts same-day establishment of acuity; known stable advanced CKD follows its renal plan. <a href="https://www.nice.org.uk/guidance/ng148/chapter/Recommendations">NICE NG148</a>.</li>
+      <li><strong>Heart failure:</strong> select the assay. For suspected chronic HF, NT-proBNP 400–2000 ng/L → specialist assessment/echo within 6 weeks; &gt;2000 → within 2 weeks. BNP uses the local assay pathway. Acute decompensation overrides outpatient timings. <a href="https://www.nice.org.uk/guidance/ng106/chapter/recommendations">NICE NG106</a>.</li>
+      <li><strong>B12/folate:</strong> total B12 &lt;180 ng/L (&lt;133 pmol/L) suggests deficiency; 180–350 ng/L (133–258 pmol/L) is indeterminate, subject to assay validation. Neurological features need prompt assessment/treatment, even without anaemia. Exclude/treat B12 deficiency before folate alone. <a href="https://www.nice.org.uk/guidance/ng239/chapter/recommendations">NICE NG239</a>.</li>
+      <li><strong>Liver tests, ferritin and HbA1c:</strong> laboratory limits and clinical context are essential. High ferritin is not ignored; normal/high ferritin does not exclude inflammatory iron restriction. HbA1c is not an acute glucose test and can be unreliable with red-cell disorders. <a href="https://doi.org/10.1136/gutjnl-2017-314924">BSG liver guidance</a>.</li>
+    </ul>
+    <p class="note">Full rule provenance, limitations and verification instructions are recorded in <a href="docs/bloods-engine.md">the engine notes</a>. These changes require local clinical governance review before being relied on for patient management.</p>
+  </div>
   <div class="section">
     <h2>Common Primary Care Pitfalls</h2>
     <ul>
@@ -1352,6 +1432,7 @@ li{ margin-bottom:6px; }
   </div>
 </div>
 
+<script src="bloods-engine.js"></script>
 <script>
 function toggleCard(cardEl){
   const details = cardEl.querySelector(".range-details");
@@ -1399,345 +1480,63 @@ function filterCards(){
   });
 }
 
-function getNum(id){
-  const el = document.getElementById(id);
-  if(!el) return null;
-  const raw = (el.value || "").trim();
-  if(raw === "") return null;
-  const val = Number(raw);
-  return Number.isFinite(val) ? val : null;
+function escapeEngineText(text){
+  return String(text).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 }
-
-function buildAlertBox(typeClass, title, items){
+function engineList(title, items){
   if(!items.length) return "";
-  return `
-    <div class="alert-box ${typeClass}">
-      <div class="alert-title">${title}</div>
-      <ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>
-    </div>
-  `;
+  return '<div style="margin-top:10px"><strong>' + escapeEngineText(title) + '</strong><ul>' +
+    items.map(item => '<li>' + escapeEngineText(item) + '</li>').join('') + '</ul></div>';
 }
-
+function readEngineInput(){
+  const input = {sex:document.getElementById("engineSex").value};
+  document.querySelectorAll("[data-engine-key]").forEach(el => {
+    input[el.dataset.engineKey] = el.validity.badInput ? "invalid" : el.value;
+  });
+  document.querySelectorAll("[data-engine-context]").forEach(el => {
+    input[el.dataset.engineContext] = el.type === "checkbox" ? el.checked : el.value;
+  });
+  return input;
+}
 function runDiagnosticEngine(){
-  const sex = (document.getElementById("engineSex")?.value || "female").toLowerCase();
-
-  const numericInputIds = [
-    "engineHb","engineWcc","engineNeut","engineLymph","enginePlatelets",
-    "engineRbc","engineHct","engineMch","engineMchc","engineMcv",
-    "engineFerritin","engineB12","engineFolate","engineTsh","engineHba1c","engineBnp",
-    "engineCr","engineEgfr","engineSodium","enginePotassium","engineCalcium",
-    "engineAlt","engineAlp","engineGgt","engineBili","engineAlbumin","engineCrp"
-  ];
-
-  const hasAnyRawInput = numericInputIds.some((id) => {
-    const el = document.getElementById(id);
-    return !!el && (el.value || "").trim() !== "";
-  });
-
   const resultEl = document.getElementById("engineResults");
-  if(!resultEl) return;
-
-  if(!hasAnyRawInput){
-    resultEl.innerHTML = '<span class="kicker">You need to input data:</span> Please enter one or more blood test results before running the diagnostic engine.';
+  document.querySelectorAll("[aria-invalid]").forEach(el => el.removeAttribute("aria-invalid"));
+  if(!window.BloodsEngine){
+    resultEl.innerHTML = '<div class="alert-box alert-danger">Engine unavailable. Do not use this page to assess urgency; use clinical review and local pathways.</div>';
     return;
   }
-
-  const hb = getNum("engineHb");
-  const mcv = getNum("engineMcv");
-  const ferritin = getNum("engineFerritin");
-  const b12 = getNum("engineB12");
-  const folate = getNum("engineFolate");
-  const tsh = getNum("engineTsh");
-  const wcc = getNum("engineWcc");
-  const neut = getNum("engineNeut");
-  const lymph = getNum("engineLymph");
-  const platelets = getNum("enginePlatelets");
-  const rbc = getNum("engineRbc");
-  const hct = getNum("engineHct");
-  const mch = getNum("engineMch");
-  const mchc = getNum("engineMchc");
-  const creatinine = getNum("engineCr");
-  const egfr = getNum("engineEgfr");
-  const sodium = getNum("engineSodium");
-  const potassium = getNum("enginePotassium");
-  const calcium = getNum("engineCalcium");
-  const alt = getNum("engineAlt");
-  const alp = getNum("engineAlp");
-  const ggt = getNum("engineGgt");
-  const bilirubin = getNum("engineBili");
-  const albumin = getNum("engineAlbumin");
-  const crp = getNum("engineCrp");
-  const hba1c = getNum("engineHba1c");
-  const bnp = getNum("engineBnp");
-
-  const values = [hb,mcv,ferritin,b12,folate,tsh,wcc,neut,lymph,platelets,rbc,hct,mch,mchc,creatinine,egfr,sodium,potassium,calcium,alt,alp,ggt,bilirubin,albumin,crp,hba1c,bnp];
-  const enteredCount = values.filter((v) => v !== null).length;
-
-  const hasStandaloneInterpretation = (
-    hba1c !== null ||
-    bnp !== null ||
-    ferritin !== null ||
-    b12 !== null ||
-    tsh !== null ||
-    calcium !== null
-  );
-
-  const hasInterpretablePair = (
-    (hb !== null && mcv !== null) ||
-    (mcv !== null && folate !== null) ||
-    (mcv !== null && b12 !== null) ||
-    (mcv !== null && tsh !== null) ||
-    (wcc !== null && crp !== null) ||
-    (creatinine !== null && egfr !== null) ||
-    (sodium !== null && potassium !== null) ||
-    (alp !== null && bilirubin !== null) ||
-    (alp !== null && ggt !== null)
-  );
-
-  const anaemiaInputsPresent = (hb !== null || mcv !== null || rbc !== null || hct !== null || mch !== null || mchc !== null);
-  const anaemiaPairsComplete = (hb !== null && mcv !== null);
-
-  if(anaemiaInputsPresent && !anaemiaPairsComplete && enteredCount <= 2 && !hasStandaloneInterpretation){
-    resultEl.innerHTML = '<span class="kicker">Not enough information to interpret anaemia:</span> Please add at least Hb + MCV (then ferritin/B12/folate as needed).';
+  const result = BloodsEngine.evaluate(readEngineInput());
+  result.errors.forEach(error => {
+    const el = document.querySelector('[data-engine-key="' + error.field + '"], [data-engine-context="' + error.field + '"]');
+    if(el) el.setAttribute("aria-invalid","true");
+  });
+  if(result.empty && !result.errors.length){
+    resultEl.innerHTML = '<strong>Awaiting input:</strong> Enter one or more results or select present red-flag symptoms. Missing blood tests never prevent a clinical emergency alert.';
     return;
   }
-
-  if(!hasStandaloneInterpretation && !hasInterpretablePair){
-    resultEl.innerHTML = '<span class="kicker">Not enough information to generate differentials:</span> Please enter more related values (for example Hb + MCV, Creatinine + eGFR, Sodium + Potassium, or ALP + Bilirubin/GGT).';
-    return;
-  }
-
-  const findings = [];
-  const actions = [];
-  const redFlags = [];
-  const amberFlags = [];
-
-  let severity = "Routine review";
-  let severityClass = "dot-green";
-
-  const hbLowCutoff = sex === "male" ? 130 : 115;
-
-  if(hb !== null && hb < hbLowCutoff){
-    if(mcv !== null && mcv < 80){
-      findings.push("Microcytic anaemia pattern.");
-      if(ferritin !== null && ferritin < 30){
-        findings.push("Iron deficiency likely (low ferritin).");
-        actions.push("Assess blood loss source (GI/menstrual), start iron replacement, and repeat FBC/ferritin response.");
-      } else {
-        actions.push("Check ferritin ± CRP and consider iron-restricted states vs thalassaemia trait.");
-      }
-    } else if(mcv !== null && mcv > 100){
-      findings.push("Macrocytic anaemia pattern.");
-      if(b12 !== null && b12 < 200){
-        findings.push("Low B12 supports B12 deficiency.");
-        actions.push("Assess for neurological features and replace B12 promptly per pathway.");
-      }
-      if(folate !== null && folate < 4){
-        findings.push("Low folate supports folate deficiency.");
-      }
-      if(tsh !== null && tsh > 4){
-        findings.push("Raised TSH may contribute to macrocytosis/hypothyroid picture.");
-      }
-      actions.push("Check B12/folate, TFTs, alcohol history and LFT context before treatment.");
-    } else {
-      findings.push("Normocytic anaemia pattern.");
-      actions.push("Consider CKD/chronic disease/inflammation and trend Hb with renal markers.");
-    }
-  }
-
-  if(b12 !== null && b12 < 200){
-    findings.push("Low B12 result.");
-    actions.push("Assess symptoms (neuropathy, glossitis, cognitive change), cause, and replace per pathway.");
-  }
-
-  if(folate !== null && folate < 4){
-    findings.push("Low folate result.");
-    actions.push("Check B12 status and replace folate per pathway after excluding/treating B12 deficiency.");
-  }
-
-  if(tsh !== null && tsh > 4){
-    findings.push("Raised TSH can fit hypothyroid pattern.");
-    actions.push("Correlate with symptoms and consider FT4 / local thyroid pathway.");
-  } else if(tsh !== null && tsh < 0.4){
-    findings.push("Suppressed TSH can fit hyperthyroid pattern.");
-    actions.push("Correlate with symptoms and consider FT4 / local thyroid pathway.");
-  }
-
-  if(wcc !== null && wcc > 11){
-    findings.push("Leucocytosis (raised WCC).");
-    actions.push("Correlate with infection/inflammation symptoms and differential count.");
-  }
-
-  if(neut !== null && neut > 7.5){
-    findings.push("Neutrophilia present.");
-  }
-
-  if(lymph !== null && lymph < 1.0){
-    findings.push("Lymphopenia present.");
-  }
-
-  if(platelets !== null && platelets > 400){
-    findings.push("Thrombocytosis (often reactive).");
-    actions.push("Screen for inflammation or iron deficiency; repeat if persistent.");
-  }
-
-  if(egfr !== null && egfr < 60){
-    findings.push("Reduced renal function (eGFR <60).");
-    actions.push("Review trend, nephrotoxic meds, hydration and urine ACR for CKD framework.");
-  }
-
-  if(creatinine !== null && creatinine > 120){
-    findings.push("Raised creatinine.");
-  }
-
-  if(sodium !== null && sodium < 130){
-    findings.push("Moderate/severe hyponatraemia.");
-    actions.push("Assess volume status, medications (e.g. SSRIs/diuretics), and symptoms urgently.");
-    redFlags.push("Sodium <130 mmol/L needs urgent clinical review, especially if symptomatic.");
-    severity = "Urgent same-day review";
-    severityClass = "dot-red";
-  } else if(sodium !== null && sodium < 135){
-    findings.push("Mild hyponatraemia.");
-    actions.push("Repeat and review fluid/medication contributors.");
-    amberFlags.push("Mild hyponatraemia may still need prompt review depending on symptoms and trend.");
-    if(severity !== "Urgent same-day review"){
-      severity = "Prompt review (24–72h)";
-      severityClass = "dot-amber";
-    }
-  }
-
-  if(potassium !== null && potassium >= 6){
-    findings.push("Severe hyperkalaemia risk.");
-    actions.push("Repeat urgently to exclude haemolysis and arrange immediate escalation per pathway.");
-    redFlags.push("Potassium ≥6.0 mmol/L is an urgent abnormality.");
-    severity = "Urgent same-day review";
-    severityClass = "dot-red";
-  } else if(potassium !== null && potassium > 5.5){
-    findings.push("Moderate hyperkalaemia.");
-    actions.push("Medication review (ACEi/ARB/MRA), ECG consideration and prompt repeat.");
-    amberFlags.push("Potassium >5.5 mmol/L usually needs prompt repeat and medication review.");
-    if(severity !== "Urgent same-day review"){
-      severity = "Prompt review (24–72h)";
-      severityClass = "dot-amber";
-    }
-  }
-
-  if(calcium !== null && calcium >= 3.0){
-    findings.push("Severe hypercalcaemia.");
-    actions.push("Arrange urgent assessment and investigate cause per pathway.");
-    redFlags.push("Adjusted calcium ≥3.0 mmol/L is a red flag.");
-    severity = "Urgent same-day review";
-    severityClass = "dot-red";
-  } else if(calcium !== null && calcium > 2.6){
-    findings.push("Hypercalcaemia pattern.");
-    actions.push("Review symptoms, hydration, medications, and consider PTH / malignancy screen per pathway.");
-    amberFlags.push("Raised calcium should be repeated and interpreted with albumin/PTH context.");
-    if(severity !== "Urgent same-day review"){
-      severity = "Prompt review (24–72h)";
-      severityClass = "dot-amber";
-    }
-  } else if(calcium !== null && calcium < 2.1){
-    findings.push("Hypocalcaemia pattern.");
-    actions.push("Assess symptoms and consider albumin, vitamin D, magnesium and PTH context.");
-  }
-
-  if(alt !== null && alt > 120){
-    findings.push("Marked ALT elevation (hepatocellular pattern).");
-    actions.push("Assess alcohol/viral/medication causes and arrange repeat + liver pathway work-up.");
-  }
-
-  if(alp !== null && alp > 130 && bilirubin !== null && bilirubin > 21){
-    findings.push("Cholestatic pattern (ALP + bilirubin rise).");
-    actions.push("Review for jaundice/pruritus and consider hepatobiliary imaging pathway.");
-  }
-
-  if(alp !== null && alp > 130 && ggt !== null && ggt > 60){
-    findings.push("Raised ALP + raised GGT supports hepatobiliary source.");
-    actions.push("Consider cholestatic or alcohol-related/hepatobiliary pattern and correlate clinically.");
-  } else if(alp !== null && alp > 130 && ggt !== null && ggt <= 60){
-    findings.push("Raised ALP with non-raised GGT may suggest non-hepatic source such as bone.");
-    actions.push("Consider bone profile / vitamin D / clinical context.");
-  }
-
-  if(albumin !== null && albumin < 35){
-    findings.push("Low albumin.");
-    actions.push("Interpret with inflammation, liver function, renal loss and nutrition status.");
-  }
-
-  if(crp !== null && crp > 5){
-    findings.push("Inflammatory marker elevated (CRP).");
-  }
-
-  if(hba1c !== null && hba1c >= 48){
-    findings.push("Diabetes-range HbA1c.");
-    actions.push("Confirm diagnosis per pathway and start glycaemic/CV risk management.");
-  } else if(hba1c !== null && hba1c >= 42){
-    findings.push("Prediabetes-range HbA1c.");
-    actions.push("Lifestyle intervention with planned repeat HbA1c monitoring.");
-  }
-
-  if(bnp !== null){
-    if(bnp >= 400){
-      findings.push("Markedly raised BNP (HF likely; urgent assessment pathway usually required).");
-      amberFlags.push("Markedly raised BNP should trigger prompt heart failure pathway review.");
-      if(severity !== "Urgent same-day review"){
-        severity = "Prompt review (24–72h)";
-        severityClass = "dot-amber";
-      }
-    } else if(bnp >= 100){
-      findings.push("Raised BNP can support heart failure in the right clinical context.");
-      actions.push("Correlate with symptoms/exam and follow local echo/HF pathway thresholds.");
-    }
-  }
-
-  if(ferritin !== null){
-    if(ferritin < 30){
-      findings.push("Low ferritin suggests iron deficiency.");
-      actions.push("Check full FBC pattern (especially Hb + MCV), identify cause of iron loss, and treat per pathway.");
-    } else if(ferritin >= 30 && ferritin <= 400){
-      findings.push("Ferritin within typical reference range (interpret with CRP/context).");
-    }
-  }
-
-  if(findings.length === 0){
-    findings.push("No major pattern triggered from entered markers.");
-    actions.push("Use trend and symptom context; compare with local laboratory ranges.");
-  }
-
-  const alertHtml = [
-    buildAlertBox("alert-danger", "Red flag urgent findings", redFlags),
-    buildAlertBox("alert-warning", "Prompt review findings", amberFlags),
-    (!redFlags.length && !amberFlags.length) ? '<div class="alert-box alert-success"><div class="alert-title">No immediate red flag pattern triggered</div><div>Still interpret with history, observations, examination, trend, and local pathways.</div></div>' : ""
-  ].join("");
-
-  resultEl.innerHTML = `
-    ${alertHtml}
-    <div class="engine-severity"><span class="dot ${severityClass}"></span>${severity}</div>
-    <div style="margin-top:8px;"><span class="kicker">Likely patterns</span><ul>${findings.map((f) => `<li>${f}</li>`).join("")}</ul></div>
-    <div style="margin-top:8px;"><span class="kicker">Suggested next steps</span><ul>${actions.map((a) => `<li>${a}</li>`).join("")}</ul></div>
-  `;
+  const style = result.level >= 3 ? "alert-danger" : result.level >= 2 ? "alert-warning" : "";
+  const dot = result.level >= 3 ? "dot-red" : result.level >= 2 ? "dot-amber" : "dot-neutral";
+  const alerts = result.alerts.slice().sort((a,b) => b.level-a.level);
+  resultEl.innerHTML = '<div class="alert-box ' + style + '"><div class="engine-severity"><span class="dot ' + dot + '"></span>' +
+    escapeEngineText(result.severity) + '</div>' + engineList("Safety alerts",alerts.map(a => a.text + " " + a.action)) + '</div>' +
+    engineList("Check these inputs",result.errors.map(e => e.text)) +
+    engineList("Patterns from entered results",result.findings.map(f => f.text)) +
+    engineList("Suggested next steps",result.actions) +
+    engineList("Missing information",result.missing) +
+    engineList("Limits of this assessment",result.limitations);
 }
-
 function clearDiagnosticEngine(){
-  [
-    "engineHb","engineWcc","engineNeut","engineLymph","enginePlatelets",
-    "engineRbc","engineHct","engineMch","engineMchc","engineMcv",
-    "engineFerritin","engineB12","engineFolate","engineTsh",
-    "engineHba1c","engineBnp","engineCr","engineEgfr","engineSodium",
-    "enginePotassium","engineCalcium","engineAlt","engineAlp","engineGgt",
-    "engineBili","engineAlbumin","engineCrp"
-  ].forEach((id) => {
-    const el = document.getElementById(id);
-    if(el) el.value = "";
+  document.querySelectorAll("[data-engine-key]").forEach(el => { el.value = ""; });
+  document.querySelectorAll("[data-engine-context]").forEach(el => {
+    if(el.type === "checkbox") el.checked = false;
+    else el.selectedIndex = 0;
   });
-
-  const sexEl = document.getElementById("engineSex");
-  if(sexEl) sexEl.value = "female";
-
-  const resultEl = document.getElementById("engineResults");
-  if(resultEl){
-    resultEl.innerHTML = '<span class="kicker">Awaiting input:</span> Enter results and run engine.';
-  }
+  document.getElementById("engineSex").value = "unknown";
+  document.querySelectorAll("[aria-invalid]").forEach(el => el.removeAttribute("aria-invalid"));
+  document.getElementById("engineResults").innerHTML = '<strong>Awaiting input:</strong> Enter results and assess clinical context.';
+}
+function invalidateEngineResults(){
+  document.getElementById("engineResults").innerHTML = '<strong>Results changed:</strong> Run the engine again to refresh this assessment. Use clinical symptoms and local emergency pathways immediately when indicated.';
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1760,9 +1559,14 @@ document.addEventListener("DOMContentLoaded", () => {
     clearBtn.addEventListener("click", clearDiagnosticEngine);
   }
 
+  document.querySelectorAll("[data-engine-key], [data-engine-context], #engineSex").forEach(el => {
+    el.addEventListener("input", invalidateEngineResults);
+    el.addEventListener("change", invalidateEngineResults);
+  });
   clearDiagnosticEngine();
 });
 </script>
 
 </body>
 </html>
+

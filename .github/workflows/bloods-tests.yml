@@ -1,0 +1,26 @@
+name: Bloods engine regression tests
+on:
+  pull_request:
+    paths:
+      - 'bloods.html'
+      - 'bloods-engine.js'
+      - 'tests/bloods-engine.test.cjs'
+      - '.github/workflows/bloods-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'bloods.html'
+      - 'bloods-engine.js'
+      - 'tests/bloods-engine.test.cjs'
+      - '.github/workflows/bloods-tests.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/bloods-engine.test.cjs
