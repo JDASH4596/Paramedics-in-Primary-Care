@@ -299,7 +299,7 @@
   <div class="grid">
     <div class="tile" onclick="openWindow('comparisons')">
       <h3>📊 Comparisons</h3>
-      <p>Otitis externa vs media • sore throat causes • sinusitis vs rhinitis</p>
+      <p>Otitis externa vs otitis media • quick clinical cues</p>
       <div class="flag-pill" onclick="event.stopPropagation(); openRedFlags('ent')">🚩</div>
     </div>
 
@@ -456,6 +456,14 @@ function imageSection(title, src, alt, creditHtml){
   `;
 }
 
+/* Shared sinusitis emergency guidance: used by the condition and quick flags. */
+const sinusEmergencyFlags = [
+  "Severe systemic infection / suspected sepsis.",
+  "Periorbital swelling or cellulitis, displaced eye, double vision, painful or restricted eye movements (ophthalmoplegia), or newly reduced vision.",
+  "Frontal bone swelling, severe frontal headache, meningism, focal neurological signs or reduced consciousness."
+];
+const sinusEmergencyAction = "Arrange urgent hospital assessment now for suspected orbital/intracranial complications or severe systemic infection. Use emergency ambulance transfer for life-threatening illness or instability. Do not delay referral for community antibiotics.";
+
 /* Content */
 function openWindow(key) {
   const content = {
@@ -523,18 +531,20 @@ function openWindow(key) {
   ${section("Safety net / follow-up", [
     "Review if not improving in 48–72 hours or if worsening",
     "Return urgently if fever/systemic illness develops",
-    "Return if spreading redness/swelling around ear"
+    "Seek urgent assessment for spreading redness/swelling around the ear; significant spread, systemic illness or cranial nerve symptoms require hospital assessment."
   ], "good")}
 
-  ${section("Red flags (think malignant otitis externa)", [
+  ${section("Red flags (suspected necrotising / malignant otitis externa)", [
     "Severe deep pain (especially night pain) in diabetes/immunosuppression",
     "Granulation tissue in canal (if seen)",
+    "Suspected necrotising otitis externa requires emergency ENT/hospital assessment; do not wait for a routine follow-up or response to drops.",
     "Cranial nerve palsy (e.g., facial weakness)",
     "Systemically unwell / sepsis features"
   ], "danger")}
 
   ${linksSection("Guidelines", [
-    { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" }
+    { label: "NICE CKS – Otitis externa", href: "https://cks.nice.org.uk/topics/otitis-externa/" },
+    { label: "NHS — otitis externa emergency referral", href: "https://www.hweclinicalguidance.nhs.uk/all-clinical-areas-documents/ear-nose-throat-ent/otitis-externa/" }
   ])}
 `,
 
@@ -652,45 +662,57 @@ function openWindow(key) {
     `,
 
     sinusitis: `
-      ${section("Definition", [
-        "Sinusitis is inflammation/swelling of the paranasal sinuses, usually following a viral upper respiratory infection.",
-        "Most acute episodes are self-limiting and improve within 2–3 weeks; persistent symptoms beyond 12 weeks suggests chronic rhinosinusitis."
+      ${section("Definition and course", [
+        "Acute sinusitis usually follows a viral upper respiratory infection. Most episodes improve within 2–3 weeks without antibiotics.",
+        "Persistent symptoms for 12 weeks or more suggest chronic rhinosinusitis and need reassessment rather than repeated acute antibiotic courses."
       ])}
-      ${section("Key features", [
-        "Facial pain/pressure (often worse on bending forward)",
-        "Nasal blockage or congestion",
-        "Anterior or post-nasal discharge (may be yellow/green)",
-        "Reduced or altered sense of smell",
-        "Tooth or jaw pain, halitosis, headache, cough, ear pressure can occur"
+      ${section("Key features and diagnosis", [
+        "Nasal blockage/congestion or nasal discharge, with facial pain/pressure and/or reduced sense of smell. Facial pain alone should prompt consideration of another cause.",
+        "Discharge may be yellow/green; colour alone does not establish bacterial infection or an antibiotic indication.",
+        "A bacterial cause is more likely when several features occur together: symptoms beyond 10 days, purulent discharge, severe unilateral tooth/jaw pain, fever, or deterioration after initial improvement.",
+        "Diagnosis is usually clinical. Routine imaging is not needed for uncomplicated acute sinusitis."
       ], "alt")}
       ${section("Assessment", [
-        "Confirm symptom pattern and duration (≤10 days, >10 days without improvement, recurrent episodes, or >12 weeks persistent symptoms).",
-        "Assess severity: fever, unilateral severe local pain, impact on oral intake/sleep/function, and progression over time.",
-        "Check for likely source or alternative diagnosis (e.g. dental infection, allergic rhinitis, migraine/facial pain syndromes).",
-        "Screen for risk factors for complications (immunosuppression, significant comorbidity, previous resistant infections)."
+        "Record duration, improvement or deterioration, severity, oral intake and effect on daily function. Check observations if unwell.",
+        "Actively check for the eye, neurological and systemic warning signs below; assess vision and eye movements if an orbital complication is suspected.",
+        "Consider dental infection, allergic rhinitis, migraine and other causes of facial pain. Review recurrent or persistent unilateral symptoms.",
+        "Assess immunosuppression and significant comorbidity. Check recent antibiotics/resistance history separately when choosing treatment.",
+        "Use age-appropriate fever/sepsis assessment in children. Immunocompromised or clinically deteriorating patients need prompt assessment; do not wait for a duration threshold."
       ], "good")}
-      ${section("Diagnosis (clinical)", [
-        "Diagnosis is usually clinical in primary care; routine imaging is not required for uncomplicated acute sinusitis.",
-        "Bacterial cause is more likely if several are present: symptoms >10 days, purulent/discoloured discharge, severe unilateral maxillary/tooth pain, fever, or marked worsening after initial milder illness (“double-sickening”).",
-        "Reassess promptly if symptoms worsen rapidly/significantly or fail to follow expected recovery."
+      ${section("Emergency referral — act now", sinusEmergencyFlags, "danger")}
+      <div class="mini-note"><strong>${sinusEmergencyAction}</strong></div>
+      ${section("Management and antibiotic stewardship", [
+        "Around 10 days or less, with uncomplicated illness: do not offer antibiotics. Explain the expected course and safety-net.",
+        "Around 10 days or more without improvement: consider no antibiotic or a back-up prescription. Duration alone is not an indication; discuss the small potential benefit and adverse effects such as diarrhoea and nausea.",
+        "At any duration, offer an immediate antibiotic if systemically very unwell, at high risk of complications, or with signs of a more serious illness. First assess whether hospital referral is required; antibiotics must not delay emergency assessment.",
+        "When prescribing, use NICE NG79 antibiotic tables and the local formulary, checking age/weight, allergy, pregnancy/breastfeeding, interactions and renal/hepatic function. Do not assume adult doses apply to children.",
+        "Back-up prescription: give verbal and written advice to use it if symptoms do not improve within the next 7 days, or worsen rapidly/significantly. Deterioration also requires reassessment; red flags require hospital assessment, not just starting the prescription.",
+        "If worsening despite antibiotics, reassess the diagnosis, complications, adherence and previous antibiotic exposure. NG79 second-choice advice applies after at least 2–3 days on first choice; seek microbiology advice for second-line allergy options or failure of co-amoxiclav."
       ])}
-      ${section("Management (Primary Care)", [
-        "Self-care: analgesia (paracetamol/ibuprofen if suitable), hydration, rest, smoking avoidance, and saline nasal irrigation.",
-        "Consider intranasal corticosteroid (especially if symptoms ≥10 days; high-dose 14-day course may be considered in people aged 12+ per NICE antimicrobial guidance).",
-        "Antibiotic stewardship: avoid immediate antibiotics for most mild/moderate cases; consider no antibiotic or delayed/back-up prescription when appropriate.",
-        "Offer immediate antibiotic if systemically very unwell, high risk of complications, or signs of serious illness.",
-        "Safety-net clearly: seek urgent review for deterioration, no improvement by expected timelines, or any red-flag features."
+      ${section("Symptom relief", [
+        "Paracetamol or ibuprofen for pain/fever if suitable; maintain fluids, rest and avoid smoking.",
+        "Saline spray/irrigation can be tried, but evidence of benefit in acute sinusitis is limited. For homemade irrigation use boiled then cooled water and a fresh solution; follow the linked NHS instructions.",
+        "For symptoms around 10 days or more without improvement, consider a high-dose nasal corticosteroid for 14 days in adults and children aged 12 years and over. This use is off-label: check NG79 dosing, the product and prescribing guidance.",
+        "Nasal steroids may improve symptoms but are unlikely to shorten illness. Check other steroid use and possible systemic effects; demonstrate correct spray technique.",
+        "Antihistamines are for accompanying allergy, not routine acute sinusitis. Evidence is insufficient for nasal decongestants; no evidence was found for oral decongestants or steam inhalation."
+      ], "alt")}
+      ${section("Safety-net and follow-up", [
+        "Seek medical review if symptoms have not improved by 3 weeks from onset, or after 7 days of treatment from a clinician/pharmacist.",
+        "Seek prompt reassessment for rapid/significant deterioration, uncontrolled pain or becoming systemically very unwell. Use the emergency pathway above for any orbital, intracranial or severe systemic features.",
+        "Seek review if symptoms worsen despite antibiotics or the antibiotic is stopped because it is not tolerated. Do not wait until the course ends if deteriorating."
+      ], "good")}
+      ${section("Persistent, recurrent or unilateral symptoms", [
+        "Consider routine ENT referral for persistent symptoms despite 3 months of appropriate treatment, or frequent recurrent episodes; reassess diagnosis and treatment technique first.",
+        "Persistent unilateral symptoms need assessment for an alternative or structural cause. Do not automatically wait for a 3-month treatment trial.",
+        "Unilateral obstruction with blood-stained discharge, cheek numbness, facial swelling or loosening teeth warrants urgent assessment and consideration of an urgent ENT pathway. Eye or neurological complications require emergency hospital assessment."
       ])}
-      ${section("Referral / escalation", [
-        "Same-day urgent hospital/ENT assessment if severe systemic infection, orbital/periorbital complications (e.g. periorbital oedema/cellulitis, displaced eye, diplopia, reduced visual acuity), or intracranial features (e.g. severe frontal headache, focal neurology, meningism, frontal swelling).",
-        "Consider ENT referral for persistent symptoms despite 3 months of appropriate treatment, frequent recurrent episodes, or unilateral persistent symptoms (to exclude structural pathology).",
-        "Escalate sooner in children, immunocompromised patients, or where diagnostic uncertainty remains high."
-      ], "danger")}
-      ${linksSection("Guidelines", [
-        { label: "NHS – Sinusitis (sinus infection)", href: "https://www.nhs.uk/conditions/sinusitis-sinus-infection/" },
-        { label: "NICE – Sinusitis (acute): antimicrobial prescribing (NG79)", href: "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations" },
-        { label: "NICE CKS – Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" }
+      ${linksSection("Guidelines and prescribing", [
+        { label: "NICE NG79 — treatment, steroid dosing and adult/child antibiotic tables", href: "https://www.nice.org.uk/guidance/ng79/chapter/Recommendations" },
+        { label: "NHS — sinusitis, self-care and safe saline preparation", href: "https://www.nhs.uk/conditions/sinusitis-sinus-infection/" },
+        { label: "NICE CKS — Sinusitis", href: "https://cks.nice.org.uk/topics/sinusitis/" },
+        { label: "NHS Devon — atypical/unilateral symptoms and referral", href: "https://myhealth-devon.nhs.uk/my-condition/condition/sinusitis/" }
       ])}
+      <p class="mini-note">Guidance sources checked: 10 October 2026. Apply clinical judgement and current local prescribing/referral pathways.</p>
     `,
 
     rhinitis: `
@@ -727,8 +749,13 @@ function openWindow(key) {
       ${section("Vestibular neuritis/labyrinthitis", [
         "Acute prolonged vertigo (hours–days)",
         "Nausea/vomiting, gait unsteadiness",
-        "Hearing loss suggests labyrinthitis"
+        "New hearing loss with vertigo must not automatically be labelled labyrinthitis: assess for stroke and sudden sensorineural hearing loss."
       ], "good")}
+      ${section("Urgent assessment", [
+        "Sudden acute vestibular syndrome (ongoing vertigo, nausea/vomiting and gait unsteadiness) not explained by BPPV or postural hypotension: use the immediate stroke pathway if a clinician trained and experienced in HINTS is unavailable. HINTS is not a general test for all dizziness.",
+        "New deafness or neurological signs with sudden dizziness: assess immediately for posterior circulation stroke. Absence of obvious limb weakness does not exclude it.",
+        "In adults, hearing loss developing over 3 days or less within the past 30 days, unexplained by external/middle ear disease: refer immediately to ENT/ED to be seen within 24 hours."
+      ], "danger")}
       ${section("Red flags (central)", [
         "New focal neuro deficit",
         "Severe headache",
@@ -737,7 +764,9 @@ function openWindow(key) {
         "Risk factors for stroke"
       ], "danger")}
       ${linksSection("Guidelines", [
-        { label: "NICE CKS – Vertigo", href: "https://cks.nice.org.uk/topics/vertigo/" }
+        { label: "NICE CKS – Vertigo", href: "https://cks.nice.org.uk/topics/vertigo/" },
+        { label: "NICE NG127 — dizziness and vertigo", href: "https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16#dizziness-and-vertigo-in-adults" },
+        { label: "NICE NG98 — sudden hearing loss", href: "https://www.nice.org.uk/guidance/ng98/chapter/Recommendations" }
       ])}
     `,
 
@@ -756,10 +785,12 @@ function openWindow(key) {
         "Sit forward, pinch soft part of nose 10–15 minutes",
         "Avoid swallowing blood",
         "Topical vasoconstrictor if available per local protocol",
-        "Safety-net: recurrent bleeds, heavy bleed, syncope, anticoagulated"
+        "If bleeding continues after 10–15 minutes of correct continuous pressure, arrange urgent ED assessment if appropriate cautery/packing expertise is unavailable. Do not delay for heavy bleeding, suspected posterior bleeding or instability.",
+        "Call 999 for severe bleeding with collapse, haemodynamic compromise or breathing difficulty. Review recurrent bleeding and anticoagulant use; do not advise stopping prescribed anticoagulants without clinical advice."
       ], "alt")}
       ${linksSection("Guidelines", [
-        { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" }
+        { label: "NICE CKS – Epistaxis", href: "https://cks.nice.org.uk/topics/epistaxis/" },
+        { label: "NHS Wales — nosebleed emergency advice", href: "https://111.wales.nhs.uk/nosebleed/" }
       ])}
     `
   };
@@ -802,14 +833,9 @@ function openRedFlags(topic) {
       "Significant trismus, uvula deviation",
       "Sepsis features"
     ],
-    sinus: [
-      "Periorbital swelling/redness",
-      "Painful eye movements / visual change",
-      "Severe frontal headache / meningism",
-      "Neuro deficit or reduced consciousness"
-    ],
+    sinus: sinusEmergencyFlags,
     vertigo: [
-      "Any focal neuro deficit",
+      "Any focal neuro deficit or new deafness with acute vertigo",
       "New inability to walk/ataxia",
       "Severe headache",
       "Diplopia/dysarthria/limb weakness"
@@ -823,6 +849,16 @@ function openRedFlags(topic) {
   };
 
   const list = flags[topic] || flags.ent;
+  const actions = {
+    sinus: sinusEmergencyAction,
+    ear: "Suspected necrotising otitis externa, mastoiditis, cranial nerve palsy or severe systemic illness: urgent hospital/ENT assessment now.",
+    mastoid: "Arrange urgent same-day hospital/ENT assessment. Use emergency transfer for sepsis or instability.",
+    throat: "Airway compromise: call 999. Suspected quinsy or inability to swallow fluids: urgent same-day ENT/ED assessment.",
+    quinsy: "Arrange urgent same-day ENT/ED assessment; call 999 for airway compromise or instability.",
+    vertigo: "Suspected stroke: use the immediate emergency stroke pathway. New unexplained sudden hearing loss also requires urgent assessment; see the vertigo tile.",
+    bleed: "Ongoing bleeding despite 10–15 minutes of pressure: urgent ED assessment if cautery/packing is unavailable. Call 999 for instability, collapse or breathing difficulty.",
+    ent: "Airway compromise or instability: call 999. Suspected orbital/intracranial infection or stroke: immediate hospital assessment. Other listed red flags require urgent same-day assessment."
+  };
 
   const html = `
     <div class="section danger">
@@ -830,7 +866,7 @@ function openRedFlags(topic) {
       <ul>
         ${list.map(x => `<li><strong>${x}</strong></li>`).join("")}
       </ul>
-      <div class="mini-note">If concerned: follow local escalation pathways.</div>
+      <div class="mini-note"><strong>${actions[topic] || actions.ent}</strong></div>
     </div>
   `;
 
